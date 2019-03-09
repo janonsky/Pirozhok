@@ -3,7 +3,7 @@ package rpis71.klimovich.oop.model;
 import rpis71.klimovich.oop.model.Account;
 
 public class Individual {
-    private Account[] accounts;
+    private Account[] accounts=new Account[16];
     private int size;
     private final static int DEFAULT_SIZE=16;
 
@@ -17,16 +17,21 @@ public class Individual {
     }
     public Individual (Account[] accounts)
     {
-        Account[] newAccounts=null;
-        System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);//???????????????
+       System.arraycopy(this.accounts,0,this.accounts,0,accounts.length);
     }
         public boolean add(Account account)
         {
+            Account account1=new Account();
+            if(size==accounts.length)
+            {
+                System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
+            }
             for(int i=size;i<accounts.length;i++)
             {
-                if(accounts[i].getNumber()==null)
+                if(accounts[i]==null)
                 {
-                    accounts[i].setNumber(account.getNumber());
+                    account1.setNumber(account.getNumber());
+                    accounts[i]=account1;
                     return true;
                 }
             }
@@ -34,9 +39,15 @@ public class Individual {
         }
         public boolean add(int index,Account account)
         {
+            Account account1=new Account();
+            account1.setNumber(account.getNumber());//??
+            if(size==accounts.length)
+            {
+                System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
+            }
             for(int i=0;i<accounts.length;i++) {
-                if ((index < accounts.length) && (accounts[i].getNumber() == null)) {
-                    accounts[index].setNumber(account.getNumber());
+                if ((index < accounts.length) && ( account1.getNumber() == null)) {
+                    accounts[index]=account1;
                     return true;
                 }
             }
@@ -68,24 +79,31 @@ public class Individual {
         }
         public Account set(int index,Account account)
         {
-            accounts[index].setBalance(account.getBalance());
-            accounts[index].setNumber(account.getNumber());
-            return accounts[index];
+           this.accounts[index]=account;
+            return this.accounts[index];
         }
         public Account remove(int index)
         {
-            accounts[index].setNumber("null");
+            for (int i = index; i<accounts.length-1; i++)
+                accounts[i] = accounts[i + 1];
+            accounts[accounts.length - 1] = null;
             return accounts[index];
         }
-        public Account remove(String accountNumber)
+        public Account remove(String accountNumber) //???
         {
+            int count=0;
+            int index=0;
             for(var el:accounts)
             {
                 if(el.getNumber().equals(accountNumber))
                 {
-                    el.setNumber("null");
+                    index=count;
+                    for (int i = index; i<accounts.length-1; i++)
+                        accounts[i] = accounts[i + 1];
+                    accounts[accounts.length - 1] = null;
                     return el;
                 }
+                count++;
             }
             return null;
         }
@@ -101,10 +119,12 @@ public class Individual {
         }
         public Account[] getAccounts()
         {
-
+            return accounts;//????
         }
-        public Account[] sortedAccountByBalance()
-        {}
+        //public Account[] sortedAccountByBalance()
+        //{
+            
+        //}
         public double totalBalance()
         {
             double count=0;
