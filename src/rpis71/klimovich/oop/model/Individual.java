@@ -21,17 +21,15 @@ public class Individual {
     }
         public boolean add(Account account)
         {
-            Account account1=new Account();
             if(size==accounts.length)
             {
                 System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
             }
-            for(int i=size;i<accounts.length;i++)
+            for(int i=0;i<accounts.length;i++)
             {
                 if(accounts[i]==null)
                 {
-                    account1.setNumber(account.getNumber());
-                    accounts[i]=account1;
+                    accounts[i]=account;
                     return true;
                 }
             }
@@ -39,25 +37,20 @@ public class Individual {
         }
         public boolean add(int index,Account account)
         {
-            Account account1=new Account();
-            account1.setNumber(account.getNumber());//??
             if(size==accounts.length)
             {
                 System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
             }
-            for(int i=0;i<accounts.length;i++) {
-                if ((index < accounts.length) && ( account1.getNumber() == null)) {
-                    accounts[index]=account1;
+                if (accounts[index]== null) {
+                    accounts[index]=account;
                     return true;
                 }
-            }
+
         return false;
         }
         public Account get(int index)
         {
-                if(index<accounts.length)
                     return accounts[index];
-                return null;
         }
         public Account get(String accountNumber)
         {
@@ -65,6 +58,8 @@ public class Individual {
             {
                 if(el.getNumber().equals(accountNumber))
                     return el;
+                else
+                    return null;
             }
         return null;
         }
@@ -74,6 +69,8 @@ public class Individual {
             {
                 if(el.getNumber().equals(accountNumber))
                     return true;
+                else
+                    return false;
             }
             return false;
         }
@@ -89,7 +86,7 @@ public class Individual {
             accounts[accounts.length - 1] = null;
             return accounts[index];
         }
-        public Account remove(String accountNumber) //???
+        public Account remove(String accountNumber) // не работает деремо
         {
             int count=0;
             int index=0;
@@ -110,28 +107,34 @@ public class Individual {
         public int size()
         {
             int count=0;
-            for(var el:accounts)
+            for(int i=0;i<accounts.length;i++)
             {
-                if(el.getNumber()!=null)
+                if(accounts[i]!=null)
                     count++;
             }
             return count;
         }
-        public Account[] getAccounts()
+        public Account[] getAccounts() //доработать без нула
         {
-            return accounts;//????
+            Account[] accounts1=new Account[accounts.length];
+            for(int i=0;i<accounts.length;i++)
+            {
+                if(accounts[i]!=null)
+                   accounts1[i]=accounts[i];
+            }
+            return accounts1;
         }
-        //public Account[] sortedAccountByBalance()
-        //{
-            
-        //}
+        /*public Account[] sortedAccountByBalance()
+        {
+
+        }*/
         public double totalBalance()
         {
             double count=0;
-            for(var el:accounts)
+            for(int i=0;i<accounts.length;i++)
             {
-                if(el.getNumber()!=null)
-                    count+=el.getBalance();
+                if(accounts[i]!=null)
+                    count+=accounts[i].getBalance();
             }
         return count;
         }
