@@ -1,7 +1,7 @@
 package rpis71.klimovich.oop.model;
 
 public class AccountManager {
-    private Individual[] individuals = new Individual[16];
+    private Individual[] individuals;
     private int size;
     private final static int ConstSIZE =16;
 
