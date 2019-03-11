@@ -28,7 +28,7 @@ public class Individual {
                 System.arraycopy(this.accounts,0,this.accounts,0,size*2);
                 size++;
             }
-            for(int i=0;i<size;i++)
+            for(int i=0;i<accounts.length;i++)
             {
                 if(accounts[i]==null)
                 {
