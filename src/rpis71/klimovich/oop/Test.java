@@ -29,18 +29,15 @@ public class Test {
         Account[] accounts1={user1,user2,user3,user4,user5};
         Individual individual1=new Individual(accounts1);
 
-        Individual[] individuals={individual};//???
+        Individual[] individuals={individual};
         AccountManager accountManager=new AccountManager(individuals);
         individual.add(userOne);
         individual.add(userTwo);
         individual.add(3,userThree);
         individual.add(4,userFour);
-        accountManager.add(individual);
-        for (var el:accountManager.get(0).getAccounts())
-        {
-            if(el!=null)
-            System.out.println(el.getNumber());
-        }
+        System.out.println(accountManager.add(individual));
+       //System.out.println(accountManager.getAccount("daun").getBalance());
+       // System.out.println(accountManager.getAccount("chmo"));
        /* System.out.println(individual.add(userOne));
         System.out.println(individual.add(userTwo));
         System.out.println(individual.add(3,userThree));
@@ -50,10 +47,6 @@ public class Test {
         System.out.println(individual.remove(3).getNumber());
         System.out.println(individual.remove("chmo").getNumber());
         System.out.println(individual.size());
-        for(var el:individual.getAccounts())
-        {
-                    System.out.println(el.getNumber());
-        }
         System.out.println(individual.totalBalance());*/
 
     }

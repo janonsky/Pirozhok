@@ -1,15 +1,13 @@
 package rpis71.klimovich.oop.model;
 
-import rpis71.klimovich.oop.model.Account;
-
 public class Individual {
-    private Account[] accounts=new Account[16];
+    private Account[] accounts;
     private int size;
-    private final static int DEFAULT_SIZE=16;
+    private final static int ConstSIZE =16;
 
-   public Individual ()
+    public Individual ()
    {
-       this(DEFAULT_SIZE);
+       this(ConstSIZE);
    }
     public Individual (int size)
     {
@@ -17,15 +15,20 @@ public class Individual {
     }
     public Individual (Account[] accounts)
     {
-       System.arraycopy(this.accounts,0,this.accounts,0,accounts.length);
+            Account[] newAccounts;
+            newAccounts = new Account[accounts.length*2];
+            System.arraycopy(accounts, 0, newAccounts, 0, accounts.length);
+            this.size = accounts.length;
+            this.accounts = newAccounts;
     }
         public boolean add(Account account)
         {
             if(size==accounts.length)
             {
-                System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
+                System.arraycopy(this.accounts,0,this.accounts,0,size*2);
+                size++;
             }
-            for(int i=0;i<accounts.length;i++)
+            for(int i=0;i<size;i++)
             {
                 if(accounts[i]==null)
                 {
@@ -39,13 +42,13 @@ public class Individual {
         {
             if(size==accounts.length)
             {
-                System.arraycopy(this.accounts,0,this.accounts,0,accounts.length*2);
+                System.arraycopy(this.accounts,0,this.accounts,0,size*2);
+                size++;
             }
                 if (accounts[index]== null) {
                     accounts[index]=account;
                     return true;
                 }
-
         return false;
         }
         public Account get(int index)
@@ -54,72 +57,57 @@ public class Individual {
         }
         public Account get(String accountNumber)
         {
-            for(var el:accounts)
+            for(int i=0;i<size;i++)
             {
-                if(el.getNumber().equals(accountNumber))
-                    return el;
-                else
-                    return null;
+                if(accounts[i].getNumber().equals(accountNumber))
+                    return accounts[i];
             }
         return null;
         }
         public boolean hasAccount(String accountNumber)
         {
-            for(var el:accounts)
+            for(int i=0;i<size;i++)
             {
-                if(el.getNumber().equals(accountNumber))
+                if(accounts[i].getNumber().equals(accountNumber))
                     return true;
-                else
-                    return false;
             }
             return false;
         }
         public Account set(int index,Account account)
         {
-           this.accounts[index]=account;
+            this.accounts[index]=account;
             return this.accounts[index];
         }
         public Account remove(int index)
         {
-            for (int i = index; i<accounts.length-1; i++)
-                accounts[i] = accounts[i + 1];
-            accounts[accounts.length - 1] = null;
+            size--;
+            System.arraycopy(accounts,index+1,accounts,index,size-1);
+            accounts[size]=null;
             return accounts[index];
         }
-        public Account remove(String accountNumber) // не работает деремо
+        public Account remove(String accountNumber)
         {
-            int count=0;
-            int index=0;
-            for(var el:accounts)
+            for(int i=0;i<size;i++)
             {
-                if(el.getNumber().equals(accountNumber))
+                if(accounts[i].getNumber().equals(accountNumber))
                 {
-                    index=count;
-                    for (int i = index; i<accounts.length-1; i++)
-                        accounts[i] = accounts[i + 1];
-                    accounts[accounts.length - 1] = null;
-                    return el;
+                   size--;
+                   System.arraycopy(accounts,i+1,accounts,i,size-1);
+                   accounts[size]=null;
+                   return accounts[i];
                 }
-                count++;
             }
             return null;
         }
         public int size()
         {
-            int count=0;
-            for(int i=0;i<accounts.length;i++)
-            {
-                if(accounts[i]!=null)
-                    count++;
-            }
-            return count;
+            return size;
         }
-        public Account[] getAccounts() //доработать без нула
+        public Account[] getAccounts()
         {
             Account[] accounts1=new Account[accounts.length];
-            for(int i=0;i<accounts.length;i++)
+            for(int i=0;i<size;i++)
             {
-                if(accounts[i]!=null)
                    accounts1[i]=accounts[i];
             }
             return accounts1;
@@ -131,9 +119,8 @@ public class Individual {
         public double totalBalance()
         {
             double count=0;
-            for(int i=0;i<accounts.length;i++)
+            for(int i=0;i<size;i++)
             {
-                if(accounts[i]!=null)
                     count+=accounts[i].getBalance();
             }
         return count;
