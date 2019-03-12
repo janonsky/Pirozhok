@@ -18,7 +18,7 @@ public class Test {
         Account userFife=new Account("nishiy",0);
 
         Account[] accounts={userOne,userTwo,userThree,userFour,userFife};
-        Individual individual=new Individual(accounts);//?????
+        Individual individual=new Individual(accounts);
 
         Account user1=new Account("dima",10);
         Account user2=new Account("masha",1);
@@ -31,12 +31,9 @@ public class Test {
 
         Individual[] individuals={individual};
         AccountManager accountManager=new AccountManager(individuals);
-        individual.add(userOne);
-        individual.add(userTwo);
-        individual.add(3,userThree);
-        individual.add(4,userFour);
-        System.out.println(accountManager.add(individual));
-        System.out.println(accountManager.getAccount("daun").getNumber());
+        for(int i=0;i<individual.getAccounts().length;i++)
+        System.out.println(individual.getAccounts()[i].getNumber());
+        System.out.println(accountManager.getAccount("chmo").getNumber());
        /* System.out.println(individual.add(userOne));
         System.out.println(individual.add(userTwo));
         System.out.println(individual.add(3,userThree));

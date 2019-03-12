@@ -55,7 +55,10 @@ public class Individual {
         }
         public Account get(int index)
         {
-                    return accounts[index];
+            Account account=new Account();
+            account.setBalance(accounts[index].getBalance());
+            account.setNumber(accounts[index].getNumber());
+                    return account;
         }
         public Account get(String accountNumber)
         {
@@ -107,7 +110,7 @@ public class Individual {
         }
         public Account[] getAccounts()
         {
-            Account[] accounts1=new Account[accounts.length];
+            Account[] accounts1=new Account[size];
             System.arraycopy(accounts, 0, accounts1, 0, size);
             return accounts1;
         }

@@ -77,14 +77,16 @@ public class AccountManager {
     }
     //public Individual[] sortedByBalanceIndividuals()
    // { }
-    public Account getAccount(String accountNumber)//nerabotaet
+    public Account getAccount(String accountNumber)
     {
         Account account=new Account();
-        Individual individual=new Individual();
         for(int i=0;i<size;i++)
         {
             if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
-                account.setNumber(accountNumber);
+            {
+                account.setNumber(individuals[i].get(i).getNumber());
+                account.setBalance(individuals[i].get(i).getBalance());
+            }
         }
         return account;
     }
