@@ -36,8 +36,7 @@ public class Test {
         individual.add(3,userThree);
         individual.add(4,userFour);
         System.out.println(accountManager.add(individual));
-       //System.out.println(accountManager.getAccount("daun").getBalance());
-       // System.out.println(accountManager.getAccount("chmo"));
+        System.out.println(accountManager.getAccount("daun").getNumber());
        /* System.out.println(individual.add(userOne));
         System.out.println(individual.add(userTwo));
         System.out.println(individual.add(3,userThree));

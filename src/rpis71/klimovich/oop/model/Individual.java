@@ -33,6 +33,7 @@ public class Individual {
                 if(accounts[i]==null)
                 {
                     accounts[i]=account;
+                    size++;
                     return true;
                 }
             }
@@ -47,6 +48,7 @@ public class Individual {
             }
                 if (accounts[index]== null) {
                     accounts[index]=account;
+                    size++;
                     return true;
                 }
         return false;
@@ -106,10 +108,7 @@ public class Individual {
         public Account[] getAccounts()
         {
             Account[] accounts1=new Account[accounts.length];
-            for(int i=0;i<size;i++)
-            {
-                   accounts1[i]=accounts[i];
-            }
+            System.arraycopy(accounts, 0, accounts1, 0, size);
             return accounts1;
         }
         /*public Account[] sortedAccountByBalance()

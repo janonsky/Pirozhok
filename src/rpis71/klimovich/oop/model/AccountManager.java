@@ -27,6 +27,7 @@ public class AccountManager {
         }
         for (int i = 0; i < size; i++) {
                 individuals[i] = individual;
+                size++;
                 return true;
 
         }
@@ -40,6 +41,7 @@ public class AccountManager {
         }
        if (individuals[index]==null)
        { individuals[index]=individual;
+       size++;
          return true;
        }
        return false;
@@ -75,16 +77,18 @@ public class AccountManager {
     }
     //public Individual[] sortedByBalanceIndividuals()
    // { }
-   /* public Account getAccount(String accountNumber)
+    public Account getAccount(String accountNumber)//nerabotaet
     {
         Account account=new Account();
         Individual individual=new Individual();
-        for (var el:individual.getAccounts())
+        for(int i=0;i<size;i++)
         {
+            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+                account.setNumber(accountNumber);
         }
-        return null;
+        return account;
     }
-    public Account removeAccount(String accountNumber)
+    /*public Account removeAccount(String accountNumber)
     {}
     public Account setAccount(String accountNumber,Account account)
     {}*/

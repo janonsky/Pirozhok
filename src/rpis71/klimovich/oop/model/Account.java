@@ -10,7 +10,6 @@ public class Account {
     }
     public Account()
     { }
-
     public String getNumber()
     {
                 return number;
