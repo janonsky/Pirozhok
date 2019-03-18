@@ -20,12 +20,12 @@ public class AccountManager {
         this.individuals = newIndividual;
     }
 
-    public boolean add(Individual individual) {
+    public boolean add(Individual individual) { //проверить либо size либо individuals.length
         if (size == individuals.length) {
-            System.arraycopy(this.individuals, 0, this.individuals, 0, individuals.length * 2);
+            System.arraycopy(this.individuals, 0, this.individuals, 0, size * 2);
             size++;
         }
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < individuals.length; i++) {
                 individuals[i] = individual;
                 size++;
                 return true;
@@ -36,7 +36,7 @@ public class AccountManager {
     public boolean add(int index,Individual individual)
     {
         if (size == individuals.length) {
-            System.arraycopy(this.individuals, 0, this.individuals, 0, individuals.length * 2);
+            System.arraycopy(this.individuals, 0, this.individuals, 0, size * 2);
             size++;
         }
        if (individuals[index]==null)
@@ -68,15 +68,24 @@ public class AccountManager {
     }
     public Individual[] getIndividuals()
     {
-        Individual[] individuals1=new Individual[individuals.length];
+        Individual[] individuals1=new Individual[size];
         for(int i=0;i<size;i++)
-        {
                 individuals1[i]=individuals[i];
-        }
         return individuals1;
     }
-    //public Individual[] sortedByBalanceIndividuals()
-   // { }
+    public Individual[] sortedByBalanceIndividuals()
+    {
+        Individual[] sortArray = getIndividuals();
+       Individual individual;
+        for (int i=0;i<size-1;i++)
+            for (int j=0;j<size-i;j++)
+                if (sortArray[j].getAccounts()[i].getBalance()> sortArray[j+1].getAccounts()[i].getBalance()) {
+                    individual = sortArray[j];
+                    sortArray[j] = sortArray[j + 1];
+                    sortArray[j + 1] = individual;
+                }
+        return sortArray;
+    }
     public Account getAccount(String accountNumber)
     {
         Account account=new Account();
@@ -90,8 +99,32 @@ public class AccountManager {
         }
         return account;
     }
-    /*public Account removeAccount(String accountNumber)
-    {}
+    public Account removeAccount(String accountNumber)
+    {
+        Account account=new Account();
+        for(int i=0;i<size;i++)
+        {
+            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+            {
+                size--;
+                System.arraycopy(individuals,i+1,individuals,i,size-1);
+                individuals[size]=null;
+                account.setNumber(individuals[i].get(i).getNumber());
+                account.setBalance(individuals[i].get(i).getBalance());
+            }
+        }
+        return account;
+    }
     public Account setAccount(String accountNumber,Account account)
-    {}*/
+    {
+        for(int i=0;i<size;i++)
+        {
+            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+            {
+                this.individuals[i].getAccounts()[i].setBalance(account.getBalance());
+                this.individuals[i].getAccounts()[i].setNumber(account.getNumber());
+            }
+        }
+        return account;
+    }
 }

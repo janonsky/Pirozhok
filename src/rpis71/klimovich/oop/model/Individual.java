@@ -1,5 +1,7 @@
 package rpis71.klimovich.oop.model;
 
+import java.security.PublicKey;
+
 public class Individual {
     private Account[] accounts;
     private int size;
@@ -62,12 +64,16 @@ public class Individual {
         }
         public Account get(String accountNumber)
         {
+            Account account=new Account();
             for(int i=0;i<size;i++)
             {
                 if(accounts[i].getNumber().equals(accountNumber))
-                    return accounts[i];
+                {
+                    account.setNumber(accounts[i].getNumber());
+                    account.setBalance(accounts[i].getBalance());
+                }
             }
-        return null;
+            return account;
         }
         public boolean hasAccount(String accountNumber)
         {
@@ -114,10 +120,19 @@ public class Individual {
             System.arraycopy(accounts, 0, accounts1, 0, size);
             return accounts1;
         }
-        /*public Account[] sortedAccountByBalance()
+        public Account[] sortedAccountByBalance()
         {
-
-        }*/
+            Account[] sortArray = getAccounts();
+            Account account;
+            for (int i=0;i<size-1;i++)
+                for (int j=0;j<size-i;j++)
+                    if (sortArray[j].getBalance()> sortArray[j+1].getBalance()) {
+                        account = sortArray[j];
+                        sortArray[j] = sortArray[j + 1];
+                        sortArray[j + 1] = account;
+                    }
+            return sortArray;
+        }
         public double totalBalance()
         {
             double count=0;
