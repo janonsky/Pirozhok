@@ -121,8 +121,8 @@ public class AccountManager {
         {
             if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
             {
-                this.individuals[i].getAccounts()[i].setBalance(account.getBalance());
-                this.individuals[i].getAccounts()[i].setNumber(account.getNumber());
+                account.setNumber(individuals[i].getAccounts()[i].getNumber());
+                account.setBalance(individuals[i].getAccounts()[i].getBalance());
             }
         }
         return account;
