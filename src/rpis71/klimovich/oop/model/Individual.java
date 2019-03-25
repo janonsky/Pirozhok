@@ -1,15 +1,13 @@
 package rpis71.klimovich.oop.model;
 
-import java.security.PublicKey;
-
 public class Individual {
     private Account[] accounts;
     private int size;
-    private final static int ConstSIZE =16;
+    private final static int CAPACITY_SIZE =16;
 
     public Individual ()
    {
-       this(ConstSIZE);
+       this(CAPACITY_SIZE);
    }
     public Individual (int size)
     {
@@ -23,57 +21,54 @@ public class Individual {
             this.size = accounts.length;
             this.accounts = newAccounts;
     }
-        public boolean add(Account account)
+        public Account[] increaseArray(int size)
         {
             if(size==accounts.length)
             {
-                System.arraycopy(this.accounts,0,this.accounts,0,size*2);
-                size++;
+                Account[] newAccounts=new Account[size*2];
+                System.arraycopy(accounts,0,newAccounts,0,size);
+                return newAccounts;
             }
-            for(int i=0;i<accounts.length;i++)
-            {
-                if(accounts[i]==null)
-                {
-                    accounts[i]=account;
-                    size++;
-                    return true;
-                }
-            }
-        return false;
+            return accounts;
+        }
+        public boolean add(Account account)
+        {
+            this.accounts=increaseArray(size);
+            accounts[size]=account;
+            size++;
+            return true;
         }
         public boolean add(int index,Account account)
         {
-            if(size==accounts.length)
-            {
-                System.arraycopy(this.accounts,0,this.accounts,0,size*2);
-                size++;
-            }
-                if (accounts[index]== null) {
-                    accounts[index]=account;
+                this.accounts=increaseArray(size);
+                for(int i=index;i<size;i++)
+                {
+                    accounts[i+1]=accounts[i];
+                    accounts[index]= account;
                     size++;
-                    return true;
                 }
-        return false;
+        return true;
         }
         public Account get(int index)
         {
-            Account account=new Account();
-            account.setBalance(accounts[index].getBalance());
-            account.setNumber(accounts[index].getNumber());
-                    return account;
+                    return accounts[index];
         }
-        public Account get(String accountNumber)
+        public int serchByAccountNumber(String accountNumber)
         {
-            Account account=new Account();
             for(int i=0;i<size;i++)
             {
                 if(accounts[i].getNumber().equals(accountNumber))
-                {
-                    account.setNumber(accounts[i].getNumber());
-                    account.setBalance(accounts[i].getBalance());
-                }
+                    return i;
             }
-            return account;
+            return -1;
+        }
+        public Account get(String accountNumber)
+        {
+            int index=serchByAccountNumber(accountNumber);
+                if(index!=-1)
+                    return accounts[index];
+                else
+                    return null;
         }
         public boolean hasAccount(String accountNumber)
         {
@@ -86,8 +81,10 @@ public class Individual {
         }
         public Account set(int index,Account account)
         {
-            this.accounts[index]=account;
-            return this.accounts[index];
+            Account account1=new Account();
+            account1.setNumber(accounts[index].getNumber());
+            account1.setBalance(accounts[index].getBalance());
+            return account1;
         }
         public Account remove(int index)
         {
@@ -98,17 +95,16 @@ public class Individual {
         }
         public Account remove(String accountNumber)
         {
-            for(int i=0;i<size;i++)
+            int index=serchByAccountNumber(accountNumber);
+            if(index!=-1)
             {
-                if(accounts[i].getNumber().equals(accountNumber))
-                {
-                   size--;
-                   System.arraycopy(accounts,i+1,accounts,i,size-1);
-                   accounts[size]=null;
-                   return accounts[i];
-                }
+                size--;
+                System.arraycopy(accounts,index+1,accounts,index,size-1);
+                accounts[size]=null;
+                return accounts[index];
             }
-            return null;
+             else
+                 return null;
         }
         public int size()
         {
@@ -135,11 +131,9 @@ public class Individual {
         }
         public double totalBalance()
         {
-            double count=0;
+            double totalBalance=0;
             for(int i=0;i<size;i++)
-            {
-                    count+=accounts[i].getBalance();
-            }
-        return count;
+                    totalBalance+=accounts[i].getBalance();
+        return totalBalance;
         }
 }

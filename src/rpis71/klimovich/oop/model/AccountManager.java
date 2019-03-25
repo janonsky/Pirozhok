@@ -3,11 +3,11 @@ package rpis71.klimovich.oop.model;
 public class AccountManager {
     private Individual[] individuals;
     private int size;
-    private final static int ConstSIZE =16;
+    private final static int CAPACITY_SIZE =16;
 
     public AccountManager ()
     {
-        this(ConstSIZE);
+        this(CAPACITY_SIZE);
     }
     public AccountManager(int size) {
         this.individuals = new Individual[size];
@@ -19,32 +19,32 @@ public class AccountManager {
         this.size = individuals.length;
         this.individuals = newIndividual;
     }
-
-    public boolean add(Individual individual) { //проверить либо size либо individuals.length
-        if (size == individuals.length) {
-            System.arraycopy(this.individuals, 0, this.individuals, 0, size * 2);
-            size++;
+    public Individual[] increaseArray(int size)
+    {
+        if(size==individuals.length)
+        {
+           Individual[] newIndividual=new Individual[size*2];
+            System.arraycopy(individuals,0,newIndividual,0,size);
+            return newIndividual;
         }
-        for (int i = 0; i < individuals.length; i++) {
-                individuals[i] = individual;
-                size++;
-                return true;
-
-        }
-        return false;
+        return individuals;
+    }
+    public boolean add(Individual individual) {
+        this.individuals=increaseArray(size);
+        individuals[size]=individual;
+        size++;
+        return true;
     }
     public boolean add(int index,Individual individual)
     {
-        if (size == individuals.length) {
-            System.arraycopy(this.individuals, 0, this.individuals, 0, size * 2);
+        this.individuals=increaseArray(size);
+        for(int i=index;i<size;i++)
+        {
+            individuals[i+1]=individuals[i];
+            individuals[index]= individual;
             size++;
         }
-       if (individuals[index]==null)
-       { individuals[index]=individual;
-       size++;
-         return true;
-       }
-       return false;
+        return true;
     }
     public Individual get(int index)
     {
@@ -52,8 +52,10 @@ public class AccountManager {
     }
     public Individual set(int index, Individual individual)
    {
-       this.individuals[index]=individual;
-       return this.individuals[index];
+       Individual individual1=new Individual();
+       individual1.get(index).setBalance(individual.get(index).getBalance());
+       individual1.get(index).setNumber(individual.get(index).getNumber());
+       return individual1;
    }
     public Individual remove(int index)
     {
@@ -69,8 +71,7 @@ public class AccountManager {
     public Individual[] getIndividuals()
     {
         Individual[] individuals1=new Individual[size];
-        for(int i=0;i<size;i++)
-                individuals1[i]=individuals[i];
+        System.arraycopy(individuals,0,individuals1,0,size);
         return individuals1;
     }
     public Individual[] sortedByBalanceIndividuals()
@@ -91,7 +92,7 @@ public class AccountManager {
         Account account=new Account();
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+            if(individuals[i].hasAccount(accountNumber))
             {
                 account.setNumber(individuals[i].get(i).getNumber());
                 account.setBalance(individuals[i].get(i).getBalance());
@@ -104,7 +105,7 @@ public class AccountManager {
         Account account=new Account();
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+            if(individuals[i].hasAccount(accountNumber))
             {
                 size--;
                 System.arraycopy(individuals,i+1,individuals,i,size-1);
@@ -117,14 +118,15 @@ public class AccountManager {
     }
     public Account setAccount(String accountNumber,Account account)
     {
+        Account account1=new Account();
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].getAccounts()[i].getNumber().equals(accountNumber))
+            if(individuals[i].hasAccount(accountNumber))
             {
-                this.individuals[i].getAccounts()[i].setBalance(account.getBalance());
-                this.individuals[i].getAccounts()[i].setNumber(account.getNumber());
+                int index=individuals[i].serchByAccountNumber(accountNumber);
+                account1=individuals[i].set(index,account);
             }
         }
-        return account;
+        return account1;
     }
 }
