@@ -3,7 +3,7 @@ package rpis71.klimovich.oop.model;
 public class AccountManager {
     private Individual[] individuals;
     private int size;
-    private final static int CAPACITY_SIZE =16;
+    private final static int CAPACITY_SIZE =16; //todo имя- гавно
 
     public AccountManager ()
     {
@@ -19,6 +19,8 @@ public class AccountManager {
         this.size = individuals.length;
         this.individuals = newIndividual;
     }
+
+    //todo подсмотри у Фунтикова
     public Individual[] increaseArray(int size)
     {
         if(size==individuals.length)
@@ -38,12 +40,14 @@ public class AccountManager {
     public boolean add(int index,Individual individual)
     {
         this.individuals=increaseArray(size);
+        //todo System.arraycopy
         for(int i=index;i<size;i++)
         {
             individuals[i+1]=individuals[i];
-            individuals[index]= individual;
-            size++;
+
         }
+        individuals[index]= individual;
+        size++;
         return true;
     }
     public Individual get(int index)
@@ -52,6 +56,7 @@ public class AccountManager {
     }
     public Individual set(int index, Individual individual)
    {
+       //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку
        Individual individual1=new Individual();
        individual1.get(index).setBalance(individual.get(index).getBalance());
        individual1.get(index).setNumber(individual.get(index).getNumber());
@@ -60,7 +65,7 @@ public class AccountManager {
     public Individual remove(int index)
     {
         size--;
-        System.arraycopy(individuals,index+1,individuals,index,size-1);
+        System.arraycopy(individuals,index+1,individuals,index,size-1); //todo последний параметр не корректен
         individuals[size]=null;
         return individuals[index];
     }
@@ -70,13 +75,13 @@ public class AccountManager {
     }
     public Individual[] getIndividuals()
     {
-        Individual[] individuals1=new Individual[size];
+        Individual[] individuals1=new Individual[size]; //todo имя имя имя
         System.arraycopy(individuals,0,individuals1,0,size);
         return individuals1;
     }
     public Individual[] sortedByBalanceIndividuals()
     {
-        Individual[] sortArray = getIndividuals();
+        Individual[] sortArray = getIndividuals(); //todo имя имя имя
        Individual individual;
         for (int i=0;i<size-1;i++)
             for (int j=0;j<size-i;j++)
@@ -89,11 +94,12 @@ public class AccountManager {
     }
     public Account getAccount(String accountNumber)
     {
-        Account account=new Account();
+        Account account=new Account(); //todo копировать объект не надо
         for(int i=0;i<size;i++)
         {
             if(individuals[i].hasAccount(accountNumber))
             {
+                //todo нормальный get()
                 account.setNumber(individuals[i].get(i).getNumber());
                 account.setBalance(individuals[i].get(i).getBalance());
             }
@@ -107,24 +113,21 @@ public class AccountManager {
         {
             if(individuals[i].hasAccount(accountNumber))
             {
-                size--;
-                System.arraycopy(individuals,i+1,individuals,i,size-1);
-                individuals[size]=null;
-                account.setNumber(individuals[i].get(i).getNumber());
-                account.setBalance(individuals[i].get(i).getBalance());
+                //todo individuals[i].remove()
             }
         }
         return account;
     }
     public Account setAccount(String accountNumber,Account account)
     {
-        Account account1=new Account();
+        Account account1=new Account(); //todo имя
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].hasAccount(accountNumber))
+            int index=individuals[i].indexOf(accountNumber);
+            if(index >=0)
             {
-                int index=individuals[i].serchByAccountNumber(accountNumber);
                 account1=individuals[i].set(index,account);
+                //todo копировать объект не надо
                 account.setNumber(individuals[i].getAccounts()[i].getNumber());
                 account.setBalance(individuals[i].getAccounts()[i].getBalance());
             }

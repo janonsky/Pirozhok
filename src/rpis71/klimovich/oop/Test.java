@@ -26,15 +26,21 @@ public class Test {
         Account user4=new Account("sasha",100000);
         Account user5=new Account("dasha",0);
 
-        Account[] accounts1={user1,user2,user3,user4,user5};
+        Account[] accounts1={user1};
         Individual individual1=new Individual(accounts1);
-
+        individual1.add(user2);
+        individual1.add(user3);
+        individual1.add(user4);
+        individual1.add(user5);
+        for(int i=0;i<individual.getAccounts().length;i++)
+            System.out.println(individual.get(i).getNumber());
+        /*
         Individual[] individuals={individual};
         AccountManager accountManager=new AccountManager(individuals);
         for(int i=0;i<individual.getAccounts().length;i++)
         System.out.println(individual.getAccounts()[i].getNumber());
         System.out.println(accountManager.getAccount("chmo").getNumber());
-       /* System.out.println(individual.add(userOne));
+        System.out.println(individual.add(userOne));
         System.out.println(individual.add(userTwo));
         System.out.println(individual.add(3,userThree));
         System.out.println(individual.add(4,userFour));

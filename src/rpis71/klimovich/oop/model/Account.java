@@ -1,7 +1,7 @@
 package rpis71.klimovich.oop.model;
 
 public class Account {
-    private double balance=0;
+    private double balance;
     private String number;
 
     public Account(String number, int balance) {
@@ -9,7 +9,9 @@ public class Account {
         this.balance = balance;
     }
     public Account()
-    { }
+    {
+        //todo number="", balance=0
+    }
     public String getNumber()
     {
                 return number;
