@@ -3,11 +3,11 @@ package rpis71.klimovich.oop.model;
 public class AccountManager {
     private Individual[] individuals;
     private int size;
-    private final static int CAPACITY_SIZE =16; //todo имя- гавно
+    private final static int DEFAULT_CAPACITY =16; //todo имя- гавно done
 
     public AccountManager ()
     {
-        this(CAPACITY_SIZE);
+        this(DEFAULT_CAPACITY);
     }
     public AccountManager(int size) {
         this.individuals = new Individual[size];
@@ -40,12 +40,9 @@ public class AccountManager {
     public boolean add(int index,Individual individual)
     {
         this.individuals=increaseArray(size);
-        //todo System.arraycopy
-        for(int i=index;i<size;i++)
-        {
-            individuals[i+1]=individuals[i];
-
-        }
+        //todo System.arraycopy done
+        if (size - index >= 0)
+            System.arraycopy(individuals, index, individuals, index + 1, size - index);
         individuals[index]= individual;
         size++;
         return true;
@@ -75,63 +72,61 @@ public class AccountManager {
     }
     public Individual[] getIndividuals()
     {
-        Individual[] individuals1=new Individual[size]; //todo имя имя имя
-        System.arraycopy(individuals,0,individuals1,0,size);
-        return individuals1;
+        Individual[] newIndividuals=new Individual[size]; //todo имя имя имя done
+        System.arraycopy(individuals,0,newIndividuals,0,size);
+        return newIndividuals;
     }
     public Individual[] sortedByBalanceIndividuals()
     {
-        Individual[] sortArray = getIndividuals(); //todo имя имя имя
+        Individual[] newIndividuals = getIndividuals(); //todo имя имя имя done
        Individual individual;
         for (int i=0;i<size-1;i++)
             for (int j=0;j<size-i;j++)
-                if (sortArray[j].getAccounts()[i].getBalance()> sortArray[j+1].getAccounts()[i].getBalance()) {
-                    individual = sortArray[j];
-                    sortArray[j] = sortArray[j + 1];
-                    sortArray[j + 1] = individual;
+                if (newIndividuals[j].getAccounts()[i].getBalance()> newIndividuals[j+1].getAccounts()[i].getBalance()) {
+                    individual = newIndividuals[j];
+                    newIndividuals[j] = newIndividuals[j + 1];
+                    newIndividuals[j + 1] = individual;
                 }
-        return sortArray;
+        return newIndividuals;
     }
     public Account getAccount(String accountNumber)
     {
-        Account account=new Account(); //todo копировать объект не надо
+        //todo копировать объект не надо done?
         for(int i=0;i<size;i++)
         {
             if(individuals[i].hasAccount(accountNumber))
             {
-                //todo нормальный get()
-                account.setNumber(individuals[i].get(i).getNumber());
-                account.setBalance(individuals[i].get(i).getBalance());
+                //todo нормальный get() done
+               return individuals[i].get(accountNumber);
             }
         }
-        return account;
+        return null;
     }
     public Account removeAccount(String accountNumber)
     {
-        Account account=new Account();
+        Account account=new Account(); //Нужно ли оставлять ссылку или сразу возвращать значение
         for(int i=0;i<size;i++)
         {
             if(individuals[i].hasAccount(accountNumber))
             {
-                //todo individuals[i].remove()
+                //todo individuals[i].remove() done
+               account=individuals[i].remove(accountNumber);
             }
         }
         return account;
     }
     public Account setAccount(String accountNumber,Account account)
     {
-        Account account1=new Account(); //todo имя
+        Account newAccount=new Account(); //todo имя done
         for(int i=0;i<size;i++)
         {
             int index=individuals[i].indexOf(accountNumber);
             if(index >=0)
             {
-                account1=individuals[i].set(index,account);
-                //todo копировать объект не надо
-                account.setNumber(individuals[i].getAccounts()[i].getNumber());
-                account.setBalance(individuals[i].getAccounts()[i].getBalance());
+                newAccount=individuals[i].set(index,account);
+                //todo копировать объект не надо done
             }
         }
-        return account1;
+        return newAccount;
     }
 }

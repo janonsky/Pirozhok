@@ -3,10 +3,10 @@ package rpis71.klimovich.oop.model;
 public class Individual {
     private Account[] accounts;
     private int size;
-    private final static int CAPACITY_SIZE = 16; //todo имя- гавно
+    private final static int DEFAULT_CAPACITY = 16; //todo имя- гавно done
 
     public Individual() {
-        this(CAPACITY_SIZE);
+        this(DEFAULT_CAPACITY);
     }
 
     public Individual(int size) {
@@ -20,29 +20,26 @@ public class Individual {
         this.size = accounts.length;
         this.accounts = newAccounts;
     }
-    //todo подсмотри у Фунтикова
-    public Account[] increaseArray(int size) {
+    //todo подсмотри у Фунтикова done
+    public void increaseArray() {
         if (size == accounts.length) {
-            Account[] newAccounts = new Account[size * 2];
+            Account[] newAccounts = new Account[accounts.length*2];
             System.arraycopy(accounts, 0, newAccounts, 0, size);
-            return newAccounts;
+            accounts= newAccounts;
         }
-        return accounts;
     }
 
     public boolean add(Account account) {
-        this.accounts = increaseArray(size);
+        increaseArray();
         accounts[size] = account;
         size++;
         return true;
     }
 
     public boolean add(int index, Account account) {
-        this.accounts = increaseArray(size);
-        //todo System.arraycopy
-        for (int i = index; i < size; i++) {
-            accounts[i + 1] = accounts[i];
-        }
+         increaseArray();
+        //todo System.arraycopy done
+            System.arraycopy(accounts, index, accounts, index + 1, size - index);
             accounts[index] = account;
             size++;
         return true;
@@ -76,14 +73,14 @@ public class Individual {
     }
 
     public Account set(int index, Account newAccount) {
-        //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку
-        Account account;
-
+        //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку done
+        Account account=accounts[index];
+        accounts[index]=account;
         return account;
     }
 
     public Account remove(int index) {
-        System.arraycopy(accounts, index + 1, accounts, index, size - 1);        //todo последний параметр не корректен
+        System.arraycopy(accounts, index + 1, accounts, index, size - index);        //todo последний параметр не корректен done
         size--;
         accounts[size] = null;
         return accounts[index];
@@ -92,13 +89,10 @@ public class Individual {
     public Account remove(String accountNumber) {
         int index = indexOf(accountNumber);
         if (index != -1) {
-            //todo дублирование remove(index)
-            size--;
-            System.arraycopy(accounts, index + 1, accounts, index, size - 1);
-            accounts[size] = null;
-            return accounts[index];
-        } else
-            return null;
+            //todo дублирование remove(index) done
+            return remove(index);
+        }
+    return null;
     }
 
     public int size() {
@@ -106,9 +100,9 @@ public class Individual {
     }
 
     public Account[] getAccounts() {
-        Account[] accounts1 = new Account[size]; //todo ЦИФРЫ НЕ ИСПОЛЬЗУЮТСЯ ДЛЯ ДИФФЕРЕНЦИАЦИИ ИМЕН
-        System.arraycopy(accounts, 0, accounts1, 0, size);
-        return accounts1;
+        Account[] newAccounts = new Account[size]; //todo ЦИФРЫ НЕ ИСПОЛЬЗУЮТСЯ ДЛЯ ДИФФЕРЕНЦИАЦИИ ИМЕН done
+        System.arraycopy(accounts, 0, newAccounts, 0, size);
+        return newAccounts;
     }
 
     public Account[] sortedAccountByBalance() {
