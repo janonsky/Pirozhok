@@ -20,28 +20,26 @@ public class AccountManager {
         this.individuals = newIndividual;
     }
 
-    //todo подсмотри у Фунтикова
-    public Individual[] increaseArray(int size)
+    //todo подсмотри у Фунтикова done
+    public void increaseArray()
     {
         if(size==individuals.length)
         {
-           Individual[] newIndividual=new Individual[size*2];
+           Individual[] newIndividual=new Individual[individuals.length*2];
             System.arraycopy(individuals,0,newIndividual,0,size);
-            return newIndividual;
+           individuals=newIndividual;
         }
-        return individuals;
     }
     public boolean add(Individual individual) {
-        this.individuals=increaseArray(size);
+        increaseArray();
         individuals[size]=individual;
         size++;
         return true;
     }
     public boolean add(int index,Individual individual)
     {
-        this.individuals=increaseArray(size);
+        increaseArray();
         //todo System.arraycopy done
-        if (size - index >= 0)
             System.arraycopy(individuals, index, individuals, index + 1, size - index);
         individuals[index]= individual;
         size++;
@@ -53,16 +51,15 @@ public class AccountManager {
     }
     public Individual set(int index, Individual individual)
    {
-       //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку
-       Individual individual1=new Individual();
-       individual1.get(index).setBalance(individual.get(index).getBalance());
-       individual1.get(index).setNumber(individual.get(index).getNumber());
-       return individual1;
+       //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку done
+       Individual newIndividual=individuals[index];
+       individuals[index]=individual;
+       return newIndividual;
    }
     public Individual remove(int index)
     {
         size--;
-        System.arraycopy(individuals,index+1,individuals,index,size-1); //todo последний параметр не корректен
+        System.arraycopy(individuals,index+1,individuals,index,size-index); //todo последний параметр не корректен done
         individuals[size]=null;
         return individuals[index];
     }
