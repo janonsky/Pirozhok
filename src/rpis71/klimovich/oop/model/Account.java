@@ -10,7 +10,6 @@ public class Account {
     }
     public Account()
     {
-        //todo number="", balance=0 done
         this("",0);
     }
     public String getNumber()

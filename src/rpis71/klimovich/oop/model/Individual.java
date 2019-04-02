@@ -3,7 +3,7 @@ package rpis71.klimovich.oop.model;
 public class Individual {
     private Account[] accounts;
     private int size;
-    private final static int DEFAULT_CAPACITY = 16; //todo имя- гавно done
+    private final static int DEFAULT_CAPACITY = 16;
 
     public Individual() {
         this(DEFAULT_CAPACITY);
@@ -20,8 +20,7 @@ public class Individual {
         this.size = accounts.length;
         this.accounts = newAccounts;
     }
-    //todo подсмотри у Фунтикова done
-    public void increaseArray() {
+    private void checkCapacity() {
         if (size == accounts.length) {
             Account[] newAccounts = new Account[accounts.length*2];
             System.arraycopy(accounts, 0, newAccounts, 0, size);
@@ -30,15 +29,14 @@ public class Individual {
     }
 
     public boolean add(Account account) {
-        increaseArray();
+        checkCapacity();
         accounts[size] = account;
         size++;
         return true;
     }
 
     public boolean add(int index, Account account) {
-         increaseArray();
-        //todo System.arraycopy done
+         checkCapacity();
             System.arraycopy(accounts, index, accounts, index + 1, size - index);
             accounts[index] = account;
             size++;
@@ -65,15 +63,10 @@ public class Individual {
     }
 
     public boolean hasAccount(String accountNumber) {
-        for (int i = 0; i < size; i++) {
-            if (accounts[i].getNumber().equals(accountNumber))
-                return true;
-        }
-        return false;
+        //todo а чем тебе здесь indexOf не угодил?
     }
 
     public Account set(int index, Account newAccount) {
-        //todo следуй контракту - заменяй ссылку в массиве и ввозвращай замененную ссылку done
         Account account=accounts[index];
         accounts[index]=account;
         return account;
@@ -89,7 +82,6 @@ public class Individual {
     public Account remove(String accountNumber) {
         int index = indexOf(accountNumber);
         if (index != -1) {
-            //todo дублирование remove(index) done
             return remove(index);
         }
     return null;
@@ -100,7 +92,7 @@ public class Individual {
     }
 
     public Account[] getAccounts() {
-        Account[] newAccounts = new Account[size]; //todo ЦИФРЫ НЕ ИСПОЛЬЗУЮТСЯ ДЛЯ ДИФФЕРЕНЦИАЦИИ ИМЕН done
+        Account[] newAccounts = new Account[size];
         System.arraycopy(accounts, 0, newAccounts, 0, size);
         return newAccounts;
     }
