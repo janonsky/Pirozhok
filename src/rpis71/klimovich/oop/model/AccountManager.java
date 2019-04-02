@@ -96,7 +96,7 @@ public class AccountManager {
     }
     public Account removeAccount(String accountNumber)
     {
-        Account account=new Account(); //Нужно ли оставлять ссылку или сразу возвращать значение
+        Account account=new Account();
         for(int i=0;i<size;i++)
         {
             if(individuals[i].hasAccount(accountNumber))

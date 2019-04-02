@@ -63,7 +63,11 @@ public class Individual {
     }
 
     public boolean hasAccount(String accountNumber) {
-        //todo а чем тебе здесь indexOf не угодил?
+        //todo а чем тебе здесь indexOf не угодил? done
+         if(indexOf(accountNumber)!=-1)
+             return true;
+         else
+             return false;
     }
 
     public Account set(int index, Account newAccount) {
@@ -73,8 +77,8 @@ public class Individual {
     }
 
     public Account remove(int index) {
-        System.arraycopy(accounts, index + 1, accounts, index, size - index);        //todo последний параметр не корректен done
         size--;
+        System.arraycopy(accounts, index + 1, accounts, index, size - index);        //todo последний параметр не корректен done
         accounts[size] = null;
         return accounts[index];
     }
