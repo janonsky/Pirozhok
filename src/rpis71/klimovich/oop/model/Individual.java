@@ -1,6 +1,6 @@
 package rpis71.klimovich.oop.model;
 
-public class Individual {
+public class Individual implements Client {
     private Account[] accounts;
     private int size;
     private final static int DEFAULT_CAPACITY = 16;
@@ -28,14 +28,14 @@ public class Individual {
         }
     }
 
-    public boolean add(Account account) {
+    public Boolean add(Account account) {
         checkCapacity();
         accounts[size] = account;
         size++;
         return true;
     }
 
-    public boolean add(int index, Account account) {
+    public Boolean add(int index, Account account) {
          checkCapacity();
             System.arraycopy(accounts, index, accounts, index + 1, size - index);
             accounts[index] = account;
@@ -62,12 +62,9 @@ public class Individual {
         return null;
     }
 
-    public boolean hasAccount(String accountNumber) {
+    public Boolean hasAccount(String accountNumber) {
         //todo а чем тебе здесь indexOf не угодил? done
-         if(indexOf(accountNumber)!=-1)
-             return true;
-         else
-             return false;
+         return (indexOf(accountNumber)!=-1);
     }
 
     public Account set(int index, Account newAccount) {
@@ -119,5 +116,15 @@ public class Individual {
         for (int i = 0; i < size; i++)
             totalBalance += accounts[i].getBalance();
         return totalBalance;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void setName(String name) {
+
     }
 }

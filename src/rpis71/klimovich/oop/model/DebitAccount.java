@@ -1,14 +1,14 @@
 package rpis71.klimovich.oop.model;
 
-public class Account {
+public class DebitAccount {
     private double balance;
     private String number;
 
-    public Account(String number, int balance) {
+    public DebitAccount(String number, int balance) {
         this.number = number;
         this.balance = balance;
     }
-    public Account()
+    public DebitAccount()
     {
         this("",0);
     }

@@ -52,5 +52,9 @@ public class Test {
         System.out.println(individual.totalBalance());*/
 
     }
+    public static void labtest2()
+    {
+
+    }
 }
 
