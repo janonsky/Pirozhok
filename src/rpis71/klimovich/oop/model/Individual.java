@@ -4,6 +4,7 @@ public class Individual implements Client {
     private Account[] accounts;
     private int size;
     private final static int DEFAULT_CAPACITY = 16;
+    private String name;
 
     public Individual() {
         this(DEFAULT_CAPACITY);
@@ -75,7 +76,7 @@ public class Individual implements Client {
 
     public Account remove(int index) {
         size--;
-        System.arraycopy(accounts, index + 1, accounts, index, size - index);        //todo последний параметр не корректен done
+        System.arraycopy(accounts, index + 1, accounts, index, size - index);
         accounts[size] = null;
         return accounts[index];
     }
@@ -120,11 +121,11 @@ public class Individual implements Client {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name=name;
     }
 }
