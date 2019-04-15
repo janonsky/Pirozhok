@@ -5,7 +5,12 @@ public class Entity implements Client {
     private Node tail;
     private String name;
     private int size;
-
+    public Entity(Node head, Node tail)
+    {
+        this.head=head;
+        this.tail=tail;
+    }
+    public Entity()
     @Override
     public Boolean add(Account account) {
         return null;
