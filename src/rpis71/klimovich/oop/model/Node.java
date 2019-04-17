@@ -2,5 +2,9 @@ package rpis71.klimovich.oop.model;
 
 public class Node {
     Node next;
-    Node Account;
+    Account value;
+    public  Node(Account value)
+    {
+        this.value=value;
+    }
 }

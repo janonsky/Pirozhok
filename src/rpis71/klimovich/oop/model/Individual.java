@@ -3,23 +3,25 @@ package rpis71.klimovich.oop.model;
 public class Individual implements Client {
     private Account[] accounts;
     private int size;
-    private final static int DEFAULT_CAPACITY = 16;
+    private final static int DEFAULT_CAPACITY = 16; //добавьте атрибут, хранящий строку, содержащую имя клиента в формате «Фамилия Имя Отчество»??
     private String name;
 
-    public Individual() {
-        this(DEFAULT_CAPACITY);
+    public Individual(String name) {
+        this(DEFAULT_CAPACITY,name);
     }
 
-    public Individual(int size) {
+    public Individual(int size,String name) {
         this.accounts = new Account[size];
+        this.name=name;
     }
 
-    public Individual(Account[] accounts) {
+    public Individual(Account[] accounts,String name) {
         Account[] newAccounts;
         newAccounts = new Account[accounts.length * 2];
         System.arraycopy(accounts, 0, newAccounts, 0, accounts.length);
         this.size = accounts.length;
         this.accounts = newAccounts;
+        this.name=name;
     }
     private void checkCapacity() {
         if (size == accounts.length) {

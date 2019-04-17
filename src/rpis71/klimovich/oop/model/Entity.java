@@ -1,16 +1,22 @@
 package rpis71.klimovich.oop.model;
 
 public class Entity implements Client {
+
     private Node head;
     private Node tail;
     private String name;
     private int size;
-    public Entity(Node head, Node tail)
+    public Entity(String name)
     {
-        this.head=head;
-        this.tail=tail;
+        this.head=null;
+        this.tail=null;
+        this.name=name;
     }
-    public Entity()
+    public Entity(Account[] accounts,String name)
+    {
+
+    }
+
     @Override
     public Boolean add(Account account) {
         return null;
