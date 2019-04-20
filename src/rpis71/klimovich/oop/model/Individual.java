@@ -3,25 +3,28 @@ package rpis71.klimovich.oop.model;
 public class Individual implements Client {
     private Account[] accounts;
     private int size;
-    private final static int DEFAULT_CAPACITY = 16; //добавьте атрибут, хранящий строку, содержащую имя клиента в формате «Фамилия Имя Отчество»??
+    private final static int DEFAULT_CAPACITY = 16;
     private String name;
+    private int creditScore;
 
-    public Individual(String name) {
-        this(DEFAULT_CAPACITY,name);
+    public Individual(String name,int creditScore) {
+        this(DEFAULT_CAPACITY,name,creditScore);
     }
 
-    public Individual(int size,String name) {
+    public Individual(int size,String name,int creditScore) {
         this.accounts = new Account[size];
         this.name=name;
+        this.creditScore=creditScore;
     }
 
-    public Individual(Account[] accounts,String name) {
+    public Individual(Account[] accounts,String name,int creditScore) {
         Account[] newAccounts;
         newAccounts = new Account[accounts.length * 2];
         System.arraycopy(accounts, 0, newAccounts, 0, accounts.length);
         this.size = accounts.length;
         this.accounts = newAccounts;
         this.name=name;
+        this.creditScore=creditScore;
     }
     private void checkCapacity() {
         if (size == accounts.length) {
@@ -66,7 +69,6 @@ public class Individual implements Client {
     }
 
     public Boolean hasAccount(String accountNumber) {
-        //todo а чем тебе здесь indexOf не угодил? done
          return (indexOf(accountNumber)!=-1);
     }
 
@@ -129,5 +131,38 @@ public class Individual implements Client {
     @Override
     public void setName(String name) {
         this.name=name;
+    }
+
+    @Override
+    public int getCreditScore() {
+        return creditScore;
+    }
+
+    @Override
+    public void addCreditScores(int creditScores) {
+       this.creditScore+=creditScores;
+    }
+
+    @Override
+    public ClientStatus getStatus() { //промежутки пророботать
+        if (getCreditScore()<3 && getCreditScore()==0)
+            return ClientStatus.GOOD;
+        if (getCreditScore()<5 && getCreditScore()>=3)
+            return ClientStatus.GOLD;
+        if(getCreditScore()>=5)
+            return ClientStatus.PLATINUM;
+        if(getCreditScore()<0 && getCreditScore()>=-2)
+            return ClientStatus.RISKY;
+        if(getCreditScore()>=-4)
+            return ClientStatus.BAD;
+        return null;
+    }
+
+    @Override
+    public Credit[] getCreditAccounts() {
+        Account[] newAccounts=getAccounts();
+        Credit[] credits=
+        for(int i=0;i<size;i++)
+
     }
 }

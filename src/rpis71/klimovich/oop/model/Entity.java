@@ -1,36 +1,33 @@
 package rpis71.klimovich.oop.model;
 
 public class Entity implements Client {
-
-    public class Node {
-        Node next;
-        Account value;
-
-        public Node(Account value, Node next) {
-            this.value = value;
-            this.next = next;
-        }
-    }
     private Node head;
     private Node tail;
     private String name;
     private int size;
-    public Entity(String name)
+    private int creditScore;
+    public Entity(String name,int creditScore)
     {
-        this.head=null;
-        this.tail=null;
+        this.head=new Node(null,head);
+        this.tail=new Node(null,tail);
         this.name=name;
+        this.creditScore=creditScore;
     }
-    public Entity(Account[] accounts,String name)
+    public Entity(Account[] accounts,String name,int creditScore)
     {
-
+        this.tail = new Node(null, head);
+        this.head = new Node(null, tail);
+        for (int i = 0; i < accounts.length; i++)
+            add(accounts[i]);
+        this.name = name;
+        this.creditScore=creditScore;
     }
 
     @Override
     public Boolean add(Account account) {
-        //добовление в конец
         Node node = new Node(account, null);
-        if (tail==null) head=tail=node;
+        if (tail==null)
+            head=tail=node;
         else {
             node.next=tail.next;
             tail.next=node;
@@ -39,39 +36,19 @@ public class Entity implements Client {
         size++;
         return true;
     }
-
-    private Node getNode(int index){
-        int numderNode=1;
-        Node currentNode=head.next;
-        while (numderNode<index)
-        {
-            currentNode=currentNode.next;
-            numderNode++;
-        }
-        return currentNode.next;
-
-    }
     @Override
-    public Boolean add(int index, Account account) {
-        Node node = new Node(account, null), nextNode,currentNode;
-        if (tail == null) {
-            head.next = node;
-            tail = node;
-        } else if (index == 0) return false;
-        else if (index == 1)  //уточнить считается ли head за элемент списка
-        {
-            nextNode = head.next;
-            node.next = nextNode;
-            head.next = node;
-        } else if (index == size) {
-            node.next = head;
-            tail.next = node;
-            tail = node;
-        } else
-        {
-
+    public Boolean add(int index, Account account) { //dodelat
+        Node node = head.next;
+        Node newNode = getNode(index);
+        for (int i = 0; i < index; i++) {
+            if (i == index - 1) {
+                newNode.setNext(node.next);
+                node.next.setNext(newNode);
+            }
+            node = node.next;
         }
-        return null;
+        size++;
+        return true;
     }
 
     @Override
@@ -79,21 +56,6 @@ public class Entity implements Client {
         return getNode(index).value;
     }
 
-    private Node getNodeByNumber(String accountNumber) {
-        Node node = head;
-        Node temp=null;
-        int index = 1;
-        while (index <= size) {
-            if (node.value.getNumber().equals(accountNumber))
-            {
-                temp = node;
-                break;
-            }
-            index++;
-            node= node.next;
-        }
-    return temp;
-    }
     @Override
     public Account get(String accountNumber) {
         return getNodeByNumber(accountNumber).value;
@@ -113,13 +75,34 @@ public class Entity implements Client {
     }
 
     @Override
-    public Account remove(int index) { //hz
-        return null;
+    public Account remove(int index) {
+        Node removedNode=getNode(index);
+        Node node=head.next;
+        for(int i=0;i<index;i++){
+            if(i==index-1){
+                Node prev=getNode(index-1);
+                prev.next=prev.next.next;
+                this.size--;
+            }
+            node=node.next;
+        }
+        return removedNode.value;
     }
 
     @Override
-    public Account remove(String accountNumber) { //hz
-        return null;
+    public Account remove(String accountNumber) { //dodelat
+       Node removedNode=getNodeByNumber(accountNumber);
+        Node node=head.next;
+        for(int i=0;i<index;i++){
+            if(i==index-1){
+                Node prev=getNodeByIndex(index-1);
+                prev.next=prev.next.next;
+                this.size--;
+            }
+            node=node.next;
+        }
+        return removedNode.value;
+     return null;
     }
 
     @Override
@@ -129,7 +112,7 @@ public class Entity implements Client {
 
     @Override
     public Account[] getAccounts() {
-        Node node=head;
+        Node node=head.next;
         Account[] accounts=new Account[size];
         for(int i=0;i<size;i++)
         {
@@ -166,11 +149,79 @@ public class Entity implements Client {
 
     @Override
     public String getName() {
-        return name;//??????
+        return name;
     }
 
     @Override
     public void setName(String name) {
-        this.name=name;//????????
+        this.name=name;
+    }
+
+    @Override
+    public int getCreditScore() {
+        return creditScore;
+    }
+
+    @Override
+    public void addCreditScores(int creditScores) {
+        this.creditScore+=creditScores;
+    }
+
+    @Override
+    public ClientStatus getStatus() { //промежутки
+        if (getCreditScore()<3 && getCreditScore()==0)
+            return ClientStatus.GOOD;
+        if (creditScore<5 && creditScore>=3)
+            return ClientStatus.GOLD;
+        if(creditScore>=5)
+            return ClientStatus.PLATINUM;
+        if(creditScore<0 && creditScore>=-2)
+            return ClientStatus.RISKY;
+        if(creditScore>=-4)
+            return ClientStatus.BAD;
+        return null;
+    }
+
+    @Override
+    public Credit[] getCreditAccounts() {
+        return new Credit[0];
+    }
+
+    private Node getNode(int index){
+        int numberNode=1;
+        Node currentNode=head.next;
+        while (numberNode<index)
+        {
+            currentNode=currentNode.next;
+            numberNode++;
+        }
+        return currentNode.next;
+
+    }
+
+    private Node getNodeByNumber(String accountNumber) {
+        Node node = head;
+        Node temp=null;
+        int index = 1;
+        while (index <= size) {
+            if (node.value.getNumber().equals(accountNumber))
+            {
+                temp = node;
+                break;
+            }
+            index++;
+            node= node.next;
+        }
+        return temp;
+    }
+
+    public class Node {
+        Node next;
+        Account value;
+
+        public Node(Account value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
     }
 }

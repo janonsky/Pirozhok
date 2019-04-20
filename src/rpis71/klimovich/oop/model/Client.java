@@ -15,4 +15,8 @@ public interface Client {
     double totalBalance();
     String getName();
     void setName(String name);
+    int getCreditScore();
+    void addCreditScores(int creditScores);
+    ClientStatus getStatus();
+    Credit[] getCreditAccounts();
 }

@@ -1,7 +1,7 @@
 package rpis71.klimovich.oop.model;
 
 public class AccountManager {
-    private Individual[] individuals;
+    private Client[] clients;
     private int size;
     private final static int DEFAULT_CAPACITY =16;
 
@@ -10,99 +10,96 @@ public class AccountManager {
         this(DEFAULT_CAPACITY);
     }
     public AccountManager(int size) {
-        this.individuals = new Individual[size];
+        this.clients = new Client[size];
     }
-    public AccountManager(Individual[] individuals) {
-        Individual[] newIndividual;
-        newIndividual = new Individual[individuals.length*2];
-        System.arraycopy(individuals, 0, newIndividual, 0, individuals.length);
-        this.size = individuals.length;
-        this.individuals = newIndividual;
+    public AccountManager(Client[] clients) {
+        Client[] newClients;
+        newClients = new Client[clients.length*2];
+        System.arraycopy(clients, 0, newClients, 0, clients.length);
+        this.size = clients.length;
+        this.clients =  newClients;
     }
 
-    //todo подсмотри у Фунтикова done
     private void checkCapacity(){
-        if(size==individuals.length)
+        if(size==clients.length)
         {
-           Individual[] newIndividual=new Individual[individuals.length*2];
-            System.arraycopy(individuals,0,newIndividual,0,size);
-           individuals=newIndividual;
+           Client[]newClient=new Client[clients.length*2];
+            System.arraycopy(clients,0,newClient,0,size);
+            clients=newClient;
         }
     }
-    public boolean add(Individual individual) {
+    public boolean add(Client individual) {
         checkCapacity();
-        individuals[size]=individual;
+        clients[size]=individual;
         size++;
         return true;
     }
-    public boolean add(int index,Individual individual)
+    public boolean add(int index,Client client)
     {
         checkCapacity();
-        System.arraycopy(individuals, index, individuals, index + 1, size - index);
-        individuals[index]= individual;
+        System.arraycopy(clients, index, clients, index + 1, size - index);
+        clients[index]= client;
         size++;
         return true;
     }
-    public Individual get(int index)
+    public Client get(int index)
     {
-        return individuals[index];
+        return clients[index];
     }
-    public Individual set(int index, Individual individual)
+    public Client set(int index, Client individual)
    {
-       Individual newIndividual=individuals[index];
-       individuals[index]=individual;
-       return newIndividual;
+       Client newClient=clients[index];
+       clients[index]=individual;
+       return newClient;
    }
-    public Individual remove(int index)
+    public Client remove(int index)
     {
         size--;
-        System.arraycopy(individuals,index+1,individuals,index,size-index);
-        individuals[size]=null;
-        return individuals[index];
+        System.arraycopy(clients,index+1,clients,index,size-index);
+        clients[size]=null;
+        return clients[index];
     }
     public int size()
     {
         return size;
     }
-    public Individual[] getIndividuals()
+    public Client[] getClients()
     {
-        Individual[] newIndividuals=new Individual[size];
-        System.arraycopy(individuals,0,newIndividuals,0,size);
-        return newIndividuals;
+        Client[] newClients=new Client[size];
+        System.arraycopy(clients,0,newClients,0,size);
+        return newClients;
     }
-    public Individual[] sortedByBalanceIndividuals()
+    public Client[] sortedByBalanceClients()
     {
-        Individual[] newIndividuals = getIndividuals();
-       Individual individual;
+        Client[] newClients = getClients();
+       Client individual;
         for (int i=0;i<size-1;i++)
             for (int j=0;j<size-i;j++)
-                if (newIndividuals[j].getAccounts()[i].getBalance()> newIndividuals[j+1].getAccounts()[i].getBalance()) {
-                    individual = newIndividuals[j];
-                    newIndividuals[j] = newIndividuals[j + 1];
-                    newIndividuals[j + 1] = individual;
+                if (newClients[j].getAccounts()[i].getBalance()> newClients[j+1].getAccounts()[i].getBalance()) {
+                    individual = newClients[j];
+                    newClients[j] = newClients[j + 1];
+                    newClients[j + 1] = individual;
                 }
-        return newIndividuals;
+        return newClients;
     }
     public Account getAccount(String accountNumber)
     {
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].hasAccount(accountNumber))
+            if(clients[i].hasAccount(accountNumber))
             {
-               return individuals[i].get(accountNumber);
+               return clients[i].get(accountNumber);
             }
         }
         return null;
     }
     public Account removeAccount(String accountNumber)
     {
-        Account account=new Account();
+        Account account=null;
         for(int i=0;i<size;i++)
         {
-            if(individuals[i].hasAccount(accountNumber))
-            {
-               account=individuals[i].remove(accountNumber);
-            }
+            if(clients[i].hasAccount(accountNumber))
+               account=clients[i].remove(accountNumber);
         }
         return account;
     }
@@ -111,12 +108,12 @@ public class AccountManager {
         Account removedAccount = null;
         for(int i=0;i<size;i++)
         {
-            int index=individuals[i].indexOf(accountNumber);
+            int index=clients[i].indexOf(accountNumber);
             if(index >=0)
-            {
-                removedAccount=individuals[i].set(index,account);
-            }
+                removedAccount=clients[i].set(index,account);
         }
         return removedAccount;
+       return null;
     }
+
 }
