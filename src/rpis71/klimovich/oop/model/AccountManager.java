@@ -108,12 +108,45 @@ public class AccountManager {
         Account removedAccount = null;
         for(int i=0;i<size;i++)
         {
-            int index=clients[i].indexOf(accountNumber);
+            int index=clients[i].indexOf(accountNumber); //????????????
             if(index >=0)
                 removedAccount=clients[i].set(index,account);
         }
         return removedAccount;
        return null;
+    }
+    public Client[] getDebtors() {
+        int countDebetors = 0;
+        for (int i = 0; i < size; i++) {
+            if (clients[i].getCreditScore() != 0)
+                countDebetors++;
+        }
+        Client[] debtors = new Client[countDebetors];
+        countDebetors = 0;
+        for (int i = 0; i < size; i++) {
+            if (clients[i].getCreditScore() != 0) {
+                debtors[countDebetors] = clients[i];
+                countDebetors++;
+            }
+        }
+        return debtors;
+    }
+    public Client[] getWickedDebtors()
+    {
+        int countDebetors = 0;
+        for (int i = 0; i < size; i++) {
+            if (clients[i].getCreditScore() < -2)
+                countDebetors++;
+        }
+        Client[] debetors = new Client[countDebetors];
+        countDebetors = 0;
+        for (int i = 0; i < size; i++) {
+            if (clients[i].getCreditScore() < -2) {
+                debetors[countDebetors] = clients[i];
+                countDebetors++;
+            }
+        }
+        return debetors;
     }
 
 }

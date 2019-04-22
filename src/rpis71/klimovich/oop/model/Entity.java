@@ -37,13 +37,13 @@ public class Entity implements Client {
         return true;
     }
     @Override
-    public Boolean add(int index, Account account) { //dodelat
+    public Boolean add(int index, Account account) { //????
         Node node = head.next;
         Node newNode = getNode(index);
         for (int i = 0; i < index; i++) {
             if (i == index - 1) {
-                newNode.setNext(node.next);
-                node.next.setNext(newNode);
+                newNode=node.next;
+                node.next=newNode;
             }
             node = node.next;
         }
@@ -91,17 +91,9 @@ public class Entity implements Client {
 
     @Override
     public Account remove(String accountNumber) { //dodelat
-       Node removedNode=getNodeByNumber(accountNumber);
-        Node node=head.next;
-        for(int i=0;i<index;i++){
-            if(i==index-1){
-                Node prev=getNodeByIndex(index-1);
-                prev.next=prev.next.next;
-                this.size--;
-            }
-            node=node.next;
-        }
-        return removedNode.value;
+        int index=IndexOf(accountNumber);
+       if(index!=-1)
+           return remove(index);
      return null;
     }
 
@@ -185,6 +177,14 @@ public class Entity implements Client {
     @Override
     public Credit[] getCreditAccounts() {
         return new Credit[0];
+    }
+    private int IndexOf(String accountNumber)
+    {
+        for (int i = 0; i < size; i++) {
+            if (get(accountNumber).getNumber().equals(accountNumber))
+                return i;
+        }
+        return -1;
     }
 
     private Node getNode(int index){
