@@ -19,4 +19,6 @@ public interface Client {
     void addCreditScores(int creditScores);
     ClientStatus getStatus();
     Credit[] getCreditAccounts();
+
+    int indexOf(String accountNumber);
 }

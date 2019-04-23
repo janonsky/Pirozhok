@@ -53,7 +53,7 @@ public class Individual implements Client {
         return accounts[index];
     }
 
-    public int indexOf(String accountNumber) {
+    private int indexOf(String accountNumber) {
         for (int i = 0; i < size; i++) {
             if (accounts[i].getNumber().equals(accountNumber))
                 return i;

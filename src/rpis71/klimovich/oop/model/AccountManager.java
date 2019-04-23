@@ -108,7 +108,7 @@ public class AccountManager {
         Account removedAccount = null;
         for(int i=0;i<size;i++)
         {
-            int index=clients[i].indexOf(accountNumber); //????????????
+            int index=clients[i].indexOf(accountNumber);
             if(index >=0)
                 removedAccount=clients[i].set(index,account);
         }

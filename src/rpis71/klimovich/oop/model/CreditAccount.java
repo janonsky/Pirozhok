@@ -10,6 +10,6 @@ public class CreditAccount extends AbstractAccount  {
     }
     public CreditAccount ()
     {
-        this(" ",0,30);
+        this(" ",0,0.3);
     }
 }
