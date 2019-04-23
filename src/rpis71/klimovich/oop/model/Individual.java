@@ -143,8 +143,20 @@ public class Individual implements Client {
        this.creditScore+=creditScores;
     }
 
+    //todo вынеси как default метод интерфейса
     @Override
     public ClientStatus getStatus() {
+        int creditScore = getCreditScore();
+        //todo конструкция else-if аккурат для таких случаев подходит + метод нада использовать
+        if (creditScore >= ClientStatus.PLATINUM.getCreditScoreBound()) {
+            return ClientStatus.PLATINUM;
+        } else if(creditScore >=3) {
+
+        } else if() {
+            return ClientStatus.GOLD;
+
+        }
+
         if (getCreditScore()>=0 && getCreditScore()<3)
             return ClientStatus.GOOD;
         if (getCreditScore()>=3 && getCreditScore()<5)
@@ -160,8 +172,8 @@ public class Individual implements Client {
 
     @Override
     public Credit[] getCreditAccounts() { //???
-        Account[] newAccounts=getAccounts();
-        Credit[] credits=
+        //todo циклом и для каждого аккаунта проверяем if (account[i] instanceOf Credit)
+
         for(int i=0;i<size;i++)
 
     }

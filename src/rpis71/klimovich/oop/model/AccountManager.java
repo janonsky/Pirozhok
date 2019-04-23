@@ -115,6 +115,9 @@ public class AccountManager {
         return removedAccount;
        return null;
     }
+
+    //todo в обоих методах не завязывайся на creditScores, но на Status
+    //todo дублирование кода - в приватный метод, принимающий статус в качестве параметра
     public Client[] getDebtors() {
         int countDebetors = 0;
         for (int i = 0; i < size; i++) {

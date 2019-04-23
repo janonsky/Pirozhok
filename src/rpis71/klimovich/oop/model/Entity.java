@@ -1,5 +1,6 @@
 package rpis71.klimovich.oop.model;
 
+//todo head не хранит value, имеет смысл только ссылка next, указывающая на 0-й элемент списка
 public class Entity implements Client {
     private Node head;
     private Node tail;
@@ -8,15 +9,13 @@ public class Entity implements Client {
     private int creditScore;
     public Entity(String name,int creditScore)
     {
-        this.head=head;
-        this.tail=tail;
+        //todo инициализировать head
         this.name=name;
         this.creditScore=creditScore;
     }
     public Entity(Account[] accounts,String name,int creditScore)
     {
-        this.tail = tail;
-        this.head =head;
+        this(name, creditScore);
         for (int i = 0; i < accounts.length; i++)
             add(accounts[i]);
         this.name = name;
@@ -24,22 +23,18 @@ public class Entity implements Client {
     }
 
     @Override
-    public Boolean add(Account account) {
-        Node node = new Node(account, null);
-        if (tail==null)
-            head=tail=node;
-        else {
-            node.next=tail.next;
-            tail.next=node;
-            tail=node;
-        }
-        size++;
-        return true;
+    public boolean add(Account account) {
+        return add(size, account);
     }
     @Override
-    public Boolean add(int index, Account account) {
+    public boolean add(int index, Account account) {
         Node node = head.next;
         Node newNode = getNode(index);
+        /*todo  1) список пуст size == 0
+        2)index = 0
+        3) index = size
+        4) node = getNode(index-1)
+        */
         for (int i = 0; i < index; i++) {
             if (i == index - 1) {
                 newNode=node.next;
@@ -68,14 +63,15 @@ public class Entity implements Client {
 
     @Override
     public Account set(int index, Account account) {
-       Account removedAccount=get(index);
        Node node= getNode(index);
+       Account removedAccount = node.value;
        node.value=account;
        return removedAccount;
     }
 
     @Override
     public Account remove(int index) {
+        //todo сделай removeNode(index) с проверками, аналогичными add(index)
         Node removedNode=getNode(index);
         Node node=head.next;
         for(int i=0;i<index;i++){
@@ -91,10 +87,7 @@ public class Entity implements Client {
 
     @Override
     public Account remove(String accountNumber) {
-        int index=IndexOf(accountNumber);
-       if(index!=-1)
-           return remove(index);
-     return null;
+        //todo циклом по нодам, пока node.next.value.getAccountNumber() != true
     }
 
     @Override
@@ -181,34 +174,29 @@ public class Entity implements Client {
 
     @Override
     public int indexOf(String accountNumber) {
-        return 0;
-    }
-
-    private int IndexOf(String accountNumber)
-    {
+        //todo циклом по нодам
         for (int i = 0; i < size; i++) {
             if (get(accountNumber).getNumber().equals(accountNumber))
                 return i;
         }
-        return -1;
-    }
+        return -1;    }
 
     private Node getNode(int index){
-        int numberNode=1;
+        int numberNode=0;
         Node currentNode=head.next;
         while (numberNode<index)
         {
             currentNode=currentNode.next;
             numberNode++;
         }
-        return currentNode.next;
+        return currentNode; //todo проверь
 
     }
 
     private Node getNodeByNumber(String accountNumber) {
         Node node = head;
-        Node temp=null;
-        int index = 1;
+        Node temp=null; //todo имя - гавно
+        int index = 0; //todo проверь
         while (index <= size) {
             if (node.value.getNumber().equals(accountNumber))
             {

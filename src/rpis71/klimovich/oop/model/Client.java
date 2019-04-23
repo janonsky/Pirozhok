@@ -1,11 +1,11 @@
 package rpis71.klimovich.oop.model;
 
 public interface Client {
-    Boolean add(Account account);
-    Boolean add(int index,Account account);
+    boolean add(Account account);
+    boolean add(int index,Account account);
     Account get(int index);
     Account get(String accountNumber);
-    Boolean hasAccount(String accountNumber);
+    boolean hasAccount(String accountNumber);
     Account set(int index,Account account);
     Account remove(int index);
     Account remove(String accountNumber);
@@ -18,7 +18,7 @@ public interface Client {
     int getCreditScore();
     void addCreditScores(int creditScores);
     ClientStatus getStatus();
-    Credit[] getCreditAccounts();
+    Account[] getCreditAccounts();
 
     int indexOf(String accountNumber);
 }
