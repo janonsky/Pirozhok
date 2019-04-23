@@ -178,6 +178,12 @@ public class Entity implements Client {
     public Credit[] getCreditAccounts() { //???????
         return new Credit[0];
     }
+
+    @Override
+    public int indexOf(String accountNumber) {
+        return 0;
+    }
+
     private int IndexOf(String accountNumber)
     {
         for (int i = 0; i < size; i++) {
