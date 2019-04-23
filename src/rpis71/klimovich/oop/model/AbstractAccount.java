@@ -3,14 +3,14 @@ package rpis71.klimovich.oop.model;
 public abstract class  AbstractAccount implements Account {
     private String number;
     private double balance;
+    AbstractAccount()
+    {
+        this("",0);
+    }
     AbstractAccount(String number,double balance)
     {
         this.number=number;
         this.balance=balance;
-    }
-    AbstractAccount()
-    {
-        this("",0);
     }
     @Override
    public String getNumber()

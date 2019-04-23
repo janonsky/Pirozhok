@@ -144,22 +144,22 @@ public class Individual implements Client {
     }
 
     @Override
-    public ClientStatus getStatus() { //промежутки пророботать
-        if (getCreditScore()<3 && getCreditScore()==0)
+    public ClientStatus getStatus() {
+        if (getCreditScore()>=0 && getCreditScore()<3)
             return ClientStatus.GOOD;
-        if (getCreditScore()<5 && getCreditScore()>=3)
+        if (getCreditScore()>=3 && getCreditScore()<5)
             return ClientStatus.GOLD;
         if(getCreditScore()>=5)
             return ClientStatus.PLATINUM;
-        if(getCreditScore()<0 && getCreditScore()>=-2)
+        if(getCreditScore()>=-2 && getCreditScore()<0)
             return ClientStatus.RISKY;
-        if(getCreditScore()>=-4)
+        if(getCreditScore()<=-2)
             return ClientStatus.BAD;
         return null;
     }
 
     @Override
-    public Credit[] getCreditAccounts() {
+    public Credit[] getCreditAccounts() { //???
         Account[] newAccounts=getAccounts();
         Credit[] credits=
         for(int i=0;i<size;i++)

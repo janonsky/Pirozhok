@@ -8,15 +8,15 @@ public class Entity implements Client {
     private int creditScore;
     public Entity(String name,int creditScore)
     {
-        this.head=new Node(null,head);
-        this.tail=new Node(null,tail);
+        this.head=head;
+        this.tail=tail;
         this.name=name;
         this.creditScore=creditScore;
     }
     public Entity(Account[] accounts,String name,int creditScore)
     {
-        this.tail = new Node(null, head);
-        this.head = new Node(null, tail);
+        this.tail = tail;
+        this.head =head;
         for (int i = 0; i < accounts.length; i++)
             add(accounts[i]);
         this.name = name;
@@ -37,7 +37,7 @@ public class Entity implements Client {
         return true;
     }
     @Override
-    public Boolean add(int index, Account account) { //????
+    public Boolean add(int index, Account account) {
         Node node = head.next;
         Node newNode = getNode(index);
         for (int i = 0; i < index; i++) {
@@ -90,7 +90,7 @@ public class Entity implements Client {
     }
 
     @Override
-    public Account remove(String accountNumber) { //dodelat
+    public Account remove(String accountNumber) {
         int index=IndexOf(accountNumber);
        if(index!=-1)
            return remove(index);
@@ -130,7 +130,7 @@ public class Entity implements Client {
     @Override
     public double totalBalance() {
        double totalBalance=0;
-       Node node=head;
+       Node node=head.next;
        for(int i=0;i<size;i++)
        {
            totalBalance+=node.value.getBalance();
@@ -160,22 +160,22 @@ public class Entity implements Client {
     }
 
     @Override
-    public ClientStatus getStatus() { //промежутки
-        if (getCreditScore()<3 && getCreditScore()==0)
+    public ClientStatus getStatus() {
+        if (getCreditScore()>=0 && getCreditScore()<3)
             return ClientStatus.GOOD;
-        if (creditScore<5 && creditScore>=3)
+        if (getCreditScore()>=3 && getCreditScore()<5)
             return ClientStatus.GOLD;
-        if(creditScore>=5)
+        if(getCreditScore()>=5)
             return ClientStatus.PLATINUM;
-        if(creditScore<0 && creditScore>=-2)
+        if(getCreditScore()>=-2 && getCreditScore()<0)
             return ClientStatus.RISKY;
-        if(creditScore>=-4)
+        if(getCreditScore()<=-2)
             return ClientStatus.BAD;
         return null;
     }
 
     @Override
-    public Credit[] getCreditAccounts() {
+    public Credit[] getCreditAccounts() { //???????
         return new Credit[0];
     }
     private int IndexOf(String accountNumber)
