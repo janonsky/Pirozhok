@@ -1,5 +1,7 @@
 package rpis71.klimovich.oop.model;
 
+import java.util.Arrays;
+
 public class AccountManager {
     private Client[] clients;
     private int size;
@@ -113,43 +115,35 @@ public class AccountManager {
                 removedAccount=clients[i].set(index,account);
         }
         return removedAccount;
-       return null;
     }
 
-    //todo в обоих методах не завязывайся на creditScores, но на Status
-    //todo дублирование кода - в приватный метод, принимающий статус в качестве параметра
+    //todo в обоих методах не завязывайся на creditScores, но на Status done?
+    //todo дублирование кода - в приватный метод, принимающий статус в качестве параметра done?
     public Client[] getDebtors() {
-        int countDebetors = 0;
+        Client[] debtors = new Client[size];
+        int countDebtors = 0;
         for (int i = 0; i < size; i++) {
-            if (clients[i].getCreditScore() != 0)
-                countDebetors++;
-        }
-        Client[] debtors = new Client[countDebetors];
-        countDebetors = 0;
-        for (int i = 0; i < size; i++) {
-            if (clients[i].getCreditScore() != 0) {
-                debtors[countDebetors] = clients[i];
-                countDebetors++;
+            if (clients[i].getCreditScore() != ClientStatus.GOOD.getCreditScoreBound()) {
+                debtors[countDebtors] = clients[i];
+                countDebtors++;
             }
         }
-        return debtors;
+        return Arrays.copyOf(debtors,countDebtors);
     }
     public Client[] getWickedDebtors()
     {
-        int countDebetors = 0;
-        for (int i = 0; i < size; i++) {
-            if (clients[i].getCreditScore() < -2)
-                countDebetors++;
-        }
-        Client[] debetors = new Client[countDebetors];
-        countDebetors = 0;
-        for (int i = 0; i < size; i++) {
-            if (clients[i].getCreditScore() < -2) {
-                debetors[countDebetors] = clients[i];
-                countDebetors++;
-            }
-        }
-        return debetors;
+       return getDebetorsForStatus(ClientStatus.BAD);
     }
-
+    private Client[] getDebetorsForStatus(ClientStatus status)
+    {
+        int countDebetors=0;
+        for(int i=0;i<size;i++)
+            if(clients[i].getCreditScore() == status.getCreditScoreBound())
+                countDebetors++;
+        Client[] debetors=new Client[countDebetors];
+        for(int i=0;i<countDebetors;i++)
+            if (clients[i].getCreditScore()==status.getCreditScoreBound())
+                debetors[i]=clients[i];
+            return debetors;
+    }
 }

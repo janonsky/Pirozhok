@@ -17,7 +17,22 @@ public interface Client {
     void setName(String name);
     int getCreditScore();
     void addCreditScores(int creditScores);
-    ClientStatus getStatus();
+    //todo вынеси как default метод интерфейса done
+    //todo конструкция else-if аккурат для таких случаев подходит + метод нада использовать done
+   default ClientStatus getStatus()
+   {
+       if (getCreditScore() >= ClientStatus.GOOD.getCreditScoreBound())
+           return ClientStatus.GOOD;
+      else if (getCreditScore() >= ClientStatus.GOLD.getCreditScoreBound())
+           return ClientStatus.GOLD;
+      else if(getCreditScore() >= ClientStatus.PLATINUM.getCreditScoreBound())
+           return ClientStatus.PLATINUM;
+      else if(getCreditScore() >= ClientStatus.RISKY.getCreditScoreBound())
+           return ClientStatus.RISKY;
+      else if(getCreditScore() >= ClientStatus.BAD.getCreditScoreBound())
+           return ClientStatus.BAD;
+       return null;
+   }
     Account[] getCreditAccounts();
 
     int indexOf(String accountNumber);

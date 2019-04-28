@@ -57,7 +57,7 @@ public class Entity implements Client {
     }
 
     @Override
-    public Boolean hasAccount(String accountNumber) {
+    public boolean hasAccount(String accountNumber) {
         return (getNodeByNumber(accountNumber)!=null);
     }
 
@@ -150,21 +150,6 @@ public class Entity implements Client {
     @Override
     public void addCreditScores(int creditScores) {
         this.creditScore+=creditScores;
-    }
-
-    @Override
-    public ClientStatus getStatus() {
-        if (getCreditScore()>=0 && getCreditScore()<3)
-            return ClientStatus.GOOD;
-        if (getCreditScore()>=3 && getCreditScore()<5)
-            return ClientStatus.GOLD;
-        if(getCreditScore()>=5)
-            return ClientStatus.PLATINUM;
-        if(getCreditScore()>=-2 && getCreditScore()<0)
-            return ClientStatus.RISKY;
-        if(getCreditScore()<=-2)
-            return ClientStatus.BAD;
-        return null;
     }
 
     @Override

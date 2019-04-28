@@ -1,5 +1,7 @@
 package rpis71.klimovich.oop.model;
 
+import java.util.Arrays;
+
 public class Individual implements Client {
     private Account[] accounts;
     private int size;
@@ -34,14 +36,14 @@ public class Individual implements Client {
         }
     }
 
-    public Boolean add(Account account) {
+    public boolean add(Account account) {
         checkCapacity();
         accounts[size] = account;
         size++;
         return true;
     }
 
-    public Boolean add(int index, Account account) {
+    public boolean add(int index, Account account) {
          checkCapacity();
             System.arraycopy(accounts, index, accounts, index + 1, size - index);
             accounts[index] = account;
@@ -53,7 +55,7 @@ public class Individual implements Client {
         return accounts[index];
     }
 
-    private int indexOf(String accountNumber) {
+    public int indexOf(String accountNumber) {
         for (int i = 0; i < size; i++) {
             if (accounts[i].getNumber().equals(accountNumber))
                 return i;
@@ -68,7 +70,7 @@ public class Individual implements Client {
         return null;
     }
 
-    public Boolean hasAccount(String accountNumber) {
+    public boolean hasAccount(String accountNumber) {
          return (indexOf(accountNumber)!=-1);
     }
 
@@ -143,38 +145,17 @@ public class Individual implements Client {
        this.creditScore+=creditScores;
     }
 
-    //todo вынеси как default метод интерфейса
     @Override
-    public ClientStatus getStatus() {
-        int creditScore = getCreditScore();
-        //todo конструкция else-if аккурат для таких случаев подходит + метод нада использовать
-        if (creditScore >= ClientStatus.PLATINUM.getCreditScoreBound()) {
-            return ClientStatus.PLATINUM;
-        } else if(creditScore >=3) {
-
-        } else if() {
-            return ClientStatus.GOLD;
-
-        }
-
-        if (getCreditScore()>=0 && getCreditScore()<3)
-            return ClientStatus.GOOD;
-        if (getCreditScore()>=3 && getCreditScore()<5)
-            return ClientStatus.GOLD;
-        if(getCreditScore()>=5)
-            return ClientStatus.PLATINUM;
-        if(getCreditScore()>=-2 && getCreditScore()<0)
-            return ClientStatus.RISKY;
-        if(getCreditScore()<=-2)
-            return ClientStatus.BAD;
-        return null;
-    }
-
-    @Override
-    public Credit[] getCreditAccounts() { //???
-        //todo циклом и для каждого аккаунта проверяем if (account[i] instanceOf Credit)
-
+    public Account[] getCreditAccounts() {
+        //todo циклом и для каждого аккаунта проверяем if (account[i] instanceOf Credit) done
+        int countCreditAccount=0;
+        Account[] accounts=new Account[size];
         for(int i=0;i<size;i++)
-
+        {
+            if (accounts[i] instanceof Credit)
+                accounts[countCreditAccount]=accounts[i];
+            countCreditAccount++;
+        }
+        return Arrays.copyOf(accounts,countCreditAccount);
     }
 }
