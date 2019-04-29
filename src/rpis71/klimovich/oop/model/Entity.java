@@ -1,5 +1,7 @@
 package rpis71.klimovich.oop.model;
 
+import java.util.Arrays;
+
 //todo head не хранит value, имеет смысл только ссылка next, указывающая на 0-й элемент списка
 public class Entity implements Client {
     private Node head;
@@ -180,22 +182,41 @@ public class Entity implements Client {
     }
 
     @Override
-    public Credit[] getCreditAccounts() { //???????
-        return new Credit[0];
+    public Account[] getCreditAccounts() {
+        int count = 0;
+        Account[] newAccounts = new Account[size];
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
+            if (node.value instanceof Credit) {
+                newAccounts[count] = node.value;
+                count++;
+            }
+            node = node.next;
+        }
+        return Arrays.copyOf(newAccounts, count);
     }
 
     @Override
     public boolean remove(Account account) {
-
+        if (indexOf(account)!=-1)
+        {
+            remove(indexOf(account));
+            return true;
+        }
+        else return false;
     }
 
     @Override
     public int indexOf(Account account) {
-        return 0;
+        Account[] accounts=getAccounts();
+       for(int i=0;i<size;i++)
+           if (accounts[i].getNumber().equals(account.getNumber()))
+               return i;
+       return -1;
     }
 
     @Override
-    public double debtTotal() {
+    public double debtTotal() {//?????
         return 0;
     }
 
@@ -228,7 +249,7 @@ public class Entity implements Client {
     private Node getNodeByNumber(String accountNumber) {
         Node node = head.next;
         Node currentNode=null; //todo имя - гавно dcne
-        int index = 0; //todo проверь done
+        int index = 0;
         while (index <= size) {
             if (node.value.getNumber().equals(accountNumber))
             {

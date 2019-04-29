@@ -161,9 +161,9 @@ public class Individual implements Client {
 
     @Override
     public boolean remove(Account account) {
-      if(indexOf(account.getNumber())!=-1)
+      if(indexOf(account)!=-1)
       {
-          remove(indexOf(account.getNumber()));
+          remove(indexOf(account));
           return true;
       }
       else
@@ -176,7 +176,7 @@ public class Individual implements Client {
     }
 
     @Override
-    public double debtTotal() { //???? //TODO sdelat 6 i 7zadanie ENTITY
+    public double debtTotal() { //???? //TODO sdelat 6 i 7zadanie
 
     }
 }
