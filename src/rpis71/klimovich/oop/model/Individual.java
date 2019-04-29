@@ -158,4 +158,25 @@ public class Individual implements Client {
         }
         return Arrays.copyOf(accounts,countCreditAccount);
     }
+
+    @Override
+    public boolean remove(Account account) {
+      if(indexOf(account.getNumber())!=-1)
+      {
+          remove(indexOf(account.getNumber()));
+          return true;
+      }
+      else
+          return false;
+    }
+
+    @Override
+    public int indexOf(Account account) {
+        return indexOf(account.getNumber());
+    }
+
+    @Override
+    public double debtTotal() { //???? //TODO sdelat 6 i 7zadanie ENTITY
+
+    }
 }

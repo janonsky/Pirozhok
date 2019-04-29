@@ -1,4 +1,5 @@
 package rpis71.klimovich.oop.model;
+import  java.lang.Cloneable;
 
 public abstract class  AbstractAccount implements Account {
     private String number;
@@ -27,10 +28,29 @@ public abstract class  AbstractAccount implements Account {
    {
        return balance;
    }
-  @Override
+    @Override
     public void setBalance(double balance)
   {
     this.balance=balance;
   }
+    public String toString()
+    {
+        return String.format("number: " + number + " balance: " + balance);
+    }
+    public int hashCode()
+    {
+        return (Double.hashCode(balance)*number.hashCode());
+    }
+    public boolean equals(Object object)
+    {
+       if (object instanceof AbstractAccount &&(((AbstractAccount) object).number==this.number) && ((AbstractAccount) object).number.equals(this.number))
+            return true;
+         else
+            return false;
+    }
+    protected Object clone()throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
 
 }

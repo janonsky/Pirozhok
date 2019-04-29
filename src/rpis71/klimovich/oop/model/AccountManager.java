@@ -134,6 +134,7 @@ public class AccountManager {
     {
        return getDebetorsForStatus(ClientStatus.BAD);
     }
+
     private Client[] getDebetorsForStatus(ClientStatus status)
     {
         int countDebetors=0;
@@ -145,5 +146,23 @@ public class AccountManager {
             if (clients[i].getCreditScore()==status.getCreditScoreBound())
                 debetors[i]=clients[i];
             return debetors;
+    }
+    public boolean remove(Client client) //???
+    {
+        int index=indexOf(client);
+        if (index!=-1) {
+            remove(indexOf(client));
+            return true;
+        }
+        else
+            return false;
+    }
+    public int indexOf(Client client)
+    {
+        int index=0;
+       for (int i=0;i<size;i++)
+           if (clients[i].getName().equals(client.getName()))
+                return i;
+           return -1;
     }
 }

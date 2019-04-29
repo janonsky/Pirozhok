@@ -9,5 +9,15 @@ public class DebitAccount extends AbstractAccount {
     {
        super();
     }
+    public String toString() {
+        return  String.format("Debit account - "+super.toString());
+    }
+    public int hashCode()
+    {
+        return super.hashCode()*53;
+    }
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
 

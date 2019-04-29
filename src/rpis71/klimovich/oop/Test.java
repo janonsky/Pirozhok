@@ -44,5 +44,9 @@ public class Test {
         CreditAccount[] creditAccounts={creditAccount};
         Individual individual1=new Individual(creditAccounts,"Lina",0);
     }
+    public static void lab4tests()
+    {
+
+    }
 }
 

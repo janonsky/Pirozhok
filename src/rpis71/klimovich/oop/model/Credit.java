@@ -1,6 +1,6 @@
 package rpis71.klimovich.oop.model;
 
 public interface Credit {
-    public double getAPR();
-    public void setAPR();
+        double getAPR();
+        void setAPR(double APR);
 }

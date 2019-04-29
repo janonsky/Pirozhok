@@ -9,7 +9,8 @@ public class Entity implements Client {
     private int creditScore;
     public Entity(String name,int creditScore)
     {
-        //todo инициализировать head
+        //todo инициализировать head done
+        this.head=this.tail=null;//??
         this.name=name;
         this.creditScore=creditScore;
     }
@@ -28,20 +29,28 @@ public class Entity implements Client {
     }
     @Override
     public boolean add(int index, Account account) {
+        Node newNode= new Node(account,null);
         Node node = head.next;
-        Node newNode = getNode(index);
-        /*todo  1) список пуст size == 0
+        /*todo  1) список пуст size == 0 done
         2)index = 0
         3) index = size
         4) node = getNode(index-1)
         */
-        for (int i = 0; i < index; i++) {
-            if (i == index - 1) {
-                newNode=node.next;
-                node.next=newNode;
-            }
-            node = node.next;
-        }
+        if (size==0) {
+           head.next= newNode;
+        }else if(index==0){
+               newNode.next= node;
+               head.next=newNode;
+            }else if (index==size){
+                    newNode.next=head;
+                    tail.next=newNode;
+                    tail=newNode;
+                }else
+                    {
+                    node=getNode(index-1);
+                        newNode.next=node.next;
+                        node.next= newNode;
+                    }
         size++;
         return true;
     }
@@ -71,23 +80,41 @@ public class Entity implements Client {
 
     @Override
     public Account remove(int index) {
-        //todo сделай removeNode(index) с проверками, аналогичными add(index)
+        //todo сделай removeNode(index) с проверками, аналогичными add(index) done
         Node removedNode=getNode(index);
-        Node node=head.next;
-        for(int i=0;i<index;i++){
-            if(i==index-1){
-                Node prev=getNode(index-1);
-                prev.next=prev.next.next;
-                this.size--;
+        Node node;
+        if (size!=0)
+        {
+            if(index==0)
+                head.next=removedNode.next;
+            else if (index==size)
+            {//??
+                node=getNode(index-1);
+                tail=node;
+                tail.next=head;
             }
-            node=node.next;
+            else {
+                node= getNode(index-1);
+                node.next=removedNode.next;
+            }
+            size--;
         }
         return removedNode.value;
     }
 
     @Override
     public Account remove(String accountNumber) {
-        //todo циклом по нодам, пока node.next.value.getAccountNumber() != true
+        //todo циклом по нодам, пока node.next.value.getAccountNumber() != true done
+        Node node=head.next;
+        for(int i=0;i<size;i++)
+        {
+            if (node.value.getNumber().equals(accountNumber))
+            {
+               return remove(i);
+            }
+            node=node.next;
+        }
+        return null;
     }
 
     @Override
@@ -158,13 +185,33 @@ public class Entity implements Client {
     }
 
     @Override
+    public boolean remove(Account account) {
+
+    }
+
+    @Override
+    public int indexOf(Account account) {
+        return 0;
+    }
+
+    @Override
+    public double debtTotal() {
+        return 0;
+    }
+
+    @Override
     public int indexOf(String accountNumber) {
-        //todo циклом по нодам
+        //todo циклом по нодам done
+        Node node=head.next;
         for (int i = 0; i < size; i++) {
-            if (get(accountNumber).getNumber().equals(accountNumber))
+            if (node.value.getNumber().equals(accountNumber))
+            {
                 return i;
+            }
+            node=node.next;
         }
-        return -1;    }
+        return -1;
+    }
 
     private Node getNode(int index){
         int numberNode=0;
@@ -174,24 +221,24 @@ public class Entity implements Client {
             currentNode=currentNode.next;
             numberNode++;
         }
-        return currentNode; //todo проверь
+        return currentNode.next; //todo проверь done
 
     }
 
     private Node getNodeByNumber(String accountNumber) {
-        Node node = head;
-        Node temp=null; //todo имя - гавно
-        int index = 0; //todo проверь
+        Node node = head.next;
+        Node currentNode=null; //todo имя - гавно dcne
+        int index = 0; //todo проверь done
         while (index <= size) {
             if (node.value.getNumber().equals(accountNumber))
             {
-                temp = node;
+                currentNode = node;
                 break;
             }
             index++;
             node= node.next;
         }
-        return temp;
+        return currentNode;
     }
 
     public class Node {
