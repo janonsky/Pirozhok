@@ -176,7 +176,35 @@ public class Individual implements Client {
     }
 
     @Override
-    public double debtTotal() { //???? //TODO sdelat 6 i 7zadanie
-
+    public double debtTotal() { //???? //TODO object vezde equils
+    return 0;
+    }
+    public String toString(){
+        StringBuilder sb= new StringBuilder("Client:\n name:");
+        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n");
+       for (int i=0;i<size;i++)
+        {
+            sb.append(accounts[i].getNumber()+"\n");
+        }
+        sb.append("total:"+totalBalance());
+        return sb.toString();
+    }
+    @Override
+    public int hashCode()
+    {
+        int hash=getCreditScore();
+        for (int i=0;i<size;i++)
+        {
+            hash^=accounts[i].getNumber().hashCode();
+        }
+        return hash;
+    }
+    public boolean equals(Object object)
+    {
+        //sdelat
+    }
+    protected Object clone()throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 }

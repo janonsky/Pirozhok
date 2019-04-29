@@ -9,19 +9,17 @@ public class Entity implements Client {
     private String name;
     private int size;
     private int creditScore;
-    public Entity(String name,int creditScore)
+    public Entity(String name)
     {
         //todo инициализировать head done
-        this.head=this.tail=null;//??
+        this.head=new Node(null,null);
         this.name=name;
-        this.creditScore=creditScore;
     }
     public Entity(Account[] accounts,String name,int creditScore)
     {
-        this(name, creditScore);
+        this(name);
         for (int i = 0; i < accounts.length; i++)
             add(accounts[i]);
-        this.name = name;
         this.creditScore=creditScore;
     }
 
@@ -40,20 +38,25 @@ public class Entity implements Client {
         */
         if (size==0) {
            head.next= newNode;
+           tail=newNode;
+           tail.next=head;
+           size++;
         }else if(index==0){
                newNode.next= node;
                head.next=newNode;
+               size++;
             }else if (index==size){
-                    newNode.next=head;
                     tail.next=newNode;
                     tail=newNode;
+                    tail.next=head;
+                    size++;
                 }else
                     {
                     node=getNode(index-1);
                         newNode.next=node.next;
                         node.next= newNode;
+                        size++;
                     }
-        size++;
         return true;
     }
 
@@ -243,14 +246,13 @@ public class Entity implements Client {
             numberNode++;
         }
         return currentNode.next; //todo проверь done
-
     }
 
-    private Node getNodeByNumber(String accountNumber) {
+    public Node getNodeByNumber(String accountNumber) {
         Node node = head.next;
         Node currentNode=null; //todo имя - гавно dcne
         int index = 0;
-        while (index <= size) {
+        while (index < size) {
             if (node.value.getNumber().equals(accountNumber))
             {
                 currentNode = node;
@@ -260,6 +262,43 @@ public class Entity implements Client {
             node= node.next;
         }
         return currentNode;
+    }
+    @Override
+    public String toString(){
+        int nodeNumber=0;
+        Node currentNode= head.next;
+        StringBuilder sb= new StringBuilder("Client:\n name:");
+        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n");
+        while (nodeNumber<size)
+        {
+            sb.append(currentNode.value.getNumber()+"\n");
+            currentNode=currentNode.next;
+            nodeNumber++;
+        }
+        sb.append("total:"+totalBalance());
+        return sb.toString();
+    }
+    @Override
+    public int hashCode()
+    {
+        Node currentNode=head.next;
+        int index=0;
+        int hash=getCreditScore();
+       while(index<size)
+       {
+           hash^=currentNode.value.getNumber().hashCode();
+                   index++;
+           currentNode=currentNode.next;
+       }
+            return hash;
+    }
+    public boolean equals(Object object)
+    {
+        //sdelat
+    }
+    protected Object clone()throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 
     public class Node {

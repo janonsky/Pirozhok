@@ -165,4 +165,12 @@ public class AccountManager {
                 return i;
            return -1;
     }
+    @Override
+    public String toString()
+    {
+        StringBuilder sb= new StringBuilder();
+        for (int i=0; i<this.clients.length;i++)
+            sb.append("< "+this.clients[i].toString() + ">" + "\n");
+        return sb.toString();
+    }
 }
