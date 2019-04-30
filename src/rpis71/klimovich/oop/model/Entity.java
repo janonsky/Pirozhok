@@ -280,13 +280,14 @@ public class Entity implements Client {
     }
     @Override
     public int hashCode()
-    {
+    {//Этот метод вычисляет хэш-код как «исключающее-или» хэш-кодов всех
+      //  объектов в списке, названия (имени), кредитных очков
         Node currentNode=head.next;
         int index=0;
-        int hash=getCreditScore();
+        int hash=Integer.hashCode(getCreditScore());
        while(index<size)
        {
-           hash^=currentNode.value.getNumber().hashCode();
+           hash^=currentNode.value.hashCode()^name.hashCode();
                    index++;
            currentNode=currentNode.next;
        }
