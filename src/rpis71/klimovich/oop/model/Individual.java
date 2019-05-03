@@ -176,7 +176,7 @@ public class Individual implements Client {
     }
 
     @Override
-    public double debtTotal() { //???? //TODO object vezde equils
+    public double debtTotal() { //????
     return 0;
     }
     public String toString(){
@@ -195,13 +195,21 @@ public class Individual implements Client {
         int hash=getCreditScore();
         for (int i=0;i<size;i++)
         {
-            hash^=accounts[i].getNumber().hashCode();
+            hash^=accounts[i].hashCode();
         }
-        return hash;
+        return hash ^name.hashCode();
     }
     public boolean equals(Object object)
     {
-        //sdelat
+        boolean flag = true;
+        if (object instanceof Individual && ((Individual) object).name == this.name && ((Individual) object).creditScore == this.creditScore && this.size == ((Individual) object).size) {
+            for (int i = 0; i < size; i++) {
+                if (!((Individual) object).accounts[i].equals(accounts[i]))
+                    flag = false;
+            }
+        } else
+            flag = false;
+        return flag;
     }
     protected Object clone()throws CloneNotSupportedException
     {

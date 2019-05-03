@@ -280,22 +280,28 @@ public class Entity implements Client {
     }
     @Override
     public int hashCode()
-    {//Этот метод вычисляет хэш-код как «исключающее-или» хэш-кодов всех
-      //  объектов в списке, названия (имени), кредитных очков
+    {
         Node currentNode=head.next;
-        int index=0;
         int hash=Integer.hashCode(getCreditScore());
-       while(index<size)
-       {
-           hash^=currentNode.value.hashCode()^name.hashCode();
-                   index++;
-           currentNode=currentNode.next;
-       }
-            return hash;
+        for (int i = 0; i <size ; i++)
+            hash^=currentNode.value.hashCode();
+        return hash^name.hashCode();
     }
     public boolean equals(Object object)
     {
-        //sdelat
+        boolean flag = true;
+        if (object instanceof Entity && ((Entity) object).name == this.name && ((Entity) object).getCreditScore()==this.getCreditScore() && ((Entity) object).size==this.size){
+            Node node=head.next;
+            Node newNode=((Entity) object).head.next;
+            for(int i=0;i<size;i++){
+                if(!newNode.value.equals(node.value))
+                    flag=false;
+                node=node.next;
+                newNode=newNode.next;
+            }
+        }else
+            flag=false;
+        return flag;
     }
     protected Object clone()throws CloneNotSupportedException
     {
