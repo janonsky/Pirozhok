@@ -17,8 +17,6 @@ public interface Client {
     void setName(String name);
     int getCreditScore();
     void addCreditScores(int creditScores);
-    //todo вынеси как default метод интерфейса done
-    //todo конструкция else-if аккурат для таких случаев подходит + метод нада использовать done
    default ClientStatus getStatus()
    {
        if (getCreditScore() >= ClientStatus.GOOD.getCreditScoreBound())

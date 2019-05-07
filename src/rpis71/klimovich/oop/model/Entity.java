@@ -2,7 +2,6 @@ package rpis71.klimovich.oop.model;
 
 import java.util.Arrays;
 
-//todo head не хранит value, имеет смысл только ссылка next, указывающая на 0-й элемент списка
 public class Entity implements Client {
     private Node head;
     private Node tail;
@@ -11,7 +10,6 @@ public class Entity implements Client {
     private int creditScore;
     public Entity(String name)
     {
-        //todo инициализировать head done
         this.head=new Node(null,null);
         this.name=name;
     }
@@ -31,24 +29,19 @@ public class Entity implements Client {
     public boolean add(int index, Account account) {
         Node newNode= new Node(account,null);
         Node node = head.next;
-        /*todo  1) список пуст size == 0 done
-        2)index = 0
-        3) index = size
-        4) node = getNode(index-1)
-        */
         if (size==0) {
            head.next= newNode;
            tail=newNode;
-           tail.next=head;
+           tail.next=head; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
            size++;
         }else if(index==0){
                newNode.next= node;
                head.next=newNode;
-               size++;
+               size++;//todo tail должен ссылаться на нулевой элемент, то есть на новый
             }else if (index==size){
                     tail.next=newNode;
                     tail=newNode;
-                    tail.next=head;
+                    tail.next=head; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
                     size++;
                 }else
                     {
@@ -85,7 +78,6 @@ public class Entity implements Client {
 
     @Override
     public Account remove(int index) {
-        //todo сделай removeNode(index) с проверками, аналогичными add(index) done
         Node removedNode=getNode(index);
         Node node;
         if (size!=0)
@@ -94,9 +86,9 @@ public class Entity implements Client {
                 head.next=removedNode.next;
             else if (index==size)
             {//??
-                node=getNode(index-1);
+                node=getNode(index-1); //todo это действие выполняется в обоих ветвях if - вынеси его вне if
                 tail=node;
-                tail.next=head;
+                tail.next=head;//todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
             }
             else {
                 node= getNode(index-1);
@@ -109,7 +101,6 @@ public class Entity implements Client {
 
     @Override
     public Account remove(String accountNumber) {
-        //todo циклом по нодам, пока node.next.value.getAccountNumber() != true done
         Node node=head.next;
         for(int i=0;i<size;i++)
         {
@@ -211,21 +202,20 @@ public class Entity implements Client {
 
     @Override
     public int indexOf(Account account) {
-        Account[] accounts=getAccounts();
+        Account[] accounts=getAccounts(); //todo никаких массивов - циклом по нодам
        for(int i=0;i<size;i++)
-           if (accounts[i].getNumber().equals(account.getNumber()))
+           if (accounts[i].getNumber().equals(account.getNumber())) //todo здесь проверяются не номера а сами аккаунты  accounts[i].equals(account)
                return i;
        return -1;
     }
 
     @Override
-    public double debtTotal() {//?????
+    public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их amount-ы
         return 0;
     }
 
     @Override
     public int indexOf(String accountNumber) {
-        //todo циклом по нодам done
         Node node=head.next;
         for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(accountNumber))
@@ -245,12 +235,12 @@ public class Entity implements Client {
             currentNode=currentNode.next;
             numberNode++;
         }
-        return currentNode.next; //todo проверь done
+        return currentNode.next;
     }
 
     public Node getNodeByNumber(String accountNumber) {
         Node node = head.next;
-        Node currentNode=null; //todo имя - гавно dcne
+        Node currentNode=null;
         int index = 0;
         while (index < size) {
             if (node.value.getNumber().equals(accountNumber))
@@ -268,14 +258,14 @@ public class Entity implements Client {
         int nodeNumber=0;
         Node currentNode= head.next;
         StringBuilder sb= new StringBuilder("Client:\n name:");
-        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n");
+        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
         while (nodeNumber<size)
         {
-            sb.append(currentNode.value.getNumber()+"\n");
+            sb.append(currentNode.value.getNumber()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
             currentNode=currentNode.next;
             nodeNumber++;
         }
-        sb.append("total:"+totalBalance());
+        sb.append("total:"+totalBalance()); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
         return sb.toString();
     }
     @Override
@@ -289,8 +279,9 @@ public class Entity implements Client {
     }
     public boolean equals(Object object)
     {
-        boolean flag = true;
-        if (object instanceof Entity && ((Entity) object).name == this.name && ((Entity) object).getCreditScore()==this.getCreditScore() && ((Entity) object).size==this.size){
+        boolean flag = true;//todo имя - гавно
+        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней.
+        if (object instanceof Entity && ((Entity) object).name == this.name /*todo ты че творишь а?*/ && ((Entity) object).getCreditScore()==this.getCreditScore() && ((Entity) object).size==this.size){
             Node node=head.next;
             Node newNode=((Entity) object).head.next;
             for(int i=0;i<size;i++){
@@ -305,7 +296,7 @@ public class Entity implements Client {
     }
     protected Object clone()throws CloneNotSupportedException
     {
-        return super.clone();
+        return super.clone();//todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
     }
 
     public class Node {

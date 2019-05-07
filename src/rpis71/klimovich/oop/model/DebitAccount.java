@@ -10,7 +10,7 @@ public class DebitAccount extends AbstractAccount {
        super();
     }
     public String toString() {
-        return  String.format("Debit account - "+super.toString());
+        return  String.format("Debit account - "+super.toString()); //todo это не format, это херня
     }
     public int hashCode()
     {

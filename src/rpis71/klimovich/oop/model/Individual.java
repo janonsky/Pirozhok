@@ -147,7 +147,6 @@ public class Individual implements Client {
 
     @Override
     public Account[] getCreditAccounts() {
-        //todo циклом и для каждого аккаунта проверяем if (account[i] instanceOf Credit) done
         int countCreditAccount=0;
         Account[] accounts=new Account[size];
         for(int i=0;i<size;i++)
@@ -172,7 +171,7 @@ public class Individual implements Client {
 
     @Override
     public int indexOf(Account account) {
-        return indexOf(account.getNumber());
+        return indexOf(account.getNumber()); //todo неа. Надо проверять сами объекты account в массиве, а не один атрибут
     }
 
     @Override
@@ -181,12 +180,12 @@ public class Individual implements Client {
     }
     public String toString(){
         StringBuilder sb= new StringBuilder("Client:\n name:");
-        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n");
+        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
        for (int i=0;i<size;i++)
         {
-            sb.append(accounts[i].getNumber()+"\n");
+            sb.append(accounts[i].getNumber()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
         }
-        sb.append("total:"+totalBalance());
+        sb.append("total:"+totalBalance()); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
         return sb.toString();
     }
     @Override
@@ -201,7 +200,8 @@ public class Individual implements Client {
     }
     public boolean equals(Object object)
     {
-        boolean flag = true;
+        boolean flag = true; //todo имя - гавно
+        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней.
         if (object instanceof Individual && ((Individual) object).name == this.name && ((Individual) object).creditScore == this.creditScore && this.size == ((Individual) object).size) {
             for (int i = 0; i < size; i++) {
                 if (!((Individual) object).accounts[i].equals(accounts[i]))
@@ -213,6 +213,6 @@ public class Individual implements Client {
     }
     protected Object clone()throws CloneNotSupportedException
     {
-        return super.clone();
+        return super.clone(); //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
     }
 }
