@@ -32,17 +32,17 @@ public class Entity implements Client {
         if (size==0) {
            head.next= newNode;
            tail=newNode;
-           tail.next=head.next; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
+           tail.next=head.next;
            size++;
         }else if(index==0){
                newNode.next= node;
                head.next=newNode;
                tail.next=newNode;
-               size++;//todo tail должен ссылаться на нулевой элемент, то есть на новый done
+               size++;
             }else if (index==size){
                     tail.next=newNode;
                     tail=newNode;
-                    tail.next=head.next; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
+                    tail.next=head.next;
                     size++;
                 }else
                     {
@@ -86,9 +86,9 @@ public class Entity implements Client {
             if(index==0)
                 head.next=removedNode.next;
             else if (index==size)
-            {//todo это действие выполняется в обоих ветвях if - вынеси его вне if done
+            {
                 tail=node;
-                tail.next=head.next;//todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
+                tail.next=head.next;
             }
             else {
                 node.next=removedNode.next;
@@ -209,12 +209,10 @@ public class Entity implements Client {
             node=node.next;
         }
         return -1;
-         //todo никаких массивов - циклом по нодам done
-        //todo здесь проверяются не номера а сами аккаунты  accounts[i].equals(account) done
     }
 
     @Override
-    public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их amount-ы
+    public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их balance-ы
         return 0;
     }
 
@@ -260,13 +258,15 @@ public class Entity implements Client {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("Client\nn")
+                .append(" name")
+                .append(); //todo так далее
         Node node = head.next;
         for (int i = 0; i < size; i++) {
-            sb.append(node.value.toString() + "\n");
+            sb.append(node.value.toString()).append("\n");
             node = node.next;
-        } //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
-        return String.format("Client%n name : %s%n creditScore : %d%n %s total : %f ",getName(),getCreditScore(),sb.toString(),totalBalance());
-        //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
+        }
+        return sb.toString();
     }
     @Override
     public int hashCode()
@@ -280,8 +280,7 @@ public class Entity implements Client {
     public boolean equals(Object object)
     {
         boolean result = true;//todo имя - гавно done
-            Entity obj=(Entity) object;
-        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней. done
+            Entity obj=(Entity) object; //todo проверка типа перед кастом делается
         if (obj instanceof Entity && ((obj.name == this.name) /*todo ты че творишь а?*/ && (obj.getCreditScore()==this.getCreditScore()) && (obj.size==this.size))){
             Node node=head.next;
             Node newNode=obj.head.next;

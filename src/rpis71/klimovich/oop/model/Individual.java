@@ -178,7 +178,6 @@ public class Individual implements Client {
                 return i;
         }
         return -1;
-         //todo неа. Надо проверять сами объекты account в массиве, а не один атрибут done
     }
 
     @Override
@@ -219,13 +218,14 @@ public class Individual implements Client {
             result = false;
         return result;
     }
-    /*protected Object clone()throws CloneNotSupportedException
+    public Object clone()throws CloneNotSupportedException
     {
-        Individual individual=new Individual();
+        Individual individual = (Individual) super.clone();
+        individual.accounts = accounts.clone();
         for (int i=0;i<size;i++)
         {
-
+            //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
         }
-         //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
-    }*/
+         return individual;
+    }
 }

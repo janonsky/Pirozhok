@@ -117,8 +117,6 @@ public class AccountManager {
         return removedAccount;
     }
 
-    //todo в обоих методах не завязывайся на creditScores, но на Status done?
-    //todo дублирование кода - в приватный метод, принимающий статус в качестве параметра done?
     public Client[] getDebtors() {
         Client[] debtors = new Client[size];
         int countDebtors = 0;
@@ -139,11 +137,11 @@ public class AccountManager {
     {
         int countDebetors=0;
         for(int i=0;i<size;i++)
-            if(clients[i].getCreditScore() == status.getCreditScoreBound())
+            if(clients[i].getCreditScore() <= status.getCreditScoreBound())
                 countDebetors++;
         Client[] debetors=new Client[countDebetors];
         for(int i=0;i<countDebetors;i++)
-            if (clients[i].getCreditScore()==status.getCreditScoreBound())
+            if (clients[i].getCreditScore()<=status.getCreditScoreBound())
                 debetors[i]=clients[i];
             return debetors;
     }
@@ -170,7 +168,7 @@ public class AccountManager {
     {
         StringBuilder sb= new StringBuilder();
         for (int i=0; i<this.clients.length;i++)
-            sb.append("< "+this.clients[i].toString() + ">" + "\n");
+            sb.append("< "+this.clients[i].toString() + ">" + "\n"); //todo конкатенацию нафиг из билдера
         return sb.toString();
     }
 }
