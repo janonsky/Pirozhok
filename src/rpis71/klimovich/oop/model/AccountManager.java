@@ -147,7 +147,7 @@ public class AccountManager {
                 debetors[i]=clients[i];
             return debetors;
     }
-    public boolean remove(Client client) //???
+    public boolean remove(Client client)
     {
         int index=indexOf(client);
         if (index!=-1) {

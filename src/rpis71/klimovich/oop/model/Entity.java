@@ -32,16 +32,17 @@ public class Entity implements Client {
         if (size==0) {
            head.next= newNode;
            tail=newNode;
-           tail.next=head; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
+           tail.next=head.next; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
            size++;
         }else if(index==0){
                newNode.next= node;
                head.next=newNode;
-               size++;//todo tail должен ссылаться на нулевой элемент, то есть на новый
+               tail.next=newNode;
+               size++;//todo tail должен ссылаться на нулевой элемент, то есть на новый done
             }else if (index==size){
                     tail.next=newNode;
                     tail=newNode;
-                    tail.next=head; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
+                    tail.next=head.next; //todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
                     size++;
                 }else
                     {
@@ -79,19 +80,17 @@ public class Entity implements Client {
     @Override
     public Account remove(int index) {
         Node removedNode=getNode(index);
-        Node node;
+        Node node=getNode(index-1);
         if (size!=0)
         {
             if(index==0)
                 head.next=removedNode.next;
             else if (index==size)
-            {//??
-                node=getNode(index-1); //todo это действие выполняется в обоих ветвях if - вынеси его вне if
+            {//todo это действие выполняется в обоих ветвях if - вынеси его вне if done
                 tail=node;
-                tail.next=head;//todo с хера head? последний элемент списка ссылается на нуевой, а не на голову
+                tail.next=head.next;//todo с хера head? последний элемент списка ссылается на нуевой, а не на голову done
             }
             else {
-                node= getNode(index-1);
                 node.next=removedNode.next;
             }
             size--;
@@ -202,11 +201,16 @@ public class Entity implements Client {
 
     @Override
     public int indexOf(Account account) {
-        Account[] accounts=getAccounts(); //todo никаких массивов - циклом по нодам
-       for(int i=0;i<size;i++)
-           if (accounts[i].getNumber().equals(account.getNumber())) //todo здесь проверяются не номера а сами аккаунты  accounts[i].equals(account)
-               return i;
-       return -1;
+        Node node=head.next;
+        for(int i=0;i<size;i++)
+        {
+            if (node.value.equals(account))
+            return i;
+            node=node.next;
+        }
+        return -1;
+         //todo никаких массивов - циклом по нодам done
+        //todo здесь проверяются не номера а сами аккаунты  accounts[i].equals(account) done
     }
 
     @Override
@@ -255,18 +259,14 @@ public class Entity implements Client {
     }
     @Override
     public String toString(){
-        int nodeNumber=0;
-        Node currentNode= head.next;
-        StringBuilder sb= new StringBuilder("Client:\n name:");
-        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
-        while (nodeNumber<size)
-        {
-            sb.append(currentNode.value.getNumber()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
-            currentNode=currentNode.next;
-            nodeNumber++;
-        }
-        sb.append("total:"+totalBalance()); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
-        return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
+            sb.append(node.value.toString() + "\n");
+            node = node.next;
+        } //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
+        return String.format("Client%n name : %s%n creditScore : %d%n %s total : %f ",getName(),getCreditScore(),sb.toString(),totalBalance());
+        //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
     }
     @Override
     public int hashCode()
@@ -279,23 +279,26 @@ public class Entity implements Client {
     }
     public boolean equals(Object object)
     {
-        boolean flag = true;//todo имя - гавно
-        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней.
-        if (object instanceof Entity && ((Entity) object).name == this.name /*todo ты че творишь а?*/ && ((Entity) object).getCreditScore()==this.getCreditScore() && ((Entity) object).size==this.size){
+        boolean result = true;//todo имя - гавно done
+            Entity obj=(Entity) object;
+        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней. done
+        if (obj instanceof Entity && ((obj.name == this.name) /*todo ты че творишь а?*/ && (obj.getCreditScore()==this.getCreditScore()) && (obj.size==this.size))){
             Node node=head.next;
-            Node newNode=((Entity) object).head.next;
+            Node newNode=obj.head.next;
             for(int i=0;i<size;i++){
                 if(!newNode.value.equals(node.value))
-                    flag=false;
+                    result=false;
                 node=node.next;
                 newNode=newNode.next;
             }
         }else
-            flag=false;
-        return flag;
+            result=false;
+        return result;
     }
     protected Object clone()throws CloneNotSupportedException
     {
+       // Node node=new Node();
+
         return super.clone();//todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
     }
 

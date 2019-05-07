@@ -54,13 +54,12 @@ public class Test {
         DebitAccount userFour=new DebitAccount("Brain3",100);
         DebitAccount userFife=new DebitAccount("Brain4",1000);
         DebitAccount[] accounts={userTwo,userThree,userFour,userFife};
-        //Individual individual=new Individual(accounts,"Alex",2);
+        Individual individual=new Individual(accounts,"Alex",2);
         Entity entity=new Entity(accounts,"Alexandr",10);
-        System.out.println(entity.add(4,user));
-        entity.add(5,user1);
-        for(var el : entity.getAccounts())
-            System.out.println(el.getNumber());
-        System.out.println(entity.toString());
+       // System.out.println(entity.add(4,user));
+        //entity.add(5,user1);
+        System.out.println(individual.toString());
+       // System.out.println(entity.toString());
         //System.out.println(entity.getNodeByNumber("123"));
     }
 }

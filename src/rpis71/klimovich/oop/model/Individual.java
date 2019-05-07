@@ -171,7 +171,14 @@ public class Individual implements Client {
 
     @Override
     public int indexOf(Account account) {
-        return indexOf(account.getNumber()); //todo неа. Надо проверять сами объекты account в массиве, а не один атрибут
+        //Account[] accounts=getAccounts();
+        for (int i=0;i<size;i++)
+        {
+            if (accounts[i].equals(account))
+                return i;
+        }
+        return -1;
+         //todo неа. Надо проверять сами объекты account в массиве, а не один атрибут done
     }
 
     @Override
@@ -179,14 +186,13 @@ public class Individual implements Client {
     return 0;
     }
     public String toString(){
-        StringBuilder sb= new StringBuilder("Client:\n name:");
-        sb.append(getName()+"\n"+"credit Score:"+getCreditScore()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
-       for (int i=0;i<size;i++)
-        {
-            sb.append(accounts[i].getNumber()+"\n"); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            sb.append(accounts[i].toString()+"\n");
         }
-        sb.append("total:"+totalBalance()); //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append()
-        return sb.toString();
+       //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
+        //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
+        return String.format("Client%n name : %s%n creditScore : %d%n %s total : %f ",getName(),getCreditScore(),sb.toString(),totalBalance());
     }
     @Override
     public int hashCode()
@@ -200,19 +206,26 @@ public class Individual implements Client {
     }
     public boolean equals(Object object)
     {
-        boolean flag = true; //todo имя - гавно
-        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней.
-        if (object instanceof Individual && ((Individual) object).name == this.name && ((Individual) object).creditScore == this.creditScore && this.size == ((Individual) object).size) {
+
+        boolean result = true; //todo имя - гавно done
+        //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней. done
+        Individual obj=(Individual) object;
+        if (obj instanceof Individual && ((obj.name == this.name) && (obj.creditScore == this.creditScore) && (this.size == (obj.size)))) {
             for (int i = 0; i < size; i++) {
-                if (!((Individual) object).accounts[i].equals(accounts[i]))
-                    flag = false;
+                if (!obj.accounts[i].equals(accounts[i]))
+                    result = false;
             }
         } else
-            flag = false;
-        return flag;
+            result = false;
+        return result;
     }
-    protected Object clone()throws CloneNotSupportedException
+    /*protected Object clone()throws CloneNotSupportedException
     {
-        return super.clone(); //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
-    }
+        Individual individual=new Individual();
+        for (int i=0;i<size;i++)
+        {
+
+        }
+         //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
+    }*/
 }
