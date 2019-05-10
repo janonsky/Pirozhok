@@ -57,10 +57,11 @@ public class Test {
         Individual individual=new Individual(accounts,"Alex",2);
         Entity entity=new Entity(accounts,"Alexandr",10);
        // System.out.println(entity.add(4,user));
-        //entity.add(5,user1);
-        System.out.println(individual.toString());
+        entity.add(5,user1);
+        //System.out.println(individual.toString());
        // System.out.println(entity.toString());
         //System.out.println(entity.getNodeByNumber("123"));
+        System.out.println(entity.toString());
     }
 }
 

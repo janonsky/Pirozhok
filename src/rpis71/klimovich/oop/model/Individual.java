@@ -186,12 +186,15 @@ public class Individual implements Client {
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        sb.append("Client\n")
+                .append(" name: ").append(getName());
         for (int i = 0; i < size; i++) {
-            sb.append(accounts[i].toString()+"\n");
+            sb.append(accounts[i].toString()).append("\n");
         }
+        sb.append("total: ").append(totalBalance());
        //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
         //todo ААААААААААААААААААА УБИРАЙ КОНКАТЕНАЦИЮ В МЕТОДАХ БИЛДЕРА ААААААААААААААААААА - замени на несколько вызовов append() done
-        return String.format("Client%n name : %s%n creditScore : %d%n %s total : %f ",getName(),getCreditScore(),sb.toString(),totalBalance());
+        return sb.toString();
     }
     @Override
     public int hashCode()
@@ -205,17 +208,22 @@ public class Individual implements Client {
     }
     public boolean equals(Object object)
     {
-
         boolean result = true; //todo имя - гавно done
         //todo чтоб не делать 1001 каст, заведи переменную и запиши туда (Individual) object и обращайся к ней. done
-        Individual obj=(Individual) object;
-        if (obj instanceof Individual && ((obj.name == this.name) && (obj.creditScore == this.creditScore) && (this.size == (obj.size)))) {
-            for (int i = 0; i < size; i++) {
-                if (!obj.accounts[i].equals(accounts[i]))
-                    result = false;
-            }
-        } else
-            result = false;
+        if (object instanceof Individual)
+        {
+            Individual obj=(Individual) object;
+            if (((obj.name.equals(this.name)) && (obj.creditScore == this.creditScore) && (this.size == (obj.size)))) {
+                for (int i = 0; i < size; i++) {
+                    if (!obj.accounts[i].equals(accounts[i]))
+                        result = false;
+                }
+            } else
+                result = false;
+        }
+        else
+            result= false;
+
         return result;
     }
     public Object clone()throws CloneNotSupportedException

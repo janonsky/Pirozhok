@@ -168,7 +168,7 @@ public class AccountManager {
     {
         StringBuilder sb= new StringBuilder();
         for (int i=0; i<this.clients.length;i++)
-            sb.append("< "+this.clients[i].toString() + ">" + "\n"); //todo конкатенацию нафиг из билдера
+            sb.append( "< ").append( this.clients[i].toString()).append(">").append("\n"); //todo конкатенацию нафиг из билдера done
         return sb.toString();
     }
 }

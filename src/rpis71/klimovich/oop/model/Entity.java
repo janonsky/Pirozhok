@@ -213,6 +213,7 @@ public class Entity implements Client {
 
     @Override
     public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их balance-ы
+        CreditAccount creditAccount=new CreditAccount();
         return 0;
     }
 
@@ -258,14 +259,15 @@ public class Entity implements Client {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Client\nn")
-                .append(" name")
-                .append(); //todo так далее
+        sb.append("Client\n")
+                .append("name: ").append(getName());
+                 //todo так далее done
         Node node = head.next;
         for (int i = 0; i < size; i++) {
             sb.append(node.value.toString()).append("\n");
             node = node.next;
         }
+        sb.append("total: ").append(totalBalance());
         return sb.toString();
     }
     @Override
@@ -280,17 +282,22 @@ public class Entity implements Client {
     public boolean equals(Object object)
     {
         boolean result = true;//todo имя - гавно done
-            Entity obj=(Entity) object; //todo проверка типа перед кастом делается
-        if (obj instanceof Entity && ((obj.name == this.name) /*todo ты че творишь а?*/ && (obj.getCreditScore()==this.getCreditScore()) && (obj.size==this.size))){
-            Node node=head.next;
-            Node newNode=obj.head.next;
-            for(int i=0;i<size;i++){
-                if(!newNode.value.equals(node.value))
-                    result=false;
-                node=node.next;
-                newNode=newNode.next;
-            }
-        }else
+        if (object instanceof Entity )
+        {
+            Entity obj=(Entity) object; //todo проверка типа перед кастом делается done
+            if (((obj.name.equals(this.name)) /*todo ты че творишь а done*/ && (obj.getCreditScore()==this.getCreditScore()) && (obj.size==this.size))){
+                Node node=head.next;
+                Node newNode=obj.head.next;
+                for(int i=0;i<size;i++){
+                    if(!newNode.value.equals(node.value))
+                        result=false;
+                    node=node.next;
+                    newNode=newNode.next;
+                }
+            }else
+                result=false;
+        }
+        else
             result=false;
         return result;
     }
