@@ -1,6 +1,9 @@
 package rpis71.klimovich.oop.model;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class Individual implements Client {
     private Account[] accounts;
@@ -14,6 +17,7 @@ public class Individual implements Client {
     }
 
     public Individual(int size,String name,int creditScore) {
+
         this.accounts = new Account[size];
         this.name=name;
         this.creditScore=creditScore;
@@ -36,14 +40,20 @@ public class Individual implements Client {
         }
     }
 
-    public boolean add(Account account) {
+    public boolean add(Account account) throws DublicateAccountNumberException {
+        Objects.requireNonNull(account,"Account - null");
+        checkDuplicateAccouuntForNumber(account);
         checkCapacity();
         accounts[size] = account;
         size++;
         return true;
     }
 
-    public boolean add(int index, Account account) {
+    public boolean add(int index, Account account) throws DublicateAccountNumberException {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.requireNonNull(account,"Account - null");
+        checkDuplicateAccouuntForNumber(account);
          checkCapacity();
             System.arraycopy(accounts, index, accounts, index + 1, size - index);
             accounts[index] = account;
@@ -52,10 +62,15 @@ public class Individual implements Client {
     }
 
     public Account get(int index) {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         return accounts[index];
     }
 
-    public int indexOf(String accountNumber) {
+    public int indexOf(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        CheckPattern pattern=new CheckPattern();
+        if (pattern.checkNumber(accountNumber)) throw new InvalidAccountNumberException();
         for (int i = 0; i < size; i++) {
             if (accounts[i].getNumber().equals(accountNumber))
                 return i;
@@ -63,36 +78,46 @@ public class Individual implements Client {
         return -1;
     }
 
-    public Account get(String accountNumber) {
+    public Account get(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
         int index = indexOf(accountNumber);
         if (index != -1)
             return accounts[index];
-        return null;
+       else
+        throw new NoSuchElementException();
     }
 
-    public boolean hasAccount(String accountNumber) {
-         return (indexOf(accountNumber)!=-1);
+    public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        return (indexOf(accountNumber)!=-1);
     }
 
-    public Account set(int index, Account newAccount) {
+    public Account set(int index, Account newAccount) throws DublicateAccountNumberException {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.requireNonNull(newAccount,"Account - null");
+        checkDuplicateAccouuntForNumber(newAccount);
         Account account=accounts[index];
         accounts[index]=account;
         return account;
     }
 
     public Account remove(int index) {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         size--;
         System.arraycopy(accounts, index + 1, accounts, index, size - index);
         accounts[size] = null;
         return accounts[index];
     }
 
-    public Account remove(String accountNumber) {
+    public Account remove(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
         int index = indexOf(accountNumber);
-        if (index != -1) {
+        if (index != -1)
             return remove(index);
-        }
-    return null;
+        else
+            throw new NoSuchElementException();
     }
 
     public int size() {
@@ -132,6 +157,7 @@ public class Individual implements Client {
 
     @Override
     public void setName(String name) {
+        Objects.requireNonNull(name,"name - null");
         this.name=name;
     }
 
@@ -159,7 +185,8 @@ public class Individual implements Client {
     }
 
     @Override
-    public boolean remove(Account account) {
+    public boolean remove(Account account) throws InvalidAccountNumberException {
+        Objects.requireNonNull(account,"Account - null");
       if(indexOf(account)!=-1)
       {
           remove(indexOf(account));
@@ -170,8 +197,8 @@ public class Individual implements Client {
     }
 
     @Override
-    public int indexOf(Account account) {
-        //Account[] accounts=getAccounts();
+    public int indexOf(Account account) throws InvalidAccountNumberException {
+        Objects.requireNonNull(account,"Account - null");
         for (int i=0;i<size;i++)
         {
             if (accounts[i].equals(account))
@@ -181,8 +208,12 @@ public class Individual implements Client {
     }
 
     @Override
-    public double debtTotal() { //????
-    return 0;
+    public double debtTotal() {
+        Account[] creditAccounts=getCreditAccounts();
+        double debtTotal=0;
+        for (int i=0;i<size;i++)
+            debtTotal+=creditAccounts[i].getBalance();
+        return debtTotal;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -235,5 +266,11 @@ public class Individual implements Client {
             //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
         }
          return individual;
+    }
+    private Exception checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
+        for (int i=0;i<size;i++)
+            if (accounts[i].getNumber().equals(account.getNumber()))
+                throw new DublicateAccountNumberException("Account with this number already exists");
+        return null;
     }
 }

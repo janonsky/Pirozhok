@@ -1,6 +1,8 @@
 package rpis71.klimovich.oop.model;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class AccountManager {
     private Client[] clients;
@@ -31,6 +33,7 @@ public class AccountManager {
         }
     }
     public boolean add(Client individual) {
+        Objects.requireNonNull(individual,"Individual - null");
         checkCapacity();
         clients[size]=individual;
         size++;
@@ -38,6 +41,9 @@ public class AccountManager {
     }
     public boolean add(int index,Client client)
     {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.requireNonNull(client,"Client - null");
         checkCapacity();
         System.arraycopy(clients, index, clients, index + 1, size - index);
         clients[index]= client;
@@ -46,16 +52,24 @@ public class AccountManager {
     }
     public Client get(int index)
     {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         return clients[index];
     }
     public Client set(int index, Client individual)
    {
+       if (index<0||index<size)
+           throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+       Objects.requireNonNull(individual,"Individual - null");
+
        Client newClient=clients[index];
        clients[index]=individual;
        return newClient;
    }
     public Client remove(int index)
     {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         size--;
         System.arraycopy(clients,index+1,clients,index,size-index);
         clients[size]=null;
@@ -84,8 +98,8 @@ public class AccountManager {
                 }
         return newClients;
     }
-    public Account getAccount(String accountNumber)
-    {
+    public Account getClient(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
         for(int i=0;i<size;i++)
         {
             if(clients[i].hasAccount(accountNumber))
@@ -93,20 +107,23 @@ public class AccountManager {
                return clients[i].get(accountNumber);
             }
         }
-        return null;
+      throw new NoSuchElementException();
     }
-    public Account removeAccount(String accountNumber)
-    {
+    public Account removeClient(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
         Account account=null;
         for(int i=0;i<size;i++)
         {
             if(clients[i].hasAccount(accountNumber))
                account=clients[i].remove(accountNumber);
         }
+        if (account==null)
+            throw new NoSuchElementException();
         return account;
     }
-    public Account setAccount(String accountNumber,Account account)
-    {
+    public Account setAccount(String accountNumber,Account account) throws DublicateAccountNumberException, InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
+        Objects.requireNonNull(account,"account - null");
         Account removedAccount = null;
         for(int i=0;i<size;i++)
         {
@@ -114,6 +131,8 @@ public class AccountManager {
             if(index >=0)
                 removedAccount=clients[i].set(index,account);
         }
+        if (removedAccount==null)
+            throw new NoSuchElementException();
         return removedAccount;
     }
 
@@ -147,6 +166,7 @@ public class AccountManager {
     }
     public boolean remove(Client client)
     {
+        Objects.requireNonNull(client,"client - null");
         int index=indexOf(client);
         if (index!=-1) {
             remove(indexOf(client));
@@ -157,6 +177,7 @@ public class AccountManager {
     }
     public int indexOf(Client client)
     {
+        Objects.requireNonNull(client,"client - null");
         int index=0;
        for (int i=0;i<size;i++)
            if (clients[i].getName().equals(client.getName()))

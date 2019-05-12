@@ -7,10 +7,11 @@ public class Test {
         //lab1tests();
         //lab2tests();
         //lab3tests();
-        lab4tests();
+        //lab4tests();
+        lab5tests();
     }
 
-    public static void lab1tests()
+   /*public static void lab1tests()
     {
         DebitAccount userTwo=new DebitAccount("Brain1",1);
         DebitAccount userThree=new DebitAccount("Brain2",10);
@@ -62,6 +63,10 @@ public class Test {
        // System.out.println(entity.toString());
         //System.out.println(entity.getNodeByNumber("123"));
         System.out.println(entity.toString());
+    }*/
+    public static void lab5tests()
+    {
+
     }
 }
 

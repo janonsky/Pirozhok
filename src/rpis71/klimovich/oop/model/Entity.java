@@ -1,6 +1,8 @@
 package rpis71.klimovich.oop.model;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class Entity implements Client {
     private Node head;
@@ -13,7 +15,7 @@ public class Entity implements Client {
         this.head=new Node(null,null);
         this.name=name;
     }
-    public Entity(Account[] accounts,String name,int creditScore)
+    public Entity(Account[] accounts,String name,int creditScore) throws DublicateAccountNumberException
     {
         this(name);
         for (int i = 0; i < accounts.length; i++)
@@ -22,13 +24,19 @@ public class Entity implements Client {
     }
 
     @Override
-    public boolean add(Account account) {
+    public boolean add(Account account) throws DublicateAccountNumberException {
+        Objects.requireNonNull(account,"Account - null");
+        checkDuplicateAccouuntForNumber(account);
         return add(size, account);
     }
     @Override
-    public boolean add(int index, Account account) {
+    public boolean add(int index, Account account) throws DublicateAccountNumberException {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.requireNonNull(account,"Account - null");
+        checkDuplicateAccouuntForNumber(account);
+        Node node=head.next;
         Node newNode= new Node(account,null);
-        Node node = head.next;
         if (size==0) {
            head.next= newNode;
            tail=newNode;
@@ -56,21 +64,38 @@ public class Entity implements Client {
 
     @Override
     public Account get(int index) {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         return getNode(index).value;
     }
 
     @Override
-    public Account get(String accountNumber) {
-        return getNodeByNumber(accountNumber).value;
+    public Account get(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        CheckPattern pattern=new CheckPattern();
+        if (pattern.checkNumber(accountNumber))
+            throw new InvalidAccountNumberException();
+        if (getNodeByNumber(accountNumber)!=null)
+            return getNodeByNumber(accountNumber).value;
+        else
+            throw new NoSuchElementException();
     }
 
     @Override
-    public boolean hasAccount(String accountNumber) {
-        return (getNodeByNumber(accountNumber)!=null);
+    public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        CheckPattern pattern=new CheckPattern();
+        if (pattern.checkNumber(accountNumber))
+            throw new InvalidAccountNumberException();
+        return  (getNodeByNumber(accountNumber)!=null);
     }
 
     @Override
-    public Account set(int index, Account account) {
+    public Account set(int index, Account account) throws DublicateAccountNumberException {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.requireNonNull(account,"Account - null");
+        checkDuplicateAccouuntForNumber(account);
        Node node= getNode(index);
        Account removedAccount = node.value;
        node.value=account;
@@ -79,6 +104,8 @@ public class Entity implements Client {
 
     @Override
     public Account remove(int index) {
+        if (index<0||index<size)
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
         Node removedNode=getNode(index);
         Node node=getNode(index-1);
         if (size!=0)
@@ -99,7 +126,10 @@ public class Entity implements Client {
     }
 
     @Override
-    public Account remove(String accountNumber) {
+    public Account remove(String accountNumber) throws InvalidAccountNumberException {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        CheckPattern pattern=new CheckPattern();
+        if (pattern.checkNumber(accountNumber)) throw new InvalidAccountNumberException();
         Node node=head.next;
         for(int i=0;i<size;i++)
         {
@@ -161,6 +191,7 @@ public class Entity implements Client {
 
     @Override
     public void setName(String name) {
+        Objects.requireNonNull(name,"name - null");
         this.name=name;
     }
 
@@ -191,6 +222,7 @@ public class Entity implements Client {
 
     @Override
     public boolean remove(Account account) {
+        Objects.requireNonNull(account,"Account - null");
         if (indexOf(account)!=-1)
         {
             remove(indexOf(account));
@@ -201,6 +233,7 @@ public class Entity implements Client {
 
     @Override
     public int indexOf(Account account) {
+        Objects.requireNonNull(account,"Account - null");
         Node node=head.next;
         for(int i=0;i<size;i++)
         {
@@ -213,12 +246,19 @@ public class Entity implements Client {
 
     @Override
     public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их balance-ы
-        CreditAccount creditAccount=new CreditAccount();
-        return 0;
+      Node node=head.next;
+      double debtTotal=0;
+      for (int i=0;i<size;i++)
+      {
+          debtTotal+=node.value.getBalance();
+          node=node.next;
+      }
+        return debtTotal;
     }
 
     @Override
     public int indexOf(String accountNumber) {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
         Node node=head.next;
         for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(accountNumber))
@@ -242,6 +282,7 @@ public class Entity implements Client {
     }
 
     public Node getNodeByNumber(String accountNumber) {
+        Objects.requireNonNull(accountNumber,"AccountNumber - null");
         Node node = head.next;
         Node currentNode=null;
         int index = 0;
@@ -306,6 +347,16 @@ public class Entity implements Client {
        // Node node=new Node();
 
         return super.clone();//todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
+    }
+    private Exception checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
+        Node node=head.next;
+        for (int i=0;i<size;i++)
+        {
+            if (node.value.getNumber().equals(account.getNumber()))
+                throw new DublicateAccountNumberException("Account with this number already exists");
+            node=node.next;
+        }
+        return null;
     }
 
     public class Node {

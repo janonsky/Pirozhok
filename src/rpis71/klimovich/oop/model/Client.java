@@ -1,14 +1,14 @@
 package rpis71.klimovich.oop.model;
 
 public interface Client {
-    boolean add(Account account);
-    boolean add(int index,Account account);
+    boolean add(Account account) throws DublicateAccountNumberException;
+    boolean add(int index,Account account) throws DublicateAccountNumberException;
     Account get(int index);
-    Account get(String accountNumber);
-    boolean hasAccount(String accountNumber);
-    Account set(int index,Account account);
+    Account get(String accountNumber) throws InvalidAccountNumberException;
+    boolean hasAccount(String accountNumber) throws InvalidAccountNumberException;
+    Account set(int index,Account account) throws DublicateAccountNumberException;
     Account remove(int index);
-    Account remove(String accountNumber);
+    Account remove(String accountNumber) throws InvalidAccountNumberException;
     int size();
     Account[] getAccounts();
     Account[] sortedAccountByBalance();
@@ -33,8 +33,8 @@ public interface Client {
    }
     Account[] getCreditAccounts();
 
-    boolean remove(Account account);
-    int indexOf(Account account);
+    boolean remove(Account account) throws InvalidAccountNumberException;
+    int indexOf(Account account) throws InvalidAccountNumberException;
     double debtTotal();
-    int indexOf(String accountNumber);
+    int indexOf(String accountNumber) throws InvalidAccountNumberException;
 }
