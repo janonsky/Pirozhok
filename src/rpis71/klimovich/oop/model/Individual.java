@@ -263,6 +263,7 @@ public class Individual implements Client {
         individual.accounts = accounts.clone();
         for (int i=0;i<size;i++)
         {
+            individual.accounts[i]=this.accounts[i].clone();//>????????
             //todo клонирование должно быть глубоким. То есть нужно склонировать отельно каждый элемент массива
         }
          return individual;

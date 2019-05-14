@@ -344,9 +344,9 @@ public class Entity implements Client {
     }
     protected Object clone()throws CloneNotSupportedException
     {
-       // Node node=new Node();
+        Node node=new Node();
 
-        return super.clone();//todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
+        //todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
     }
     private Exception checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
         Node node=head.next;
