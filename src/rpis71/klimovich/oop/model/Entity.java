@@ -139,7 +139,7 @@ public class Entity implements Client {
             }
             node=node.next;
         }
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override
@@ -357,7 +357,7 @@ public class Entity implements Client {
                 throw new DublicateAccountNumberException("Account with this number already exists");
             node=node.next;
         }
-        return null;
+        throw new NoSuchElementException();
     }
 
     public class Node {
