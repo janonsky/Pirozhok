@@ -1,6 +1,7 @@
 package rpis71.klimovich.oop.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Objects;
 
 public abstract class  AbstractAccount implements Account {
@@ -93,10 +94,11 @@ public abstract class  AbstractAccount implements Account {
     }@Override
     public int monthesQuantityBeforeExpiration()
    {
+       Period period=Period.between(creationDate,expirationDate);
        if (LocalDate.now().getDayOfMonth()>25)
-           return expirationDate.getMonthValue()-creationDate.getMonthValue();
+           return period.getYears()*12;
        else
-           return expirationDate.getMonthValue() - creationDate.getMonthValue()+1;
+           return period.getYears()*12+1;
    }
 
 }

@@ -258,7 +258,7 @@ public class Individual implements Client {
         return result;
     }
     public Object clone()throws CloneNotSupportedException
-    {
+   {
         Individual individual = (Individual) super.clone();
         individual.accounts = accounts.clone();
         for (int i=0;i<size;i++)

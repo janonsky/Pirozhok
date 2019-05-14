@@ -68,7 +68,7 @@ public class Test {
     }*/
     public static void lab5tests() throws InvalidAccountNumberException {
         Account account=new CreditAccount("40123810712349876543",-123,0.2,LocalDate.now(),LocalDate.now().plusYears(1));
-        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now().plusYears(1));
+        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now().plusYears(3));
         System.out.println(account1.getCreationDate());
         System.out.println(account1.getExpirationDate());
         System.out.println(account1.monthesQuantityBeforeExpiration());
