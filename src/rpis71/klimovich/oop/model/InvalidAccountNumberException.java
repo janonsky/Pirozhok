@@ -1,5 +1,6 @@
 package rpis71.klimovich.oop.model;
 
+//todo должно быть unchecked
 public class InvalidAccountNumberException extends Exception {
     public InvalidAccountNumberException()
     {

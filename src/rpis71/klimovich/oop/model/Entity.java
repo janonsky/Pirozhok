@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+//todo чеки перенеси в приватные методы работы с нодами (если их вызываешь)
 public class Entity implements Client {
     private Node head;
     private Node tail;
@@ -13,10 +14,12 @@ public class Entity implements Client {
     public Entity(String name)
     {
         this.head=new Node(null,null);
+        //todo проверка имени
         this.name=name;
     }
     public Entity(Account[] accounts,String name,int creditScore) throws DublicateAccountNumberException
     {
+
         this(name);
         for (int i = 0; i < accounts.length; i++)
             add(accounts[i]);
@@ -32,12 +35,12 @@ public class Entity implements Client {
     @Override
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
         if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException"); //todo
         Objects.requireNonNull(account,"Account - null");
         checkDuplicateAccouuntForNumber(account);
         Node node=head.next;
         Node newNode= new Node(account,null);
-        if (size==0) {
+        if (size==0 && index==0) {
            head.next= newNode;
            tail=newNode;
            tail.next=head.next;
@@ -65,7 +68,7 @@ public class Entity implements Client {
     @Override
     public Account get(int index) {
         if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException"); //todo
         return getNode(index).value;
     }
 
@@ -75,7 +78,7 @@ public class Entity implements Client {
         CheckPattern pattern=new CheckPattern();
         if (!(pattern.checkNumber(accountNumber)))
             throw new InvalidAccountNumberException();
-        if (getNodeByNumber(accountNumber)!=null)
+        if (getNodeByNumber(accountNumber)!=null) //todo
             return getNodeByNumber(accountNumber).value;
         else
             throw new NoSuchElementException();
@@ -87,13 +90,13 @@ public class Entity implements Client {
         CheckPattern pattern=new CheckPattern();
         if (!(pattern.checkNumber(accountNumber)))
             throw new InvalidAccountNumberException();
-        return  (getNodeByNumber(accountNumber)!=null);
+        return  (getNodeByNumber(accountNumber)!=null); //todo лучше ручками пробедаться и вернуть true или false
     }
 
     @Override
     public Account set(int index, Account account) throws DublicateAccountNumberException {
         if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");//todo
         Objects.requireNonNull(account,"Account - null");
         checkDuplicateAccouuntForNumber(account);
        Node node= getNode(index);
@@ -105,9 +108,10 @@ public class Entity implements Client {
     @Override
     public Account remove(int index) {
         if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
-        Node removedNode=getNode(index);
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException"); //todo
+
         Node node=getNode(index-1);
+        Node removedNode=node.next;
         if (size!=0)
         {
             if(index==0)
@@ -245,11 +249,12 @@ public class Entity implements Client {
     }
 
     @Override
-    public double debtTotal() {//todo ну общий долг - по кредитам пробегаемся и берем их balance-ы
+    public double debtTotal() {
       Node node=head.next;
       double debtTotal=0;
       for (int i=0;i<size;i++)
       {
+          //todo getBalance() только если value - кредит
           debtTotal+=node.value.getBalance();
           node=node.next;
       }
@@ -268,6 +273,7 @@ public class Entity implements Client {
             node=node.next;
         }
         return -1;
+        //todo NoSuchElementException
     }
 
     private Node getNode(int index){
@@ -281,7 +287,7 @@ public class Entity implements Client {
         return currentNode.next;
     }
 
-    public Node getNodeByNumber(String accountNumber) {
+    private Node getNodeByNumber(String accountNumber) {
         Objects.requireNonNull(accountNumber,"AccountNumber - null");
         Node node = head.next;
         Node currentNode=null;
@@ -302,7 +308,6 @@ public class Entity implements Client {
         StringBuilder sb = new StringBuilder();
         sb.append("Client\n")
                 .append("name: ").append(getName());
-                 //todo так далее done
         Node node = head.next;
         for (int i = 0; i < size; i++) {
             sb.append(node.value.toString()).append("\n");
@@ -322,6 +327,7 @@ public class Entity implements Client {
     }
     public boolean equals(Object object)
     {
+        //todo см Individual
         boolean result = true;//todo имя - гавно done
         if (object instanceof Entity )
         {
@@ -345,11 +351,11 @@ public class Entity implements Client {
     protected Object clone()throws CloneNotSupportedException
     {
         Entity clone=(Entity)super.clone();
-        return super.clone();
 
-        //todo клонирование должно быть глубоким. То есть нужно склонировать всю нодовую структуру
+        //todo в цикле node.next = node.next.clone()
+
     }
-    private Exception checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
+    private void checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
         Node node=head.next;
         for (int i=0;i<size;i++)
         {
@@ -357,16 +363,22 @@ public class Entity implements Client {
                 throw new DublicateAccountNumberException("Account with this number already exists");
             node=node.next;
         }
-        throw new NoSuchElementException();
     }
 
-    public class Node {
+    private class Node {
         Node next;
         Account value;
 
-        public Node(Account value, Node next) {
+        private Node(Account value, Node next) {
             this.value = value;
             this.next = next;
+        }
+
+        @Override
+        public Node clone() throws CloneNotSupportedException {
+            Node node = (Node)super.clone();
+            node.value = node.value.clone();
+            return Node;
         }
     }
 }

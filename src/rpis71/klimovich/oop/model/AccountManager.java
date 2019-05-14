@@ -42,7 +42,7 @@ public class AccountManager {
     public boolean add(int index,Client client)
     {
         if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException("IndexOutOfBoundsException"); //todo
         Objects.requireNonNull(client,"Client - null");
         checkCapacity();
         System.arraycopy(clients, index, clients, index + 1, size - index);
@@ -114,12 +114,12 @@ public class AccountManager {
         Account account=null;
         for(int i=0;i<size;i++)
         {
-            if(clients[i].hasAccount(accountNumber))
-               account=clients[i].remove(accountNumber);
+            if(clients[i].hasAccount(accountNumber)) {
+                account = clients[i].remove(accountNumber);
+                return account;
+            }
         }
-        if (account==null)
-            throw new NoSuchElementException();
-        return account;
+        throw new NoSuchElementException();
     }
     public Account setAccount(String accountNumber,Account account) throws DublicateAccountNumberException, InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
@@ -128,12 +128,12 @@ public class AccountManager {
         for(int i=0;i<size;i++)
         {
             int index=clients[i].indexOf(accountNumber);
-            if(index >=0)
-                removedAccount=clients[i].set(index,account);
+            if(index >=0) {
+                removedAccount = clients[i].set(index, account);
+                return removedAccount;
+            }
         }
-        if (removedAccount==null)
-            throw new NoSuchElementException();
-        return removedAccount;
+        throw new NoSuchElementException();
     }
 
     public Client[] getDebtors() {
@@ -189,7 +189,7 @@ public class AccountManager {
     {
         StringBuilder sb= new StringBuilder();
         for (int i=0; i<this.clients.length;i++)
-            sb.append( "< ").append( this.clients[i].toString()).append(">").append("\n"); //todo конкатенацию нафиг из билдера done
+            sb.append( "< ").append( this.clients[i].toString()).append(">").append("\n");
         return sb.toString();
     }
 }

@@ -11,4 +11,5 @@ public interface Account {
      LocalDate getExpirationDate();
      void setExpirationDate(LocalDate expirationDate);
      int monthesQuantityBeforeExpiration();
+     Account clone() throws CloneNotSupportedException;
 }
