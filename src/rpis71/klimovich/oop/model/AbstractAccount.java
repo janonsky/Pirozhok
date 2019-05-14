@@ -11,7 +11,7 @@ public abstract class  AbstractAccount implements Account {
     protected AbstractAccount(String number,LocalDate expirationDate) throws InvalidAccountNumberException {
         this(number,0,LocalDate.now(),expirationDate);
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(number)) throw new InvalidAccountNumberException();
+        if (!(pattern.checkNumber(number))) throw new InvalidAccountNumberException();
     }
     protected AbstractAccount(String number,double balance,LocalDate creationDate,LocalDate expirationDate) throws InvalidAccountNumberException {
         Objects.requireNonNull(number,"number-null");
@@ -22,7 +22,7 @@ public abstract class  AbstractAccount implements Account {
         if (creationDate.isAfter(expirationDate))
             throw new IllegalArgumentException("Illegal expirationDate");
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(number)) throw new InvalidAccountNumberException();
+        if (!(pattern.checkNumber(number))) throw new InvalidAccountNumberException();
         this.number=number;
         this.balance=balance;
         this.creationDate=creationDate;

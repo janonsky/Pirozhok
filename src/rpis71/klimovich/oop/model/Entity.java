@@ -73,7 +73,7 @@ public class Entity implements Client {
     public Account get(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"AccountNumber - null");
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(accountNumber))
+        if (!(pattern.checkNumber(accountNumber)))
             throw new InvalidAccountNumberException();
         if (getNodeByNumber(accountNumber)!=null)
             return getNodeByNumber(accountNumber).value;
@@ -85,7 +85,7 @@ public class Entity implements Client {
     public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"AccountNumber - null");
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(accountNumber))
+        if (!(pattern.checkNumber(accountNumber)))
             throw new InvalidAccountNumberException();
         return  (getNodeByNumber(accountNumber)!=null);
     }
@@ -129,7 +129,7 @@ public class Entity implements Client {
     public Account remove(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"AccountNumber - null");
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(accountNumber)) throw new InvalidAccountNumberException();
+        if (!(pattern.checkNumber(accountNumber))) throw new InvalidAccountNumberException();
         Node node=head.next;
         for(int i=0;i<size;i++)
         {

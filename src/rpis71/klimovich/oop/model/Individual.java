@@ -70,7 +70,7 @@ public class Individual implements Client {
     public int indexOf(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"AccountNumber - null");
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(accountNumber)) throw new InvalidAccountNumberException();
+        if (!(pattern.checkNumber(accountNumber))) throw new InvalidAccountNumberException();
         for (int i = 0; i < size; i++) {
             if (accounts[i].getNumber().equals(accountNumber))
                 return i;

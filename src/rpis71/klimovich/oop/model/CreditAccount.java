@@ -13,7 +13,7 @@ private double APR;
     public CreditAccount(String number, double balance, double APR,LocalDate creationDate,LocalDate expirationDate) throws InvalidAccountNumberException {
         super(number,balance,creationDate,expirationDate);
         CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(number)) throw new InvalidAccountNumberException();
+        if (!(pattern.checkNumber(number))) throw new InvalidAccountNumberException();
         this.APR=APR;
         if (balance>0)
             throw new IllegalArgumentException("NullPointerException");

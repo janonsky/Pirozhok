@@ -1,8 +1,10 @@
 package rpis71.klimovich.oop;
 import rpis71.klimovich.oop.model.*;
 
+import java.time.LocalDate;
+
 public class Test {
-    public static void main (String[] args) {
+    public static void main (String[] args) throws InvalidAccountNumberException {
         //System.out.println("Я сделяль!");
         //lab1tests();
         //lab2tests();
@@ -64,9 +66,19 @@ public class Test {
         //System.out.println(entity.getNodeByNumber("123"));
         System.out.println(entity.toString());
     }*/
-    public static void lab5tests()
-    {
-
+    public static void lab5tests() throws InvalidAccountNumberException {
+        Account account=new CreditAccount("40123810712349876543",-123,0.2,LocalDate.now(),LocalDate.now().plusYears(1));
+        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now().plusYears(1));
+        System.out.println(account1.getCreationDate());
+        System.out.println(account1.getExpirationDate());
+        System.out.println(account1.monthesQuantityBeforeExpiration());
+        account1.setExpirationDate(LocalDate.now().plusYears(2));
+        System.out.println(account1.getExpirationDate());
+       // System.out.println(account.getCreationDate());
+       // System.out.println(account.getExpirationDate());
+       // System.out.println(account.monthesQuantityBeforeExpiration());
+       // System.out.println(((CreditAccount) account).nextPaymentDate());
+       // System.out.println(((CreditAccount) account).nextPaymentValue());
     }
 }
 
