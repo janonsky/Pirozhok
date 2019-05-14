@@ -1,6 +1,7 @@
 package rpis71.klimovich.oop.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.IllegalFormatCodePointException;
 import java.util.regex.Pattern;
 
@@ -64,9 +65,10 @@ private double APR;
 
     @Override
     public int monthesQuantityBeforeExpiration() {
+        Period period=Period.between(getCreationDate(),getExpirationDate());
         if (LocalDate.now().getDayOfMonth()>25)
-            return getExpirationDate().getMonthValue()-getCreationDate().getMonthValue();
+            return period.getYears()*12;
         else
-            return getExpirationDate().getMonthValue() - getCreationDate().getMonthValue()+1;
+            return period.getYears()*12+1;
     }
 }
