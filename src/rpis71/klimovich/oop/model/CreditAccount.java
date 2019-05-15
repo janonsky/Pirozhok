@@ -2,8 +2,6 @@ package rpis71.klimovich.oop.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.IllegalFormatCodePointException;
-import java.util.regex.Pattern;
 
 public class CreditAccount extends AbstractAccount implements Credit  {
 private double APR;
@@ -29,25 +27,23 @@ private double APR;
 
     @Override
     public double nextPaymentValue() {
-        //todo переделай
-        return getBalance()*(1+APR*(getExpirationDate().getYear()-getCreationDate().getYear()))/(getExpirationDate().getMonthValue()-getCreationDate().getMonthValue());
+        //todo переделай done
+        double period = Period.between(LocalDate.now(), getExpirationDate()).toTotalMonths();
+        return getBalance() * (1 + getAPR() * (period / 12)) / (period);
     }
     @Override
     public LocalDate nextPaymentDate() {
-        //todo берем текущую даты и сравниваем дни для нее.
+        //todo берем текущую даты и сравниваем дни для нее. done
         LocalDate now = LocalDate.now();
         if (now.getDayOfMonth()<25)
-            return date;
+            return LocalDate.of(now.getYear(), now.getMonth(), 25);
         else
-        {
-            date.plusMonths(1);
-            return date;
-        }
+            return LocalDate.of(now.getYear(),now.getMonth().plus(1),25);
     }
 
     public String toString()
     {
-        return String.format("Credit account - %s APR: %f",super.toString(),getAPR()); //todo это не формат done
+        return String.format("Credit account - %s APR: %f",super.toString(),getAPR());
     }
     public int hashCode()
     {
@@ -55,20 +51,23 @@ private double APR;
     }
     public boolean equals(Object object)
     {
-        //todo Double.compare()
-        return (object instanceof CreditAccount && ((CreditAccount)object).getNumber().equals(this.getNumber())&& ((CreditAccount)object).getBalance()==this.getBalance()&& ((CreditAccount)object).getAPR()==this.getAPR());
+        //todo Double.compare()??
+        return (object instanceof CreditAccount &&
+                ((CreditAccount)object).getNumber().equals(this.getNumber())&&
+                ((CreditAccount)object).getBalance()==this.getBalance()&&
+                ((CreditAccount)object).getAPR()==this.getAPR());
     }
-    protected Object clone() throws CloneNotSupportedException {
+    public Account clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
     @Override
     public int monthesQuantityBeforeExpiration() {
-        //todo месяцы не верно
-        Period period=Period.between(getCreationDate(),getExpirationDate());
+        //todo месяцы не верно done
+        Period period=Period.between(LocalDate.now(),getExpirationDate());
         if (LocalDate.now().getDayOfMonth()>25)
-            return period.getYears()*12;
+            return (int)period.toTotalMonths();
         else
-            return period.getYears()*12+1;
+            return (int)period.toTotalMonths()+1;
     }
 }

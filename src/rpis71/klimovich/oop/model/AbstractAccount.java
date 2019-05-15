@@ -11,8 +11,7 @@ public abstract class  AbstractAccount implements Account {
     private LocalDate expirationDate;
     protected AbstractAccount(String number,LocalDate expirationDate) throws InvalidAccountNumberException {
         this(number,0,LocalDate.now(),expirationDate);
-        CheckPattern pattern=new CheckPattern();
-        if (!(pattern.checkNumber(number))) throw new InvalidAccountNumberException();
+        CheckPattern.checkNumber(number);
     }
     protected AbstractAccount(String number,double balance,LocalDate creationDate,LocalDate expirationDate) throws InvalidAccountNumberException {
         Objects.requireNonNull(number,"number-null");
@@ -22,8 +21,7 @@ public abstract class  AbstractAccount implements Account {
             throw new IllegalArgumentException("Illegal creationDate");
         if (creationDate.isAfter(expirationDate))
             throw new IllegalArgumentException("Illegal expirationDate");
-        CheckPattern pattern=new CheckPattern();
-        if (!(pattern.checkNumber(number))) throw new InvalidAccountNumberException();
+        CheckPattern.checkNumber(number);
         this.number=number;
         this.balance=balance;
         this.creationDate=creationDate;
@@ -36,8 +34,7 @@ public abstract class  AbstractAccount implements Account {
     }
     @Override
    public void setNumber(String number) throws InvalidAccountNumberException {
-        CheckPattern pattern=new CheckPattern();
-        if (pattern.checkNumber(number)) throw new InvalidAccountNumberException();
+        CheckPattern.checkNumber(number);
         this.number=number;
     }
     @Override
@@ -66,7 +63,7 @@ public abstract class  AbstractAccount implements Account {
                   ((AbstractAccount) object).balance == this.balance &&
                   ((AbstractAccount) object).number.equals(this.number)&&
                   ((AbstractAccount) object).expirationDate.equals(expirationDate) &&
-                  ((AbstractAccount) object).creationDate.equals(this.creationDate));
+                  ((AbstractAccount) object).creationDate.equals(this.creationDate);
     }
     public Account clone()throws CloneNotSupportedException
     {
@@ -92,12 +89,12 @@ public abstract class  AbstractAccount implements Account {
     }@Override
     public int monthesQuantityBeforeExpiration()
    {
-       Period period=Period.between(creationDate,expirationDate);
-       period.toTotalMonths(); //todo используй
+       Period period=Period.between(LocalDate.now(),expirationDate);
+       //period.toTotalMonths(); //todo используй done
        if (LocalDate.now().getDayOfMonth()>25)
-           return period.getYears()*12;
+           return (int)period.toTotalMonths();
        else
-           return period.getYears()*12+1;
+           return (int)period.toTotalMonths()+1;
    }
 
 }

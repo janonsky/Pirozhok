@@ -41,8 +41,8 @@ public class AccountManager {
     }
     public boolean add(int index,Client client)
     {
-        if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException"); //todo
+         Objects.checkIndex(index,size);
+             //todo done
         Objects.requireNonNull(client,"Client - null");
         checkCapacity();
         System.arraycopy(clients, index, clients, index + 1, size - index);
@@ -52,14 +52,12 @@ public class AccountManager {
     }
     public Client get(int index)
     {
-        if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.checkIndex(index,size);
         return clients[index];
     }
     public Client set(int index, Client individual)
    {
-       if (index<0||index<size)
-           throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+       Objects.checkIndex(index,size);
        Objects.requireNonNull(individual,"Individual - null");
 
        Client newClient=clients[index];
@@ -68,8 +66,7 @@ public class AccountManager {
    }
     public Client remove(int index)
     {
-        if (index<0||index<size)
-            throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+        Objects.checkIndex(index,size);
         size--;
         System.arraycopy(clients,index+1,clients,index,size-index);
         clients[size]=null;
