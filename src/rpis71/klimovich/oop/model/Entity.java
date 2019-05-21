@@ -325,16 +325,18 @@ public class Entity implements Client {
         return true;
     }
 
-    public Object clone() throws CloneNotSupportedException //TODO dodelat
+    public Object clone() throws CloneNotSupportedException
     {
         Entity clone = (Entity) super.clone();
-        Node node = head.next;
-
+        clone.head = head.clone();
+        Node node = clone.head;
         for (int i = 0; i < size; i++) {
             node.next = node.next.clone();
+            node = node.next;
         }
-
-        //todo в цикле node.next = node.next.clone()
+        node.next = clone.head.next;
+        return clone;
+        //todo в цикле node.next = node.next.clone() done??
     }
 
     private void checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
