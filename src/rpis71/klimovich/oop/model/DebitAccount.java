@@ -19,7 +19,7 @@ public class DebitAccount extends AbstractAccount {
     {
         return super.hashCode()*53;
     }
-    protected Object clone() throws CloneNotSupportedException {
+    public Account clone() throws CloneNotSupportedException {
         return super.clone();
     }
 }

@@ -1,10 +1,11 @@
 package rpis71.klimovich.oop.model;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class AccountManager {
+public class AccountManager implements Iterable<Client> {
     private Client[] clients;
     private int size;
     private final static int DEFAULT_CAPACITY =16;
@@ -97,31 +98,44 @@ public class AccountManager {
     }
     public Account getClient(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
-        for(int i=0;i<size;i++)
+        for (Client client:clients)
+        {
+            if (client.hasAccount(accountNumber))
+                return client.get(accountNumber);
+        }
+      /*  for(int i=0;i<size;i++)
         {
             if(clients[i].hasAccount(accountNumber))
             {
                return clients[i].get(accountNumber);
             }
-        }
+        }*/
       throw new NoSuchElementException();
     }
     public Account removeClient(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
-        Account account=null;
-        for(int i=0;i<size;i++)
+        Account account;
+        for (Client client:clients)
+        {
+            if (client.hasAccount(accountNumber))
+            {
+                account=client.remove(accountNumber);
+                return account;
+            }
+        }
+        /*for(int i=0;i<size;i++)
         {
             if(clients[i].hasAccount(accountNumber)) {
                 account = clients[i].remove(accountNumber);
                 return account;
             }
-        }
+        }*/
         throw new NoSuchElementException();
     }
     public Account setAccount(String accountNumber,Account account) throws DublicateAccountNumberException, InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
         Objects.requireNonNull(account,"account - null");
-        Account removedAccount = null;
+        Account removedAccount;
         for(int i=0;i<size;i++)
         {
             int index=clients[i].indexOf(accountNumber);
@@ -136,12 +150,20 @@ public class AccountManager {
     public Client[] getDebtors() {
         Client[] debtors = new Client[size];
         int countDebtors = 0;
-        for (int i = 0; i < size; i++) {
+        for (Client debetor:clients)
+        {
+            if (debetor.getCreditScore()!=ClientStatus.GOOD.getCreditScoreBound())
+            {
+                debtors[countDebtors]=debetor;
+                countDebtors++;
+            }
+        }
+        /*for (int i = 0; i < size; i++) {
             if (clients[i].getCreditScore() != ClientStatus.GOOD.getCreditScoreBound()) {
                 debtors[countDebtors] = clients[i];
                 countDebtors++;
             }
-        }
+        }*/
         return Arrays.copyOf(debtors,countDebtors);
     }
     public Client[] getWickedDebtors()
@@ -164,22 +186,23 @@ public class AccountManager {
     public boolean remove(Client client)
     {
         Objects.requireNonNull(client,"client - null");
-        int index=indexOf(client);
-        if (index!=-1) {
             remove(indexOf(client));
             return true;
-        }
-        else
-            return false;
     }
     public int indexOf(Client client)
     {
         Objects.requireNonNull(client,"client - null");
         int index=0;
-       for (int i=0;i<size;i++)
+        for (Client newClient: clients)
+        {
+            if (newClient.getName().equals(client.getName()))
+                return index;
+            index++;
+        }
+       /*for (int i=0;i<size;i++)
            if (clients[i].getName().equals(client.getName()))
-                return i;
-           return -1;
+                return i;*/
+           throw new NoSuchElementException();
     }
     @Override
     public String toString()
@@ -188,5 +211,31 @@ public class AccountManager {
         for (int i=0; i<this.clients.length;i++)
             sb.append( "< ").append( this.clients[i].toString()).append(">").append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<Client> iterator() {
+        return new ClientIterator(getClients());
+    }
+    private class ClientIterator
+    {
+        int index=0;
+        Client[] clientsIter;
+        public ClientIterator(Client[] clients)
+        {
+            this.clientsIter=clients;
+        }
+
+        public boolean hasNext() {
+            return (size>=index);
+        }
+        public Client next()
+        {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            Client client=clientsIter[index];
+            index++;
+            return client;
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public abstract class  AbstractAccount implements Account {
     private String number;
-    private double balance;
+    private Double balance;
     private LocalDate creationDate;
     private LocalDate expirationDate;
     protected AbstractAccount(String number,LocalDate expirationDate) throws InvalidAccountNumberException {
@@ -95,6 +95,11 @@ public abstract class  AbstractAccount implements Account {
            return (int)period.toTotalMonths();
        else
            return (int)period.toTotalMonths()+1;
+   }
+   @Override
+    public int compareTo(Account o)
+   {
+       return this.balance.compareTo(o.getBalance());
    }
 
 }

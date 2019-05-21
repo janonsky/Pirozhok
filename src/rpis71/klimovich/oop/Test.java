@@ -2,6 +2,7 @@ package rpis71.klimovich.oop;
 import rpis71.klimovich.oop.model.*;
 
 import java.time.LocalDate;
+import java.lang.Comparable;
 
 public class Test {
     public static void main (String[] args) throws InvalidAccountNumberException {
@@ -10,7 +11,8 @@ public class Test {
         //lab2tests();
         //lab3tests();
         //lab4tests();
-        lab5tests();
+        //lab5tests();
+        lab6tests();
     }
 
    /*public static void lab1tests()
@@ -79,6 +81,10 @@ public class Test {
        // System.out.println(account.monthesQuantityBeforeExpiration());
        // System.out.println(((CreditAccount) account).nextPaymentDate());
        // System.out.println(((CreditAccount) account).nextPaymentValue());
+    }
+    public static void lab6tests()
+    {
+
     }
 }
 

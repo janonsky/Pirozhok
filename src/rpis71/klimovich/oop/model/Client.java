@@ -1,18 +1,57 @@
 package rpis71.klimovich.oop.model;
 
-public interface Client {
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public interface Client extends Iterable<Account>,Comparable<Client> {
     boolean add(Account account) throws DublicateAccountNumberException;
     boolean add(int index,Account account) throws DublicateAccountNumberException;
     Account get(int index);
-    Account get(String accountNumber) throws InvalidAccountNumberException;
-    boolean hasAccount(String accountNumber) throws InvalidAccountNumberException;
+   default Account get(String accountNumber) throws InvalidAccountNumberException
+    {
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
+        for (Account account: getAccounts())
+        {
+            if (account.getNumber().equals(accountNumber))
+                return account;
+        }
+        throw new NoSuchElementException();
+    }
+   default boolean hasAccount(String accountNumber) throws InvalidAccountNumberException
+   {
+       Objects.requireNonNull(accountNumber, "AccountNumber - null");
+       for (Account account:getAccounts())
+       {
+           if (account.getNumber().equals(accountNumber))
+               return true;
+       }
+       throw new NoSuchElementException();
+   }
     Account set(int index,Account account) throws DublicateAccountNumberException;
     Account remove(int index);
     Account remove(String accountNumber) throws InvalidAccountNumberException;
     int size();
-    Account[] getAccounts();
-    Account[] sortedAccountByBalance();
-    double totalBalance();
+   default Account[] getAccounts()
+   {
+       Account[] newAccounts=getAccounts();
+       return newAccounts;
+   }
+    default Account[] sortedAccountByBalance()
+    {
+        Account[] newAccounts=getAccounts();
+        Arrays.sort(newAccounts);
+        return newAccounts;
+    }
+   default Double totalBalance()
+   {
+       double totalBalance=0;
+       for (Account account:getAccounts())
+       {
+           totalBalance+=account.getBalance();
+       }
+       return totalBalance;
+   }
     String getName();
     void setName(String name);
     int getCreditScore();
@@ -31,8 +70,16 @@ public interface Client {
            return ClientStatus.BAD;
        return null;
    }
-    Account[] getCreditAccounts();
-
+    default Account[] getCreditAccounts()
+    {
+        int countCreditAccount = 0;
+        Account[] accounts = new Account[size()];
+        for (Account account:getAccounts())
+            if (account instanceof Credit)
+                accounts[countCreditAccount]=account;
+            countCreditAccount++;
+        return Arrays.copyOf(accounts, countCreditAccount);
+    }
     boolean remove(Account account) throws InvalidAccountNumberException;
     int indexOf(Account account) throws InvalidAccountNumberException;
     double debtTotal();

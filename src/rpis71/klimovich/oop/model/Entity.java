@@ -1,6 +1,8 @@
 package rpis71.klimovich.oop.model;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -11,110 +13,109 @@ public class Entity implements Client {
     private String name;
     private int size;
     private int creditScore;
+
     public Entity(String name) throws InvalidAccountNumberException {
 
         CheckPattern.checkNumber(name);
-        this.head=new Node(null,null);
+        this.head = new Node(null, null);
         //todo проверка имени done
-        this.name=name;
+        this.name = name;
     }
-    public Entity(Account[] accounts,String name,int creditScore) throws DublicateAccountNumberException, InvalidAccountNumberException {
-       this(name);
+
+    public Entity(Account[] accounts, String name, int creditScore) throws DublicateAccountNumberException, InvalidAccountNumberException {
+        this(name);
         for (int i = 0; i < accounts.length; i++)
             add(accounts[i]);
-        this.creditScore=creditScore;
+        this.creditScore = creditScore;
     }
 
     @Override
     public boolean add(Account account) throws DublicateAccountNumberException {
-        Objects.requireNonNull(account,"Account - null");
+        Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
         return add(size, account);
     }
+
     @Override
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
-        Objects.checkIndex(index,size); //todo done
-        Objects.requireNonNull(account,"Account - null");
+        Objects.checkIndex(index, size); //todo done
+        Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
-        Node node=head.next;
-        Node newNode= new Node(account,null);
-        if (size==0 && index==0) {
-           head.next= newNode;
-           tail=newNode;
-           tail.next=head.next;
-           size++;
-        }else if(index==0){
-               newNode.next= node;
-               head.next=newNode;
-               tail.next=newNode;
-               size++;
-            }else if (index==size){
-                    tail.next=newNode;
-                    tail=newNode;
-                    tail.next=head.next;
-                    size++;
-                }else
-                    {
-                    node=getNode(index-1);
-                        newNode.next=node.next;
-                        node.next= newNode;
-                        size++;
-                    }
+        Node node = head.next;
+        Node newNode = new Node(account, null);
+        if (size == 0 && index == 0) {
+            head.next = newNode;
+            tail = newNode;
+            tail.next = head.next;
+            size++;
+        } else if (index == 0) {
+            newNode.next = node;
+            head.next = newNode;
+            tail.next = newNode;
+            size++;
+        } else if (index == size) {
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head.next;
+            size++;
+        } else {
+            node = getNode(index - 1);
+            newNode.next = node.next;
+            node.next = newNode;
+            size++;
+        }
         return true;
     }
 
     @Override
     public Account get(int index) {
-        Objects.checkIndex(index,size); //todo done
+        Objects.checkIndex(index, size); //todo done
         return getNode(index).value;
     }
 
     @Override
     public Account get(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
         CheckPattern.checkNumber(accountNumber);
-       // if (getNodeByNumber(accountNumber)!=null) //todo done
-            return getNodeByNumber(accountNumber).value;
+        // if (getNodeByNumber(accountNumber)!=null) //todo done
+        return getNodeByNumber(accountNumber).value;
     }
 
     @Override
     public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
         CheckPattern.checkNumber(accountNumber);
-        Node node=head.next;
-        for (int i=0;i<size;i++)
+        Node node = head.next;
+        for (int i = 0; i < size; i++)
             if (node.value.getNumber().equals(accountNumber))
                 return true;
-        return  false; //todo лучше ручками пробедаться и вернуть true или false done
+        return false; //todo лучше ручками пробедаться и вернуть true или false done
     }
 
     @Override
     public Account set(int index, Account account) throws DublicateAccountNumberException {
-       Objects.checkIndex(index,size);//todo done
-        Objects.requireNonNull(account,"Account - null");
+        Objects.checkIndex(index, size);//todo done
+        Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
-       Node node= getNode(index);
-       Account removedAccount = node.value;
-       node.value=account;
-       return removedAccount;
+        Node node = getNode(index);
+        Account removedAccount = node.value;
+        node.value = account;
+        return removedAccount;
     }
 
     @Override
     public Account remove(int index) {
-        Objects.checkIndex(index,size); //todo done
-        Node node=getNode(index-1);
-        Node removedNode=node.next;
-        if (size!=0)
-        {
-            if(index==0)
-                head.next=removedNode.next;
-            else if (index==size)
-            {
-                tail=node;
-                tail.next=head.next;
-            }
-            else {
-                node.next=removedNode.next;
+        Objects.checkIndex(index, size); //todo done
+        Node node = getNode(index - 1);
+        Node removedNode = node.next;
+        if (size != 0) {
+            if (index == 0)
+                head.next = removedNode.next;
+            else if (index == size) {
+                tail = node;
+                tail.next = head.next;
+            } else {
+                node.next = removedNode.next;
             }
             size--;
         }
@@ -123,16 +124,14 @@ public class Entity implements Client {
 
     @Override
     public Account remove(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
         CheckPattern.checkNumber(accountNumber);
-        Node node=head.next;
-        for(int i=0;i<size;i++)
-        {
-            if (node.value.getNumber().equals(accountNumber))
-            {
-               return remove(i);
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
+            if (node.value.getNumber().equals(accountNumber)) {
+                return remove(i);
             }
-            node=node.next;
+            node = node.next;
         }
         throw new NoSuchElementException();
     }
@@ -144,12 +143,11 @@ public class Entity implements Client {
 
     @Override
     public Account[] getAccounts() {
-        Node node=head.next;
-        Account[] accounts=new Account[size];
-        for(int i=0;i<size;i++)
-        {
-            accounts[i]=node.value;
-            node=node.next;
+        Node node = head.next;
+        Account[] accounts = new Account[size];
+        for (int i = 0; i < size; i++) {
+            accounts[i] = node.value;
+            node = node.next;
         }
         return accounts;
     }
@@ -157,26 +155,27 @@ public class Entity implements Client {
     @Override
     public Account[] sortedAccountByBalance() {
         Account[] sortedAccountsByBalance = getAccounts();
-        Account account;
-        for (int i = 0; i < size - 1; i++)
+        //Account account;
+        Arrays.sort(sortedAccountsByBalance);
+       /* for (int i = 0; i < size - 1; i++)
             for (int j = 0; j < size - i; j++)
                 if (sortedAccountsByBalance[j].getBalance() > sortedAccountsByBalance[j + 1].getBalance()) {
                     account = sortedAccountsByBalance[j];
                     sortedAccountsByBalance[j] = sortedAccountsByBalance[j + 1];
                     sortedAccountsByBalance[j + 1] = account;
-                }
+                }*/
         return sortedAccountsByBalance;
     }
+
     @Override
-    public double totalBalance() {
-       double totalBalance=0;
-       Node node=head.next;
-       for(int i=0;i<size;i++)
-       {
-           totalBalance+=node.value.getBalance();
-           node=node.next;
-       }
-       return totalBalance;
+    public Double totalBalance() {
+        double totalBalance = 0;
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
+            totalBalance += node.value.getBalance();
+            node = node.next;
+        }
+        return totalBalance;
     }
 
     @Override
@@ -186,8 +185,8 @@ public class Entity implements Client {
 
     @Override
     public void setName(String name) {
-        Objects.requireNonNull(name,"name - null");
-        this.name=name;
+        Objects.requireNonNull(name, "name - null");
+        this.name = name;
     }
 
     @Override
@@ -197,7 +196,7 @@ public class Entity implements Client {
 
     @Override
     public void addCreditScores(int creditScores) {
-        this.creditScore+=creditScores;
+        this.creditScore += creditScores;
     }
 
     @Override
@@ -217,82 +216,76 @@ public class Entity implements Client {
 
     @Override
     public boolean remove(Account account) {
-        Objects.requireNonNull(account,"Account - null");
-        if (indexOf(account)!=-1)
-        {
+        Objects.requireNonNull(account, "Account - null");
+        if (indexOf(account) != -1) {
             remove(indexOf(account));
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     @Override
     public int indexOf(Account account) {
-        Objects.requireNonNull(account,"Account - null");
-        Node node=head.next;
-        for(int i=0;i<size;i++)
-        {
+        Objects.requireNonNull(account, "Account - null");
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
             if (node.value.equals(account))
-            return i;
-            node=node.next;
+                return i;
+            node = node.next;
         }
         throw new NoSuchElementException();
     }
 
     @Override
     public double debtTotal() {
-      Node node=head.next;
-      double debtTotal=0;
-      for (int i=0;i<size;i++)
-      {
-          //todo getBalance() только если value - кредит done
-          if (node.value.getBalance()<0)
-          debtTotal+=node.value.getBalance();
-          node=node.next;
-      }
+        Node node = head.next;
+        double debtTotal = 0;
+        for (int i = 0; i < size; i++) {
+            //todo getBalance() только если value - кредит done
+            if (node.value instanceof Credit)
+                debtTotal += node.value.getBalance();
+            node = node.next;
+        }
         return debtTotal;
     }
 
     @Override
     public int indexOf(String accountNumber) {
-        Objects.requireNonNull(accountNumber,"AccountNumber - null");
-        Node node=head.next;
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
+        Node node = head.next;
         for (int i = 0; i < size; i++) {
-            if (node.value.getNumber().equals(accountNumber))
-            {
+            if (node.value.getNumber().equals(accountNumber)) {
                 return i;
             }
-            node=node.next;
+            node = node.next;
         }
         throw new NoSuchElementException();
         //todo NoSuchElementException done
     }
 
-    private Node getNode(int index){
-        Objects.checkIndex(-1,size);
-        int numberNode=0;
-        Node currentNode=head.next;
-        while (numberNode<index)
-        {
-            currentNode=currentNode.next;
+    private Node getNode(int index) {
+        Objects.checkIndex(-1, size);
+        int numberNode = 0;
+        Node currentNode = head.next;
+        while (numberNode < index) {
+            currentNode = currentNode.next;
             numberNode++;
         }
         return currentNode.next;
     }
 
     private Node getNodeByNumber(String accountNumber) {
-        Objects.requireNonNull(accountNumber,"AccountNumber - null");
+        Objects.requireNonNull(accountNumber, "AccountNumber - null");
         Node node = head.next;
-        for (int i=0;i<size;i++)
-        {
+        for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(accountNumber))
                 return node;
-            node=node.next;
+            node = node.next;
         }
         throw new NoSuchElementException();
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Client\n")
                 .append("name: ").append(getName());
@@ -304,68 +297,102 @@ public class Entity implements Client {
         sb.append("total: ").append(totalBalance());
         return sb.toString();
     }
+
     @Override
-    public int hashCode()
-    {
-        Node currentNode=head.next;
-        int hash=Integer.hashCode(getCreditScore());
-        for (int i = 0; i <size ; i++)
-            hash^=currentNode.value.hashCode();
-        return hash^name.hashCode();
+    public int hashCode() {
+        Node currentNode = head.next;
+        int hash = Integer.hashCode(getCreditScore());
+        for (int i = 0; i < size; i++)
+            hash ^= currentNode.value.hashCode();
+        return hash ^ name.hashCode();
     }
-    public boolean equals(Object object)
-    {
+
+    public boolean equals(Object object) {
         //todo см Individual done
-        if (!(object instanceof Entity ))
-        return false;
-            Entity obj=(Entity) object; //todo проверка типа перед кастом делается done
-            if (!(((obj.name.equals(this.name)) /*todo ты че творишь а done*/ && (obj.getCreditScore()==this.getCreditScore()) && (obj.size==this.size))))
+        if (!(object instanceof Entity))
+            return false;
+        Entity obj = (Entity) object; //todo проверка типа перед кастом делается done
+        if (!(((obj.name.equals(this.name)) /*todo ты че творишь а done*/ && (obj.getCreditScore() == this.getCreditScore()) && (obj.size == this.size))))
+            return false;
+        Node node = head.next;
+        Node newNode = obj.head.next;
+        for (int i = 0; i < size; i++) {
+            if (!newNode.value.equals(node.value))
                 return false;
-                Node node=head.next;
-                Node newNode=obj.head.next;
-                for(int i=0;i<size;i++){
-                    if(!newNode.value.equals(node.value))
-                        return false;
-                    node=node.next;
-                    newNode=newNode.next;
-                }
+            node = node.next;
+            newNode = newNode.next;
+        }
         return true;
     }
-    public Object clone()throws CloneNotSupportedException //TODO dodelat
-    {
-        Entity clone=(Entity)super.clone();
-        Node node=head.next;
 
-        for (int i=0;i<size;i++)
-        {
-            clone.=node.next.clone();
+    public Object clone() throws CloneNotSupportedException //TODO dodelat
+    {
+        Entity clone = (Entity) super.clone();
+        Node node = head.next;
+
+        for (int i = 0; i < size; i++) {
+            node.next = node.next.clone();
         }
+
         //todo в цикле node.next = node.next.clone()
     }
+
     private void checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
-        Node node=head.next;
-        for (int i=0;i<size;i++)
-        {
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(account.getNumber()))
                 throw new DublicateAccountNumberException("Account with this number already exists");
-            node=node.next;
+            node = node.next;
         }
     }
 
-    private class Node {
-        Node next;
-        Account value;
+    @Override
+    public Iterator<Account> iterator() {
+        return new AccountIterator(getAccounts());
+    }
 
-        private Node(Account value, Node next) {
-            this.value = value;
-            this.next = next;
+    @Override
+    public int compareTo(Client o) {
+        return this.totalBalance().compareTo(o.totalBalance());
+    }
+
+    private class AccountIterator implements Iterator<Account> {
+        int index = 0;
+        Account[] accountsIter;
+
+        public AccountIterator(Account[] accounts) {
+            this.accountsIter = accounts;
         }
 
         @Override
-        public Node clone() throws CloneNotSupportedException {
-            Node clone= (Node)super.clone();
-            clone.value=value.clone();
-            return clone;
+        public boolean hasNext() {
+            return (size >= index);
+        }
+
+        @Override
+        public Account next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            Account account = accountsIter[index];
+            index++;
+            return account;
         }
     }
-}
+
+        private class Node {
+            Node next;
+            Account value;
+
+            private Node(Account value, Node next) {
+                this.value = value;
+                this.next = next;
+            }
+
+            @Override
+            public Node clone() throws CloneNotSupportedException {
+                Node clone = (Node) super.clone();
+                clone.value = value.clone();
+                return clone;
+            }
+        }
+    }
