@@ -103,13 +103,6 @@ public class AccountManager implements Iterable<Client> {
             if (client.hasAccount(accountNumber))
                 return client.get(accountNumber);
         }
-      /*  for(int i=0;i<size;i++)
-        {
-            if(clients[i].hasAccount(accountNumber))
-            {
-               return clients[i].get(accountNumber);
-            }
-        }*/
       throw new NoSuchElementException();
     }
     public Account removeClient(String accountNumber) throws InvalidAccountNumberException {
@@ -123,13 +116,6 @@ public class AccountManager implements Iterable<Client> {
                 return account;
             }
         }
-        /*for(int i=0;i<size;i++)
-        {
-            if(clients[i].hasAccount(accountNumber)) {
-                account = clients[i].remove(accountNumber);
-                return account;
-            }
-        }*/
         throw new NoSuchElementException();
     }
     public Account setAccount(String accountNumber,Account account) throws DublicateAccountNumberException, InvalidAccountNumberException {
@@ -158,12 +144,6 @@ public class AccountManager implements Iterable<Client> {
                 countDebtors++;
             }
         }
-        /*for (int i = 0; i < size; i++) {
-            if (clients[i].getCreditScore() != ClientStatus.GOOD.getCreditScoreBound()) {
-                debtors[countDebtors] = clients[i];
-                countDebtors++;
-            }
-        }*/
         return Arrays.copyOf(debtors,countDebtors);
     }
     public Client[] getWickedDebtors()
@@ -199,9 +179,6 @@ public class AccountManager implements Iterable<Client> {
                 return index;
             index++;
         }
-       /*for (int i=0;i<size;i++)
-           if (clients[i].getName().equals(client.getName()))
-                return i;*/
            throw new NoSuchElementException();
     }
     @Override
@@ -215,27 +192,21 @@ public class AccountManager implements Iterable<Client> {
 
     @Override
     public Iterator<Client> iterator() {
-        return new ClientIterator(getClients());
+        return null;
     }
-    private class ClientIterator
+    private class ClientIterator implements Iterable<Client>
     {
-        int index=0;
-        Client[] clientsIter;
-        public ClientIterator(Client[] clients)
-        {
-            this.clientsIter=clients;
-        }
-
         public boolean hasNext() {
-            return (size>=index);
+            return ;
         }
         public Client next()
         {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            Client client=clientsIter[index];
-            index++;
-            return client;
+            return null;
+        }
+
+        @Override
+        public Iterator<Client> iterator() {
+            return null;
         }
     }
 }

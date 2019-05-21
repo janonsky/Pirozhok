@@ -76,22 +76,6 @@ public class Individual implements Client {
         throw new NoSuchElementException();
     }
 
-   /* public Account get(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        int index = indexOf(accountNumber);
-            return accounts[index];
-    }
-
-    public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        for (int i=0;i<size;i++)
-        {
-            if (accounts[i].getNumber().equals(accountNumber))
-                return true;
-        }
-        return false;
-    }*/
-
     public Account set(int index, Account newAccount) throws DublicateAccountNumberException {
         Objects.checkIndex(index,size); //todo done
         Objects.requireNonNull(newAccount, "Account - null");
@@ -120,32 +104,6 @@ public class Individual implements Client {
         return size;
     }
 
-   /* public Account[] getAccounts() {
-        Account[] newAccounts = new Account[size];
-        System.arraycopy(accounts, 0, newAccounts, 0, size);
-        return newAccounts;
-    }
-      public Account[] sortedAccountByBalance() {
-        Account[] sortedAccounts = getAccounts();
-        //Account account;
-        Arrays.sort(sortedAccounts);
-        for (int i = 0; i < size - 1; i++)
-            for (int j = 0; j < size - i; j++)
-                if (sortedAccounts[j].getBalance() > sortedAccounts[j + 1].getBalance()) {
-                    account = sortedAccounts[j];
-                    sortedAccounts[j] = sortedAccounts[j + 1];
-                    sortedAccounts[j + 1] = account;
-                }
-        return sortedAccounts;
-    }*/
-
-  /*  public Double totalBalance() {
-        double totalBalance = 0;
-        for (int i = 0; i < size; i++)
-            totalBalance += accounts[i].getBalance();
-        return totalBalance;
-    }*/
-
     @Override
     public String getName() {
         return name;
@@ -166,18 +124,6 @@ public class Individual implements Client {
     public void addCreditScores(int creditScores) {
         this.creditScore += creditScores;
     }
-
-   /* @Override
-    public Account[] getCreditAccounts() {
-        int countCreditAccount = 0;
-        Account[] accounts = new Account[size];
-        for (int i = 0; i < size; i++) {
-            if (accounts[i] instanceof Credit)
-                accounts[countCreditAccount] = accounts[i];
-            countCreditAccount++;
-        }
-        return Arrays.copyOf(accounts, countCreditAccount);
-    }*/
 
     @Override
     public boolean remove(Account account) throws InvalidAccountNumberException {
@@ -261,28 +207,22 @@ public class Individual implements Client {
 
     @Override
     public Iterator<Account> iterator() {
-        return new AccountIterator(accounts);
+        return null;
     }
-    private class AccountIterator implements Iterator<Account>
+    private class AccountIterator implements Iterable<Account>
     {
-        int index=0;
-        Account[] accountsIter;
-        public AccountIterator(Account[] accounts)
-        {
-            this.accountsIter=accounts;
-        }
-        @Override
         public boolean hasNext() {
-          return (size>=index);
+          return ;
+        }
+
+
+        public Account next() {
+          return null;
         }
 
         @Override
-        public Account next() {
-           if (!hasNext())
-               throw new NoSuchElementException();
-           Account account=accountsIter[index];
-           index++;
-           return account;
+        public Iterator<Account> iterator() {
+            return null;
         }
     }
 }

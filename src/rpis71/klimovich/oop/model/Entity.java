@@ -1,6 +1,5 @@
 package rpis71.klimovich.oop.model;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -155,15 +154,7 @@ public class Entity implements Client {
     @Override
     public Account[] sortedAccountByBalance() {
         Account[] sortedAccountsByBalance = getAccounts();
-        //Account account;
         Arrays.sort(sortedAccountsByBalance);
-       /* for (int i = 0; i < size - 1; i++)
-            for (int j = 0; j < size - i; j++)
-                if (sortedAccountsByBalance[j].getBalance() > sortedAccountsByBalance[j + 1].getBalance()) {
-                    account = sortedAccountsByBalance[j];
-                    sortedAccountsByBalance[j] = sortedAccountsByBalance[j + 1];
-                    sortedAccountsByBalance[j + 1] = account;
-                }*/
         return sortedAccountsByBalance;
     }
 
@@ -217,10 +208,8 @@ public class Entity implements Client {
     @Override
     public boolean remove(Account account) {
         Objects.requireNonNull(account, "Account - null");
-        if (indexOf(account) != -1) {
             remove(indexOf(account));
             return true;
-        } else return false;
     }
 
     @Override
@@ -350,7 +339,7 @@ public class Entity implements Client {
 
     @Override
     public Iterator<Account> iterator() {
-        return new AccountIterator(getAccounts());
+        return null;
     }
 
     @Override
@@ -358,26 +347,19 @@ public class Entity implements Client {
         return this.totalBalance().compareTo(o.totalBalance());
     }
 
-    private class AccountIterator implements Iterator<Account> {
-        int index = 0;
-        Account[] accountsIter;
+    private class AccountIterator implements Iterable<Account> {
 
-        public AccountIterator(Account[] accounts) {
-            this.accountsIter = accounts;
-        }
-
-        @Override
         public boolean hasNext() {
-            return (size >= index);
+            return;
+        }
+
+        public Account next() {
+           return null;
         }
 
         @Override
-        public Account next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            Account account = accountsIter[index];
-            index++;
-            return account;
+        public Iterator<Account> iterator() {
+            return null;
         }
     }
 
