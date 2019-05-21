@@ -349,8 +349,10 @@ public class Entity implements Client {
 
     private class AccountIterator implements Iterable<Account> {
 
+        int index=0;
+
         public boolean hasNext() {
-            return;
+            return index < size;
         }
 
         public Account next() {

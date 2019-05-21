@@ -196,8 +196,9 @@ public class AccountManager implements Iterable<Client> {
     }
     private class ClientIterator implements Iterable<Client>
     {
+        int index=0;
         public boolean hasNext() {
-            return ;
+            return index < size;
         }
         public Client next()
         {
