@@ -33,7 +33,6 @@ private double APR;
     }
     @Override
     public LocalDate nextPaymentDate() {
-        //todo берем текущую даты и сравниваем дни для нее. done
         LocalDate now = LocalDate.now();
         if (now.getDayOfMonth()<25)
             return LocalDate.of(now.getYear(), now.getMonth(), 25);
@@ -51,11 +50,11 @@ private double APR;
     }
     public boolean equals(Object object)
     {
-        //todo Double.compare()??
+        //todo super.equals?
         return (object instanceof CreditAccount &&
                 ((CreditAccount)object).getNumber().equals(this.getNumber())&&
-                ((CreditAccount)object).getBalance()==this.getBalance()&&
-                ((CreditAccount)object).getAPR()==this.getAPR());
+                Double.compare(this.getBalance(), ((CreditAccount)object).getBalance()) == 0 &&
+                ((CreditAccount)object).getAPR()==this.getAPR()); //todo
     }
     public Account clone() throws CloneNotSupportedException {
         return super.clone();

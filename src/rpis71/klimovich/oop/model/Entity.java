@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-//todo чеки перенеси в приватные методы работы с нодами (если их вызываешь) done
 public class Entity implements Client {
     private Node head;
     private Node tail;
@@ -17,7 +16,6 @@ public class Entity implements Client {
 
         CheckPattern.checkNumber(name);
         this.head = new Node(null, null);
-        //todo проверка имени done
         this.name = name;
     }
 
@@ -37,7 +35,7 @@ public class Entity implements Client {
 
     @Override
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
-        Objects.checkIndex(index, size); //todo done
+        Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
         Node node = head.next;
@@ -68,7 +66,7 @@ public class Entity implements Client {
 
     @Override
     public Account get(int index) {
-        Objects.checkIndex(index, size); //todo done
+        Objects.checkIndex(index, size);
         return getNode(index).value;
     }
 
@@ -76,24 +74,17 @@ public class Entity implements Client {
     public Account get(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
         CheckPattern.checkNumber(accountNumber);
-        // if (getNodeByNumber(accountNumber)!=null) //todo done
         return getNodeByNumber(accountNumber).value;
     }
 
     @Override
     public boolean hasAccount(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        CheckPattern.checkNumber(accountNumber);
-        Node node = head.next;
-        for (int i = 0; i < size; i++)
-            if (node.value.getNumber().equals(accountNumber))
-                return true;
-        return false; //todo лучше ручками пробедаться и вернуть true или false done
+        return indexOf(accountNumber) != -1;
     }
 
     @Override
     public Account set(int index, Account account) throws DublicateAccountNumberException {
-        Objects.checkIndex(index, size);//todo done
+        Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
         Node node = getNode(index);
@@ -104,7 +95,7 @@ public class Entity implements Client {
 
     @Override
     public Account remove(int index) {
-        Objects.checkIndex(index, size); //todo done
+        Objects.checkIndex(index, size);
         Node node = getNode(index - 1);
         Node removedNode = node.next;
         if (size != 0) {
@@ -229,7 +220,6 @@ public class Entity implements Client {
         Node node = head.next;
         double debtTotal = 0;
         for (int i = 0; i < size; i++) {
-            //todo getBalance() только если value - кредит done
             if (node.value instanceof Credit)
                 debtTotal += node.value.getBalance();
             node = node.next;
@@ -240,6 +230,7 @@ public class Entity implements Client {
     @Override
     public int indexOf(String accountNumber) {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
+        //todo check accountNumber
         Node node = head.next;
         for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(accountNumber)) {
@@ -247,8 +238,7 @@ public class Entity implements Client {
             }
             node = node.next;
         }
-        throw new NoSuchElementException();
-        //todo NoSuchElementException done
+        return -1;
     }
 
     private Node getNode(int index) {
@@ -279,6 +269,7 @@ public class Entity implements Client {
         sb.append("Client\n")
                 .append("name: ").append(getName());
         Node node = head.next;
+        //todo foreach
         for (int i = 0; i < size; i++) {
             sb.append(node.value.toString()).append("\n");
             node = node.next;
@@ -291,17 +282,17 @@ public class Entity implements Client {
     public int hashCode() {
         Node currentNode = head.next;
         int hash = Integer.hashCode(getCreditScore());
+        //todo foreach
         for (int i = 0; i < size; i++)
             hash ^= currentNode.value.hashCode();
         return hash ^ name.hashCode();
     }
 
     public boolean equals(Object object) {
-        //todo см Individual done
         if (!(object instanceof Entity))
             return false;
-        Entity obj = (Entity) object; //todo проверка типа перед кастом делается done
-        if (!(((obj.name.equals(this.name)) /*todo ты че творишь а done*/ && (obj.getCreditScore() == this.getCreditScore()) && (obj.size == this.size))))
+        Entity obj = (Entity) object;
+        if (!(((obj.name.equals(this.name)) && (obj.getCreditScore() == this.getCreditScore()) && (obj.size == this.size))))
             return false;
         Node node = head.next;
         Node newNode = obj.head.next;
@@ -325,7 +316,6 @@ public class Entity implements Client {
         }
         node.next = clone.head.next;
         return clone;
-        //todo в цикле node.next = node.next.clone() done??
     }
 
     private void checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {

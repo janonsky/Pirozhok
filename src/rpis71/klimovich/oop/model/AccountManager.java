@@ -43,7 +43,6 @@ public class AccountManager implements Iterable<Client> {
     public boolean add(int index,Client client)
     {
          Objects.checkIndex(index,size);
-             //todo done
         Objects.requireNonNull(client,"Client - null");
         checkCapacity();
         System.arraycopy(clients, index, clients, index + 1, size - index);
@@ -192,9 +191,9 @@ public class AccountManager implements Iterable<Client> {
 
     @Override
     public Iterator<Client> iterator() {
-        return null;
+        return new ClientIterator();
     }
-    private class ClientIterator implements Iterable<Client>
+    private class ClientIterator implements Iterator<Client>
     {
         int index=0;
         public boolean hasNext() {
@@ -202,12 +201,8 @@ public class AccountManager implements Iterable<Client> {
         }
         public Client next()
         {
-            return null;
-        }
-
-        @Override
-        public Iterator<Client> iterator() {
-            return null;
+            //todo выброс исключения
+            return clients[index++];
         }
     }
 }

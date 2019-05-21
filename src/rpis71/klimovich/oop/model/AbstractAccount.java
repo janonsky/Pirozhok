@@ -59,7 +59,7 @@ public abstract class  AbstractAccount implements Account {
           if (!(object instanceof Account))
               return false;
           return
-                  ((AbstractAccount) object).balance == this.balance &&
+                  ((AbstractAccount) object).balance == this.balance && //todo
                   ((AbstractAccount) object).number.equals(this.number)&&
                   ((AbstractAccount) object).expirationDate.equals(expirationDate) &&
                   ((AbstractAccount) object).creationDate.equals(this.creationDate);
@@ -89,7 +89,7 @@ public abstract class  AbstractAccount implements Account {
     public int monthesQuantityBeforeExpiration()
    {
        Period period=Period.between(LocalDate.now(),expirationDate);
-       //period.toTotalMonths(); //todo используй done
+       //todo тест и прув в студию
        if (LocalDate.now().getDayOfMonth()>25)
            return (int)period.toTotalMonths();
        else

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+//todo все foreach через this
 public interface Client extends Iterable<Account>,Comparable<Client> {
     boolean add(Account account) throws DublicateAccountNumberException;
     boolean add(int index,Account account) throws DublicateAccountNumberException;
@@ -11,7 +12,7 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
    default Account get(String accountNumber) throws InvalidAccountNumberException
     {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        for (Account account: getAccounts())
+        for (Account account: this)
         {
             if (account.getNumber().equals(accountNumber))
                 return account;
@@ -34,6 +35,7 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
     int size();
    default Account[] getAccounts()
    {
+       //todo лютая фигня
        Account[] newAccounts=getAccounts();
        return newAccounts;
    }
@@ -43,7 +45,7 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
         Arrays.sort(newAccounts);
         return newAccounts;
     }
-   default Double totalBalance()
+   default double totalBalance()
    {
        double totalBalance=0;
        for (Account account:getAccounts())
@@ -52,6 +54,8 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
        }
        return totalBalance;
    }
+
+   //todo compareTоже default
     String getName();
     void setName(String name);
     int getCreditScore();

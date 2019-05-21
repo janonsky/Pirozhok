@@ -51,7 +51,7 @@ public class Individual implements Client {
     }
 
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
-        Objects.checkIndex(index,size);//todo done
+        Objects.checkIndex(index,size);
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccouuntForNumber(account);
         checkCapacity();
@@ -62,7 +62,7 @@ public class Individual implements Client {
     }
 
     public Account get(int index) {
-        Objects.checkIndex(index,size); //todo done
+        Objects.checkIndex(index,size);
         return accounts[index];
     }
 
@@ -77,7 +77,7 @@ public class Individual implements Client {
     }
 
     public Account set(int index, Account newAccount) throws DublicateAccountNumberException {
-        Objects.checkIndex(index,size); //todo done
+        Objects.checkIndex(index,size);
         Objects.requireNonNull(newAccount, "Account - null");
         checkDuplicateAccouuntForNumber(newAccount);
         Account account = accounts[index];
@@ -86,7 +86,7 @@ public class Individual implements Client {
     }
 
     public Account remove(int index) {
-        Objects.checkIndex(index,size);//todo done
+        Objects.checkIndex(index,size);
         size--;
         System.arraycopy(accounts, index + 1, accounts, index, size - index);
         accounts[size] = null;
@@ -95,7 +95,7 @@ public class Individual implements Client {
 
     public Account remove(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        //todo чекни номер done
+        //todo проверка -1 и выброс исключения
         int index = indexOf(accountNumber);
             return remove(index);
     }
@@ -139,7 +139,7 @@ public class Individual implements Client {
             if (accounts[i].equals(account))
                 return i;
         }
-        throw new NoSuchElementException();
+        return -1;
     }
 
     @Override
