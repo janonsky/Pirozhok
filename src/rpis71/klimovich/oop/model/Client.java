@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-//todo все foreach через this
+//todo все foreach через this done
 public interface Client extends Iterable<Account>,Comparable<Client> {
     boolean add(Account account) throws DublicateAccountNumberException;
     boolean add(int index,Account account) throws DublicateAccountNumberException;
@@ -22,7 +22,7 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
    default boolean hasAccount(String accountNumber) throws InvalidAccountNumberException
    {
        Objects.requireNonNull(accountNumber, "AccountNumber - null");
-       for (Account account:getAccounts())
+       for (Account account:this)
        {
            if (account.getNumber().equals(accountNumber))
                return true;
@@ -35,8 +35,14 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
     int size();
    default Account[] getAccounts()
    {
-       //todo лютая фигня
-       Account[] newAccounts=getAccounts();
+       Account[] newAccounts=new Account[size()];
+       int index=0;
+       for (Account account:this)
+       {
+           newAccounts[index]=account;
+           index++;
+       }
+       //todo лютая фигня done
        return newAccounts;
    }
     default Account[] sortedAccountByBalance()
@@ -45,17 +51,19 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
         Arrays.sort(newAccounts);
         return newAccounts;
     }
-   default double totalBalance()
+   default Double totalBalance()
    {
        double totalBalance=0;
-       for (Account account:getAccounts())
+       for (Account account:this)
        {
            totalBalance+=account.getBalance();
        }
        return totalBalance;
    }
-
-   //todo compareTоже default
+   //todo compareTоже default done
+   default int compareTo(Client o) {
+       return Double.compare(this.totalBalance(),o.totalBalance());
+   }
     String getName();
     void setName(String name);
     int getCreditScore();
@@ -78,7 +86,7 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
     {
         int countCreditAccount = 0;
         Account[] accounts = new Account[size()];
-        for (Account account:getAccounts())
+        for (Account account:this)
             if (account instanceof Credit)
                 accounts[countCreditAccount]=account;
             countCreditAccount++;

@@ -50,11 +50,11 @@ private double APR;
     }
     public boolean equals(Object object)
     {
-        //todo super.equals?
-        return (object instanceof CreditAccount &&
-                ((CreditAccount)object).getNumber().equals(this.getNumber())&&
+        //todo super.equals? done
+        return  (object instanceof CreditAccount &&
+                super.equals(object) &&
                 Double.compare(this.getBalance(), ((CreditAccount)object).getBalance()) == 0 &&
-                ((CreditAccount)object).getAPR()==this.getAPR()); //todo
+                Double.compare(this.APR, ((CreditAccount)object).APR) == 0); //todo done
     }
     public Account clone() throws CloneNotSupportedException {
         return super.clone();

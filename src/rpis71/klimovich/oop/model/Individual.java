@@ -73,7 +73,7 @@ public class Individual implements Client {
             if (accounts[i].getNumber().equals(accountNumber))
                 return i;
         }
-        throw new NoSuchElementException();
+       return -1;
     }
 
     public Account set(int index, Account newAccount) throws DublicateAccountNumberException {
@@ -95,9 +95,12 @@ public class Individual implements Client {
 
     public Account remove(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        //todo проверка -1 и выброс исключения
+        //todo проверка -1 и выброс исключения DONE
         int index = indexOf(accountNumber);
+        if (index>0)
             return remove(index);
+        else
+            throw new NoSuchElementException();
     }
 
     public int size() {
@@ -201,15 +204,10 @@ public class Individual implements Client {
                 throw new DublicateAccountNumberException("Account with this number already exists");
     }
     @Override
-    public int compareTo(Client o) {
-        return this.totalBalance().compareTo(o.totalBalance());
-    }
-
-    @Override
     public Iterator<Account> iterator() {
-        return null;
+        return new AccountIterator();
     }
-    private class AccountIterator implements Iterable<Account>
+    private class AccountIterator implements Iterator<Account>
     {
         int index=0;
         public boolean hasNext() {
@@ -217,12 +215,9 @@ public class Individual implements Client {
         }
 
         public Account next() {
-          return null;
-        }
-
-        @Override
-        public Iterator<Account> iterator() {
-            return null;
+          if (!hasNext())
+              throw new NoSuchElementException();
+          return accounts[index++];
         }
     }
 }

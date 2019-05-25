@@ -11,7 +11,7 @@ public class Test {
         //lab2tests();
         //lab3tests();
         //lab4tests();
-        //lab5tests();
+        lab5tests();
         lab6tests();
     }
 
@@ -70,15 +70,15 @@ public class Test {
     }*/
     public static void lab5tests() throws InvalidAccountNumberException {
         Account account=new CreditAccount("40123810712349876543",-123,0.2,LocalDate.now(),LocalDate.now().plusYears(1));
-        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now().plusYears(3));
-        System.out.println(account1.getCreationDate());
-        System.out.println(account1.getExpirationDate());
+        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now());
+       // System.out.println(account1.getCreationDate());
+        //System.out.println(account1.getExpirationDate());
         System.out.println(account1.monthesQuantityBeforeExpiration());
-        account1.setExpirationDate(LocalDate.now().plusYears(2));
-        System.out.println(account1.getExpirationDate());
+        //account1.setExpirationDate(LocalDate.now().plusYears(2));
+        //System.out.println(account1.getExpirationDate());
        // System.out.println(account.getCreationDate());
        // System.out.println(account.getExpirationDate());
-       // System.out.println(account.monthesQuantityBeforeExpiration());
+        System.out.println(account.monthesQuantityBeforeExpiration());
        // System.out.println(((CreditAccount) account).nextPaymentDate());
        // System.out.println(((CreditAccount) account).nextPaymentValue());
     }

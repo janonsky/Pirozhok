@@ -184,8 +184,8 @@ public class AccountManager implements Iterable<Client> {
     public String toString()
     {
         StringBuilder sb= new StringBuilder();
-        for (int i=0; i<this.clients.length;i++)
-            sb.append( "< ").append( this.clients[i].toString()).append(">").append("\n");
+        for (Client client:clients)
+            sb.append("<").append(client.toString()).append(">").append("\n");
         return sb.toString();
     }
 
@@ -201,7 +201,9 @@ public class AccountManager implements Iterable<Client> {
         }
         public Client next()
         {
-            //todo выброс исключения
+            //todo выброс исключения done
+            if (!hasNext())
+                throw new NoSuchElementException();
             return clients[index++];
         }
     }

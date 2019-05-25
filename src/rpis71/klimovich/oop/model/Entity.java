@@ -29,7 +29,7 @@ public class Entity implements Client {
     @Override
     public boolean add(Account account) throws DublicateAccountNumberException {
         Objects.requireNonNull(account, "Account - null");
-        checkDuplicateAccouuntForNumber(account);
+        checkDuplicateAccountForNumber(account);
         return add(size, account);
     }
 
@@ -37,7 +37,7 @@ public class Entity implements Client {
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
         Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
-        checkDuplicateAccouuntForNumber(account);
+        checkDuplicateAccountForNumber(account);
         Node node = head.next;
         Node newNode = new Node(account, null);
         if (size == 0 && index == 0) {
@@ -86,7 +86,7 @@ public class Entity implements Client {
     public Account set(int index, Account account) throws DublicateAccountNumberException {
         Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
-        checkDuplicateAccouuntForNumber(account);
+        checkDuplicateAccountForNumber(account);
         Node node = getNode(index);
         Account removedAccount = node.value;
         node.value = account;
@@ -199,8 +199,12 @@ public class Entity implements Client {
     @Override
     public boolean remove(Account account) {
         Objects.requireNonNull(account, "Account - null");
+        if (indexOf(account)>0) {
             remove(indexOf(account));
             return true;
+        }
+        else
+            return false;
     }
 
     @Override
@@ -212,7 +216,7 @@ public class Entity implements Client {
                 return i;
             node = node.next;
         }
-        throw new NoSuchElementException();
+       return -1;
     }
 
     @Override
@@ -230,7 +234,8 @@ public class Entity implements Client {
     @Override
     public int indexOf(String accountNumber) {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        //todo check accountNumber
+        //todo check accountNumber done
+        CheckPattern.checkNumber(accountNumber);
         Node node = head.next;
         for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(accountNumber)) {
@@ -283,6 +288,10 @@ public class Entity implements Client {
         Node currentNode = head.next;
         int hash = Integer.hashCode(getCreditScore());
         //todo foreach
+        for (Node node:)
+        {
+            hash ^= currentNode.value.hashCode();
+        }
         for (int i = 0; i < size; i++)
             hash ^= currentNode.value.hashCode();
         return hash ^ name.hashCode();
@@ -318,7 +327,7 @@ public class Entity implements Client {
         return clone;
     }
 
-    private void checkDuplicateAccouuntForNumber(Account account) throws DublicateAccountNumberException {
+    private void checkDuplicateAccountForNumber(Account account) throws DublicateAccountNumberException {
         Node node = head.next;
         for (int i = 0; i < size; i++) {
             if (node.value.getNumber().equals(account.getNumber()))
@@ -329,16 +338,11 @@ public class Entity implements Client {
 
     @Override
     public Iterator<Account> iterator() {
-        return null;
+        return new AccountIterator();
     }
 
-    @Override
-    public int compareTo(Client o) {
-        return this.totalBalance().compareTo(o.totalBalance());
-    }
-
-    private class AccountIterator implements Iterable<Account> {
-
+    private class AccountIterator implements Iterator<Account> {
+        Node node=head.next;
         int index=0;
 
         public boolean hasNext() {
@@ -346,12 +350,16 @@ public class Entity implements Client {
         }
 
         public Account next() {
-           return null;
-        }
-
-        @Override
-        public Iterator<Account> iterator() {
-            return null;
+           if (!hasNext())
+               throw new NoSuchElementException();
+           for (int i=0;i<size;i++)
+           {
+               if (i==index)
+                   break;
+               index++;
+               node=node.next;
+           }
+           return node.value;
         }
     }
 
