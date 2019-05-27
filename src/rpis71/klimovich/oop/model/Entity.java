@@ -284,7 +284,7 @@ public class Entity implements Client {
     }
 
     @Override
-    public int hashCode() {
+   /* public int hashCode() {
         Node currentNode = head.next;
         int hash = Integer.hashCode(getCreditScore());
         //todo foreach
@@ -295,7 +295,7 @@ public class Entity implements Client {
         for (int i = 0; i < size; i++)
             hash ^= currentNode.value.hashCode();
         return hash ^ name.hashCode();
-    }
+    }*/
 
     public boolean equals(Object object) {
         if (!(object instanceof Entity))
