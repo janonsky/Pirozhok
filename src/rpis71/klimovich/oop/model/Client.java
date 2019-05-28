@@ -4,7 +4,7 @@ import java.util.*;
 
 //todo все foreach через this done
 public interface Client extends Iterable<Account>,Comparable<Client>, Collection<Account> {
-    /*boolean add(Account account);*/
+    boolean add(Account account);
     boolean add(int index,Account account) throws DublicateAccountNumberException;
     Account get(int index);
    default Account get(String accountNumber) throws InvalidAccountNumberException

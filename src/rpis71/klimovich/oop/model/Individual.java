@@ -49,6 +49,14 @@ public class Individual implements Client {
 
     @Override
     public boolean remove(Object o) {
+        for (Account account:this)
+        {
+            if (o.equals(account))
+            {
+                remove(o);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -62,6 +70,7 @@ public class Individual implements Client {
         return false;
     }
 
+
     @Override
     public boolean removeAll(Collection<?> c) {
         return false;
@@ -74,7 +83,11 @@ public class Individual implements Client {
 
     @Override
     public void clear() {
-
+       for (int i=0;i<size;i++)
+       {
+           remove(i);
+           size--;
+       }
     }
 
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
@@ -136,11 +149,17 @@ public class Individual implements Client {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size==0;
     }
 
     @Override
     public boolean contains(Object o) {
+
+        for (Account account:this)
+        {
+            if (account.equals(o))
+                return true;
+        }
         return false;
     }
 
