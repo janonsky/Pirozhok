@@ -27,7 +27,6 @@ private double APR;
 
     @Override
     public double nextPaymentValue() {
-        //todo переделай done
         double period = Period.between(LocalDate.now(), getExpirationDate()).toTotalMonths();
         return getBalance() * (1 + getAPR() * (period / 12)) / (period);
     }
@@ -50,11 +49,9 @@ private double APR;
     }
     public boolean equals(Object object)
     {
-        //todo super.equals? done
-        return  (object instanceof CreditAccount &&
-                super.equals(object) &&
+        return  (super.equals(object) && object instanceof CreditAccount &&
                 Double.compare(this.getBalance(), ((CreditAccount)object).getBalance()) == 0 &&
-                Double.compare(this.APR, ((CreditAccount)object).APR) == 0); //todo done
+                Double.compare(this.APR, ((CreditAccount)object).APR) == 0);
     }
     public Account clone() throws CloneNotSupportedException {
         return super.clone();
@@ -62,7 +59,6 @@ private double APR;
 
     @Override
     public int monthesQuantityBeforeExpiration() {
-        //todo месяцы не верно done
         Period period=Period.between(LocalDate.now(),getExpirationDate());
         if (LocalDate.now().getDayOfMonth()>25)
             return (int)period.toTotalMonths();

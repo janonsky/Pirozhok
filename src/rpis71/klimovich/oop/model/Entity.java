@@ -249,7 +249,6 @@ public class Entity implements Client {
     @Override
     public int indexOf(String accountNumber) {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        //todo check accountNumber done
         CheckPattern.checkNumber(accountNumber);
         Node node = head.next;
         for (int i = 0; i < size; i++) {
@@ -299,18 +298,14 @@ public class Entity implements Client {
     }
 
     @Override
-   /* public int hashCode() {
-        Node currentNode = head.next;
-        int hash = Integer.hashCode(getCreditScore());
-        //todo foreach
-        for (Node node:)
+    public int hashCode() {
+        int hash = getCreditScore() ^ name.hashCode();
+        for (Account account: this)
         {
-            hash ^= currentNode.value.hashCode();
+            hash ^= account.hashCode();
         }
-        for (int i = 0; i < size; i++)
-            hash ^= currentNode.value.hashCode();
-        return hash ^ name.hashCode();
-    }*/
+        return hash;
+    }
 
     public boolean equals(Object object) {
         if (!(object instanceof Entity))
@@ -357,7 +352,7 @@ public class Entity implements Client {
     }
 
     @Override
-    public Object[] toArray() {
+    public Account[] toArray() {
         return new Object[0];
     }
 
@@ -375,16 +370,10 @@ public class Entity implements Client {
         }
 
         public Account next() {
-           if (!hasNext())
-               throw new NoSuchElementException();
-           for (int i=0;i<size;i++)
-           {
-               if (i==index)
-                   break;
+            Account value = node.value;
                index++;
                node=node.next;
-           }
-           return node.value;
+           return value;
         }
     }
 

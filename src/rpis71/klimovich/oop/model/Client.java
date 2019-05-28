@@ -2,8 +2,7 @@ package rpis71.klimovich.oop.model;
 
 import java.util.*;
 
-//todo все foreach через this done
-public interface Client extends Iterable<Account>,Comparable<Client>, Collection<Account> {
+public interface Client extends Comparable<Client>, Collection<Account> {
     boolean add(Account account);
     boolean add(int index,Account account) throws DublicateAccountNumberException;
     Account get(int index);
@@ -40,16 +39,11 @@ public interface Client extends Iterable<Account>,Comparable<Client>, Collection
            newAccounts[index]=account;
            index++;
        }
-       //todo лютая фигня done
        return newAccounts;
    }
     default ArrayList<Account> sortedAccountByBalance()
     {
-        ArrayList<Account> accountArrayList=new ArrayList<>();
-        for (Account account:this)
-        {
-            accountArrayList.add(account);
-        }
+        ArrayList<Account> accountArrayList=new ArrayList<>(this);
         Collections.sort(accountArrayList);
         return accountArrayList;
     }
@@ -62,7 +56,6 @@ public interface Client extends Iterable<Account>,Comparable<Client>, Collection
        }
        return totalBalance;
    }
-   //todo compareTоже default done
    default int compareTo(Client o) {
        return Double.compare(this.totalBalance(),o.totalBalance());
    }
@@ -84,18 +77,18 @@ public interface Client extends Iterable<Account>,Comparable<Client>, Collection
            return ClientStatus.BAD;
        return null;
    }
-    default Collection<Account> getCreditAccounts()
+    default Collection<Credit> getCreditAccounts()
     {
-        LinkedList<Account> clientLinkedList=new LinkedList<>();//todo тип данных
-        for (Account account: getAccounts())
+        LinkedList<Credit> clientLinkedList=new LinkedList<>();
+        for (Account account: this)
         {
             if (account instanceof Credit)
-                clientLinkedList.add(account);
+                clientLinkedList.add((Credit) account);
         }
         return clientLinkedList;
     }
     boolean remove(Account account) throws InvalidAccountNumberException;
-    int indexOf(Account account) throws InvalidAccountNumberException;
+    int indexOf(Account account) throws InvalidAccountNumberException; //todo default
     double debtTotal();
-    int indexOf(String accountNumber) throws InvalidAccountNumberException;
+    int indexOf(String accountNumber) throws InvalidAccountNumberException; //todo default
 }

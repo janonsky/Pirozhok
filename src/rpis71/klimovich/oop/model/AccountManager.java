@@ -191,7 +191,6 @@ public class AccountManager implements Iterable<Client> {
         }
         public Client next()
         {
-            //todo выброс исключения done
             if (!hasNext())
                 throw new NoSuchElementException();
             return clients[index++];

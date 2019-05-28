@@ -135,7 +135,6 @@ public class Individual implements Client {
 
     public Account remove(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber, "AccountNumber - null");
-        //todo проверка -1 и выброс исключения DONE
         int index = indexOf(accountNumber);
         if (index>0)
             return remove(index);
