@@ -1,9 +1,6 @@
 package rpis71.klimovich.oop.model;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class AccountManager implements Iterable<Client> {
     private Client[] clients;
@@ -82,18 +79,15 @@ public class AccountManager implements Iterable<Client> {
         System.arraycopy(clients,0,newClients,0,size);
         return newClients;
     }
-    public Client[] sortedByBalanceClients()
+    public ArrayList<Client> sortedByBalanceClients()
     {
-        Client[] newClients = getClients();
-       Client individual;
-        for (int i=0;i<size-1;i++)
-            for (int j=0;j<size-i;j++)
-                if (newClients[j].getAccounts()[i].getBalance()> newClients[j+1].getAccounts()[i].getBalance()) {
-                    individual = newClients[j];
-                    newClients[j] = newClients[j + 1];
-                    newClients[j + 1] = individual;
-                }
-        return newClients;
+        ArrayList<Client> clientArrayList=new ArrayList<>();
+        for (Client client:this)
+        {
+            clientArrayList.add(client);
+        }
+        Collections.sort(clientArrayList);
+        return clientArrayList;
     }
     public Account getClient(String accountNumber) throws InvalidAccountNumberException {
         Objects.requireNonNull(accountNumber,"InvalidAccountNumberException - null");
@@ -132,35 +126,31 @@ public class AccountManager implements Iterable<Client> {
         throw new NoSuchElementException();
     }
 
-    public Client[] getDebtors() {
-        Client[] debtors = new Client[size];
-        int countDebtors = 0;
+    public Set<Client> getDebtors() {
+        HashSet<Client> clientHashSet=new HashSet<>();
         for (Client debetor:clients)
         {
             if (debetor.getCreditScore()!=ClientStatus.GOOD.getCreditScoreBound())
             {
-                debtors[countDebtors]=debetor;
-                countDebtors++;
+                clientHashSet.add(debetor);
             }
         }
-        return Arrays.copyOf(debtors,countDebtors);
+        return clientHashSet;
     }
-    public Client[] getWickedDebtors()
+    public Set<Client> getWickedDebtors()
     {
        return getDebetorsForStatus(ClientStatus.BAD);
     }
 
-    private Client[] getDebetorsForStatus(ClientStatus status)
+    private Set<Client> getDebetorsForStatus(ClientStatus status)
     {
-        int countDebetors=0;
-        for(int i=0;i<size;i++)
-            if(clients[i].getCreditScore() <= status.getCreditScoreBound())
-                countDebetors++;
-        Client[] debetors=new Client[countDebetors];
-        for(int i=0;i<countDebetors;i++)
-            if (clients[i].getCreditScore()<=status.getCreditScoreBound())
-                debetors[i]=clients[i];
-            return debetors;
+        HashSet<Client> clientHashSet=new HashSet<>();
+        for (Client client:this)
+        {
+            if (client.getCreditScore()<=status.getCreditScoreBound())
+                clientHashSet.add(client);
+        }
+        return clientHashSet;
     }
     public boolean remove(Client client)
     {

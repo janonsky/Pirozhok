@@ -70,13 +70,21 @@ public class Test {
     }*/
     public static void lab5tests() throws InvalidAccountNumberException {
         Account account=new CreditAccount("40123810712349876543",-123,0.2,LocalDate.now(),LocalDate.now().plusYears(1));
-        DebitAccount account1=new DebitAccount("40123810712349876543",123,LocalDate.now(),LocalDate.now());
-        Credit credit1=new CreditAccount("40123810712349876543",-123,0.2,LocalDate.now(),LocalDate.now().plusYears(1));
-        Account[] accounts={account,account1};
-
-        Individual individuals=new Individual(accounts,"daun",0);
-        System.out.println(individuals.hasAccount("41123810712349876543"));
-       // System.out.println(account1.getCreationDate());
+        Account account1=new DebitAccount("40123810712349876544",100,LocalDate.now(),LocalDate.now().plusYears(2));
+        DebitAccount account3=new DebitAccount("40123810712349876545",123,LocalDate.now(),LocalDate.now());
+        Account[] accounts1={account};
+        Account[] accounts2={account1};
+        Account[] accounts3={account3};
+        Client client=new Individual(accounts1,"firs",-10);
+        Client client1=new Individual(accounts2,"second",10);
+        Client client2=new Individual(accounts3,"Third",-5);
+        Client[] clients={client,client1,client2};
+        AccountManager accountManager=new AccountManager(clients);
+        System.out.println(accountManager.getDebtors());
+        //Individual individuals=new Individual(accounts,"dlown",0);
+        // System.out.println(individuals.hasAccount("41123810712349876543"));
+        //AccountManager accountManager=new AccountManager();
+        // System.out.println(account1.getCreationDate());
         //System.out.println(account1.getExpirationDate());
         //System.out.println(account1.monthesQuantityBeforeExpiration());
         //account1.setExpirationDate(LocalDate.now().plusYears(2));

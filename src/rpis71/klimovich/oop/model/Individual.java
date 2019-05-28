@@ -1,9 +1,6 @@
 package rpis71.klimovich.oop.model;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class Individual implements Client {
     private Account[] accounts;
@@ -48,6 +45,36 @@ public class Individual implements Client {
         accounts[size] = account;
         size++;
         return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Account> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
     }
 
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
@@ -108,6 +135,16 @@ public class Individual implements Client {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -147,7 +184,7 @@ public class Individual implements Client {
 
     @Override
     public double debtTotal() {
-        Account[] creditAccounts = getCreditAccounts();
+        Account[] creditAccounts = getCreditAccounts().toArray(new Account[0]);
         double debtTotal = 0;
         for (int i = 0; i < size; i++)
             debtTotal += creditAccounts[i].getBalance();
@@ -207,6 +244,17 @@ public class Individual implements Client {
     public Iterator<Account> iterator() {
         return new AccountIterator();
     }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
     private class AccountIterator implements Iterator<Account>
     {
         int index=0;

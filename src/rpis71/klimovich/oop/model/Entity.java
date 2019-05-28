@@ -1,9 +1,6 @@
 package rpis71.klimovich.oop.model;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class Entity implements Client {
     private Node head;
@@ -31,6 +28,36 @@ public class Entity implements Client {
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccountForNumber(account);
         return add(size, account);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Account> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
     }
 
     @Override
@@ -132,6 +159,16 @@ public class Entity implements Client {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
     public Account[] getAccounts() {
         Node node = head.next;
         Account[] accounts = new Account[size];
@@ -140,13 +177,6 @@ public class Entity implements Client {
             node = node.next;
         }
         return accounts;
-    }
-
-    @Override
-    public Account[] sortedAccountByBalance() {
-        Account[] sortedAccountsByBalance = getAccounts();
-        Arrays.sort(sortedAccountsByBalance);
-        return sortedAccountsByBalance;
     }
 
     @Override
@@ -179,21 +209,6 @@ public class Entity implements Client {
     @Override
     public void addCreditScores(int creditScores) {
         this.creditScore += creditScores;
-    }
-
-    @Override
-    public Account[] getCreditAccounts() {
-        int count = 0;
-        Account[] newAccounts = new Account[size];
-        Node node = head.next;
-        for (int i = 0; i < size; i++) {
-            if (node.value instanceof Credit) {
-                newAccounts[count] = node.value;
-                count++;
-            }
-            node = node.next;
-        }
-        return Arrays.copyOf(newAccounts, count);
     }
 
     @Override
@@ -339,6 +354,16 @@ public class Entity implements Client {
     @Override
     public Iterator<Account> iterator() {
         return new AccountIterator();
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
     }
 
     private class AccountIterator implements Iterator<Account> {

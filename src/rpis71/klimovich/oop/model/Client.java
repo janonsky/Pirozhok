@@ -1,12 +1,10 @@
 package rpis71.klimovich.oop.model;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 //todo все foreach через this done
-public interface Client extends Iterable<Account>,Comparable<Client> {
-    boolean add(Account account) throws DublicateAccountNumberException;
+public interface Client extends Iterable<Account>,Comparable<Client>, Collection<Account> {
+    /*boolean add(Account account);*/
     boolean add(int index,Account account) throws DublicateAccountNumberException;
     Account get(int index);
    default Account get(String accountNumber) throws InvalidAccountNumberException
@@ -45,11 +43,15 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
        //todo лютая фигня done
        return newAccounts;
    }
-    default Account[] sortedAccountByBalance()
+    default ArrayList<Account> sortedAccountByBalance()
     {
-        Account[] newAccounts=getAccounts();
-        Arrays.sort(newAccounts);
-        return newAccounts;
+        ArrayList<Account> accountArrayList=new ArrayList<>();
+        for (Account account:this)
+        {
+            accountArrayList.add(account);
+        }
+        Collections.sort(accountArrayList);
+        return accountArrayList;
     }
    default Double totalBalance()
    {
@@ -82,15 +84,15 @@ public interface Client extends Iterable<Account>,Comparable<Client> {
            return ClientStatus.BAD;
        return null;
    }
-    default Account[] getCreditAccounts()
+    default LinkedList<Account> getCreditAccounts()
     {
-        int countCreditAccount = 0;
-        Account[] accounts = new Account[size()];
-        for (Account account:this)
+        LinkedList<Account> clientLinkedList=new LinkedList<>();//todo тип данных
+        for (Account account: getAccounts())
+        {
             if (account instanceof Credit)
-                accounts[countCreditAccount]=account;
-            countCreditAccount++;
-        return Arrays.copyOf(accounts, countCreditAccount);
+                clientLinkedList.add(account);
+        }
+        return clientLinkedList;
     }
     boolean remove(Account account) throws InvalidAccountNumberException;
     int indexOf(Account account) throws InvalidAccountNumberException;
