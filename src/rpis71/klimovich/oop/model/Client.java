@@ -84,7 +84,7 @@ public interface Client extends Iterable<Account>,Comparable<Client>, Collection
            return ClientStatus.BAD;
        return null;
    }
-    default LinkedList<Account> getCreditAccounts()
+    default Collection<Account> getCreditAccounts()
     {
         LinkedList<Account> clientLinkedList=new LinkedList<>();//todo тип данных
         for (Account account: getAccounts())
