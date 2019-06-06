@@ -122,16 +122,7 @@ public interface Client extends Comparable<Client>, Collection<Account> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
      default <T> T[] toArray(T[] a) {
-       Account[] elementData = toArray();
-        if (a.length < size()) {
-            return (T[]) Arrays.copyOf(elementData, size(), a.getClass());
-        }
-        System.arraycopy(elementData, 0, a, 0, size());
-        if (a.length > size())
-            a[size()] = null;
-        return a;
     }
     @Override
      default boolean isEmpty() {
