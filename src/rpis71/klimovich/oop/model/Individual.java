@@ -184,16 +184,6 @@ public class Individual implements Client {
         return new AccountIterator();
     }
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
     private class AccountIterator implements Iterator<Account>
     {
         int index=0;

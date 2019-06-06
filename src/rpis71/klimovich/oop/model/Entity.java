@@ -31,36 +31,6 @@ public class Entity implements Client {
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends Account> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
         Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
@@ -156,16 +126,6 @@ public class Entity implements Client {
     @Override
     public int size() {
         return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
     }
 
     @Override
