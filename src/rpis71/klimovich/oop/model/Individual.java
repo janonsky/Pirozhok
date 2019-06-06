@@ -142,6 +142,19 @@ public class Individual implements Client {
     }
 
     @Override
+    public boolean retainAll(Collection<?> c) { //todo done
+        for(int i=0;i<size;i++)
+        {
+            if (!c.contains(accounts[i]))
+            {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void clear() {
             //todo это надо переопределить в классах . массив - делаем все элементы null в нодах делаем все ссылки null done
             for (int i=0;i<size();i++)
