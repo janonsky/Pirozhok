@@ -88,7 +88,116 @@ public interface Client extends Comparable<Client>, Collection<Account> {
         return clientLinkedList;
     }
     boolean remove(Account account) throws InvalidAccountNumberException;
-    int indexOf(Account account) throws InvalidAccountNumberException; //todo default
+   default int indexOf(Account account) throws InvalidAccountNumberException
+   {
+       Objects.requireNonNull(account, "Account - null");
+       int index=0;
+       for (Account account1:this)
+       {
+           if (account1.equals(account))
+               return index;
+           index++;
+       }
+       return -1;
+   }//todo default done
     double debtTotal();
-    int indexOf(String accountNumber) throws InvalidAccountNumberException; //todo default
+   default int indexOf(String accountNumber) throws InvalidAccountNumberException
+   {
+       Objects.requireNonNull(accountNumber, "AccountNumber - null");
+       CheckPattern.checkNumber(accountNumber);
+       int index=0;
+       for (Account account1:this)
+       {
+           if (account1.getNumber().equals(accountNumber))
+               return index;
+           index++;
+       }
+       return -1;
+   }//todo default done
+    @Override
+     default Account[] toArray() {
+        Account[] accounts = new Account[size()];
+        System.arraycopy(getAccounts(), 0, accounts, 0, size());
+        return accounts;
+    }
+
+    @Override
+     default <T> T[] toArray(T[] a) {
+    }
+    @Override
+     default boolean isEmpty() {
+        return size()==0;
+    }
+
+    @Override
+    default boolean contains(Object o) {
+
+        for (Account account:this)
+        {
+            if (account.equals(o))
+                return true;
+        }
+        return false;
+    }
+    @Override
+     default boolean remove(Object o) {
+        for (Account account:this)
+        {
+            if (account.equals(o))
+            {
+                remove(account);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+     default boolean containsAll(Collection<?> c) {
+        for (Object obj : c)
+            if (!contains(obj))
+                return false;
+        return true;
+    }
+
+    @Override
+     default boolean addAll(Collection<? extends Account> c) {
+        for (Account account : c) {
+            add(account);
+        }
+        return true;
+    }
+
+    @Override
+     default boolean removeAll(Collection<?> c) {
+        for(Object obj:c)
+        {
+            if(contains(obj))
+            {
+                remove(obj);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+     default boolean retainAll(Collection<?> c) {
+       for(Object obj:c)
+       {
+           if(!c.contains(obj))
+           {
+               remove(obj);
+               return true;
+           }
+       }
+       return false;
+    }
+
+    @Override
+     default void clear() { ;
+        for (int i=0;i<size();i++)
+            remove(i);
+    }
+
 }

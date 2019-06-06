@@ -287,11 +287,10 @@ public class Entity implements Client {
         StringBuilder sb = new StringBuilder();
         sb.append("Client\n")
                 .append("name: ").append(getName());
-        Node node = head.next;
-        //todo foreach
-        for (int i = 0; i < size; i++) {
-            sb.append(node.value.toString()).append("\n");
-            node = node.next;
+        //todo foreach done
+        for (Account account:this)
+        {
+            sb.append(account.toString()).append("\n");
         }
         sb.append("total: ").append(totalBalance());
         return sb.toString();
@@ -351,15 +350,7 @@ public class Entity implements Client {
         return new AccountIterator();
     }
 
-    @Override
-    public Account[] toArray() {
-        return new Object[0];
-    }
 
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
 
     private class AccountIterator implements Iterator<Account> {
         Node node=head.next;

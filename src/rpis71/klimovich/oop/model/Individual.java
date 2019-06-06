@@ -47,49 +47,6 @@ public class Individual implements Client {
         return true;
     }
 
-    @Override
-    public boolean remove(Object o) {
-        for (Account account:this)
-        {
-            if (o.equals(account))
-            {
-                remove(o);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends Account> c) {
-        return false;
-    }
-
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-       for (int i=0;i<size;i++)
-       {
-           remove(i);
-           size--;
-       }
-    }
-
     public boolean add(int index, Account account) throws DublicateAccountNumberException {
         Objects.checkIndex(index,size);
         Objects.requireNonNull(account, "Account - null");
@@ -104,16 +61,6 @@ public class Individual implements Client {
     public Account get(int index) {
         Objects.checkIndex(index,size);
         return accounts[index];
-    }
-
-    public int indexOf(String accountNumber) throws InvalidAccountNumberException {
-        Objects.requireNonNull(accountNumber, "AccountNumber - null");
-       CheckPattern.checkNumber(accountNumber);
-        for (int i = 0; i < size; i++) {
-            if (accounts[i].getNumber().equals(accountNumber))
-                return i;
-        }
-       return -1;
     }
 
     public Account set(int index, Account newAccount) throws DublicateAccountNumberException {
@@ -147,22 +94,6 @@ public class Individual implements Client {
     }
 
     @Override
-    public boolean isEmpty() {
-        return size==0;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-
-        for (Account account:this)
-        {
-            if (account.equals(o))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
@@ -188,16 +119,6 @@ public class Individual implements Client {
         Objects.requireNonNull(account, "Account - null");
             remove(indexOf(account));
             return true;
-    }
-
-    @Override
-    public int indexOf(Account account) throws InvalidAccountNumberException {
-        Objects.requireNonNull(account, "Account - null");
-        for (int i = 0; i < size; i++) {
-            if (accounts[i].equals(account))
-                return i;
-        }
-        return -1;
     }
 
     @Override
