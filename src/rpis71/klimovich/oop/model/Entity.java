@@ -1,5 +1,6 @@
 package rpis71.klimovich.oop.model;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Entity implements Client {
@@ -24,14 +25,14 @@ public class Entity implements Client {
     }
 
     @Override
-    public boolean add(Account account) throws DublicateAccountNumberException {
+    public boolean add(Account account) {
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccountForNumber(account);
         return add(size, account);
     }
 
     @Override
-    public boolean add(int index, Account account) throws DublicateAccountNumberException {
+    public boolean add(int index, Account account) {
         Objects.checkIndex(index, size);
         Objects.requireNonNull(account, "Account - null");
         checkDuplicateAccountForNumber(account);
@@ -126,17 +127,6 @@ public class Entity implements Client {
     @Override
     public int size() {
         return size;
-    }
-
-    @Override
-    public Account[] getAccounts() {
-        Node node = head.next;
-        Account[] accounts = new Account[size];
-        for (int i = 0; i < size; i++) {
-            accounts[i] = node.value;
-            node = node.next;
-        }
-        return accounts;
     }
 
     @Override
@@ -247,7 +237,6 @@ public class Entity implements Client {
         StringBuilder sb = new StringBuilder();
         sb.append("Client\n")
                 .append("name: ").append(getName());
-        //todo foreach done
         for (Account account:this)
         {
             sb.append(account.toString()).append("\n");
@@ -310,6 +299,13 @@ public class Entity implements Client {
         return new AccountIterator();
     }
 
+    @Override
+    public <T> T[] toArray(T[] a) {
+
+        T[] accounts = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
+        //todo набиваем либо accounts либо a элементами this (через foreach разумеется)
+        return null;
+    }
 
 
     private class AccountIterator implements Iterator<Account> {

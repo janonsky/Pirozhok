@@ -1,6 +1,6 @@
 package rpis71.klimovich.oop.model;
 
-public class DublicateAccountNumberException extends Exception {
+public class DublicateAccountNumberException extends RuntimeException {
     public DublicateAccountNumberException(){
         super();
     }

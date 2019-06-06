@@ -30,7 +30,8 @@ public interface Client extends Comparable<Client>, Collection<Account> {
     Account remove(int index);
     Account remove(String accountNumber) throws InvalidAccountNumberException;
     int size();
-   default Account[] getAccounts()
+    @Override
+   default Account[] toArray()
    {
        Account[] newAccounts=new Account[size()];
        int index=0;
@@ -99,7 +100,7 @@ public interface Client extends Comparable<Client>, Collection<Account> {
            index++;
        }
        return -1;
-   }//todo default done
+   }
     double debtTotal();
    default int indexOf(String accountNumber) throws InvalidAccountNumberException
    {
@@ -113,17 +114,8 @@ public interface Client extends Comparable<Client>, Collection<Account> {
            index++;
        }
        return -1;
-   }//todo default done
-    @Override
-     default Account[] toArray() {
-        Account[] accounts = new Account[size()];
-        System.arraycopy(getAccounts(), 0, accounts, 0, size());
-        return accounts;
-    }
+   }
 
-    @Override
-     default <T> T[] toArray(T[] a) {
-    }
     @Override
      default boolean isEmpty() {
         return size()==0;
@@ -141,6 +133,7 @@ public interface Client extends Comparable<Client>, Collection<Account> {
     }
     @Override
      default boolean remove(Object o) {
+       //todo это лучше не делать default и удалять без foreach
         for (Account account:this)
         {
             if (account.equals(o))
@@ -181,6 +174,7 @@ public interface Client extends Comparable<Client>, Collection<Account> {
         return false;
     }
 
+    //todo надо бы переопределить и не смешивать интератор и удаление
     @Override
      default boolean retainAll(Collection<?> c) {
        for(Object obj:c)
@@ -195,7 +189,8 @@ public interface Client extends Comparable<Client>, Collection<Account> {
     }
 
     @Override
-     default void clear() { ;
+     default void clear() {
+       //todo это надо переопределить в классах . массив - делаем все элементы null в нодах делаем все ссылки null
         for (int i=0;i<size();i++)
             remove(i);
     }

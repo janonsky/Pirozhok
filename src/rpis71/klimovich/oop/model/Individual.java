@@ -184,6 +184,13 @@ public class Individual implements Client {
         return new AccountIterator();
     }
 
+    @Override
+    public <T> T[] toArray(T[] a) {
+        //todo смотри реализацию в классе ArrayList
+
+        return null;
+    }
+
     private class AccountIterator implements Iterator<Account>
     {
         int index=0;
