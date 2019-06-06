@@ -132,18 +132,7 @@ public interface Client extends Comparable<Client>, Collection<Account> {
         return false;
     }
     @Override
-     default boolean remove(Object o) {
-       //todo это лучше не делать default и удалять без foreach
-        for (Account account:this)
-        {
-            if (account.equals(o))
-            {
-                remove(account);
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean remove(Object o);
 
     @Override
      default boolean containsAll(Collection<?> c) {
@@ -174,25 +163,11 @@ public interface Client extends Comparable<Client>, Collection<Account> {
         return false;
     }
 
-    //todo надо бы переопределить и не смешивать интератор и удаление
+    //todo надо бы переопределить и не смешивать интератор и удаление done
     @Override
-     default boolean retainAll(Collection<?> c) {
-       for(Object obj:c)
-       {
-           if(!c.contains(obj))
-           {
-               remove(obj);
-               return true;
-           }
-       }
-       return false;
-    }
+    boolean retainAll(Collection<?> c);
 
     @Override
-     default void clear() {
-       //todo это надо переопределить в классах . массив - делаем все элементы null в нодах делаем все ссылки null
-        for (int i=0;i<size();i++)
-            remove(i);
-    }
+     void clear();
 
 }

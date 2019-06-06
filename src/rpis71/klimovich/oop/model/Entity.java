@@ -210,6 +210,45 @@ public class Entity implements Client {
         return -1;
     }
 
+    @Override
+    public boolean remove(Object o) {
+        //todo это лучше не делать default и удалять без foreach done
+        Node node = head.next;
+        for (int i = 0; i < size; i++) {
+            if (node.value.equals(o)) {
+                remove(i);
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        Node node=head.next;
+        for (int i=0;i<size;i++)
+        {
+            if (!c.contains(node.value))
+            {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void clear() {
+            //todo это надо переопределить в классах . массив - делаем все элементы null в нодах делаем все ссылки null done
+        Node node=head.next;
+            for (int i=0;i<size;i++)
+            {
+                node.value=null;
+               node=node.next;
+            }
+    }
+
     private Node getNode(int index) {
         Objects.checkIndex(-1, size);
         int numberNode = 0;
@@ -300,10 +339,15 @@ public class Entity implements Client {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-
-        T[] accounts = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
+        if (a.length < size)
+            return (T[]) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         //todo набиваем либо accounts либо a элементами this (через foreach разумеется)
+        for (Account account : this)
+        {
+
+        }
         return null;
     }
 

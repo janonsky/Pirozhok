@@ -130,6 +130,24 @@ public class Individual implements Client {
         return debtTotal;
     }
 
+    @Override
+    public boolean remove(Object o) { //todo done
+        for (int i = 0; i < size; i++) {
+            if (accounts[i].equals(o)) {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void clear() {
+            //todo это надо переопределить в классах . массив - делаем все элементы null в нодах делаем все ссылки null done
+            for (int i=0;i<size();i++)
+                accounts[i]=null;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Client\n")
@@ -185,10 +203,16 @@ public class Individual implements Client {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        //todo смотри реализацию в классе ArrayList
-
-        return null;
+        //todo смотри реализацию в классе ArrayList done
+        if (a.length < size) {
+            return (T[]) Arrays.copyOf(accounts, size, a.getClass());
+        }
+        System.arraycopy(accounts, 0, a, 0, size);
+        if (a.length > size)
+            a[size] = null;
+        return a;
     }
 
     private class AccountIterator implements Iterator<Account>
